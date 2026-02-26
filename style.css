@@ -253,7 +253,6 @@ nav .active {
     align-items: center;
     gap: 1rem;
     border-radius: 10px;
-    padding: 1rem 1.25rem;
     background: var(--bg-main);
     text-decoration: none;
 }
