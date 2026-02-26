@@ -111,16 +111,34 @@ nav .active {
     padding: 0.5rem;
     transition: transform 0.2s ease;
 }
+    
 
-.gallery-item:hover {
-    transform: scale(1.02);
+.gallery-image {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    object-fit: cover;
 }
 
-.gallery-item img {
-    width: 100%;
-    height: auto;           /* height independent */
-    border-radius: 4px;
-    margin-bottom: 0.5rem;
+.gallery-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+    color: var(--accent);
+}
+
+.gallery-description {
+    font-size: 0.85rem;
+    color: var(--text-main);
+    margin-bottom: 0.25rem;
+}
+
+.gallery-date {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    border-bottom: solid 1px var(--border-solid);
+    padding-bottom: 1rem;
 }
 
 /* ===== Footer ===== */

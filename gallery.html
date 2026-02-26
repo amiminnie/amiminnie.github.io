@@ -113,12 +113,11 @@ async function loadGallery() {
             div.className = "gallery-item";
 
             div.innerHTML = `
-                <img src="${item.file}" alt="${item.name}">
-                <h3>${item.name}</h3>
-                <p>${item.description}</p>
-                <p><em>${item.date}</em></p>
-            `;
-
+                <a class="gallery-link" href="${item.file}" target="_blank" rel="noopener noreferrer">
+                <img class="gallery-image" src="${item.file}" alt="${item.name}"></a>
+                <h3 class="gallery-title">${item.name}</h3>
+                <p class="gallery-description">${item.description}</p>
+                <p class="gallery-date"><em>${item.date}</em></p>`;
             container.appendChild(div);
         });
 
