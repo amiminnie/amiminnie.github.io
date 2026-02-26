@@ -14,5 +14,7 @@
     /* Accent */
     --accent: #ff8ef1;
     --accent-hover: #9eafff;
+    
+    --card-hover: #ff8ef111;
 }
 
