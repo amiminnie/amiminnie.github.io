@@ -3,18 +3,20 @@
 :root {
     /* Backgrounds */
     --bg-main: #2a1908;
+    --bg-dark: #251607;
 
     /* Text */
     --text-main: #e2d7e0;
     --text-muted: #bb9ab5;
 
     /* Borders */
-    --border-solid: #4c3737;
+    --border-solid: #4c3737; 
 
     /* Accent */
     --accent: #ff8ef1;
+    --accent-dark: #924d8a;
     --accent-hover: #9eafff;
     
-    --card-hover: #ff8ef111;
+    --card-hover: #ff8ef111; 
 }
 

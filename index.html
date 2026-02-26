@@ -42,12 +42,25 @@
             </div>
         </section>
         
+        <section class="guestbook">
+            <h2>leave a comment!</h2>
+  
+            <form id="guestbook-form">
+            <input type="text" id="name" placeholder="nickname (optional)">
+            <textarea id="message" placeholder="what do you think?" required></textarea>
+            <button type="submit">Send</button>
+        </form>
+
+  <div id="guestbook-entries">
+    <p>Loading comments…</p>
+  </div>
+</section>
+        
     </main>
 
     <!-- Footer -->
     <footer>
         <p>minushadulwan@gmail.com</p>
-        <p>© 2026 ChipFlare Studios</p>
     </footer>
 
 </div>
@@ -96,6 +109,95 @@ toggleBtn.addEventListener("click", () => {
     }, 120);
 });
 
+    </script>
+    
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+// -----------------------------
+// Supabase config
+// -----------------------------
+const SUPABASE_URL = "https://miwcmqwhudshgetmrmhf.supabase.co";
+const SUPABASE_KEY = "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ";
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// Elements
+const guestbookForm = document.getElementById("guestbook-form");
+const guestbookEntries = document.getElementById("guestbook-entries");
+
+// -----------------------------
+// Load existing messages
+// -----------------------------
+async function loadMessages() {
+  try {
+    const { data, error } = await supabase
+      .from("guestbook")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (error) throw error;
+
+    guestbookEntries.innerHTML = "";
+
+    if (!data.length) {
+      guestbookEntries.innerHTML = "<p>No comments yet. Be the first!</p>";
+      return;
+    }
+
+    data.forEach(msg => {
+      const div = document.createElement("div");
+      div.className = "guestbook-entry";
+div.innerHTML = `
+  <div class="guestbook-entry-header" style="display: flex; justify-content: space-between; align-items: baseline;">
+    <strong>${msg.name}</strong>
+    <small style="color: var(--text-muted); font-size: 0.75rem;">
+      ${new Date(msg.created_at).toLocaleDateString({
+        day: "numeric",
+        month: "short",
+        year: "numeric"
+      })} - ${new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+    </small>
+  </div>
+  <p>${msg.message}</p>
+`;
+      guestbookEntries.appendChild(div);
+    });
+  } catch (err) {
+    guestbookEntries.innerHTML = `<p>Could not load comments: ${err.message}</p>`;
+    console.error(err);
+  }
+}
+
+// -----------------------------
+// Submit new message
+// -----------------------------
+guestbookForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  let name = document.getElementById("name").value.trim(); // use let
+  const message = document.getElementById("message").value.trim();
+  if (!message) return; // message is required
+  if (!name) name = "Anonymous"; // now works
+
+  try {
+    const { error } = await supabase
+      .from("guestbook")  // your table
+      .insert([{ name, message }]);
+
+    if (error) throw error;
+
+    guestbookForm.reset();
+    loadMessages(); // refresh list
+  } catch (err) {
+    alert("Failed to send message: " + err.message);
+    console.error(err);
+  }
+});
+
+// -----------------------------
+// Initial load
+// -----------------------------
+loadMessages();
 </script>
 
 </body>

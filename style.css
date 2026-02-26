@@ -191,6 +191,55 @@ nav .active {
     color: var(--text-muted);
 }
 
+.guestbook {
+  background-color: var(--bg-dark);
+  margin-top: 2rem;
+  padding: 1rem;
+  border: 1px dashed var(--border-solid);
+}
+
+#guestbook-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+#guestbook-form input,
+#guestbook-form textarea {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-solid);
+  background: var(--bg);
+  color: var(--text-main);
+  font-family: inherit;
+}
+
+#guestbook-form button {
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: none;
+  background: var(--accent-dark);
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.guestbook-entry {
+  padding: 0.5rem 0;
+  border-top: 1px solid var(--border-solid)
+}
+
+.guestbook-entry strong {
+  color: var(--accent);
+  font-size: 1.2re
+}
+
+.guestbook-entry span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
 /* ===== Footer ===== */
 
 footer {
