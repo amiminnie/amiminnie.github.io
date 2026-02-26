@@ -87,8 +87,13 @@ if (savedTheme) {
 
 // Toggle click
 toggleBtn.addEventListener("click", () => {
-    const current = localStorage.getItem("theme");
-    setTheme(current === "dark" ? "light" : "dark"); 
+    themeIcon.style.transform = "scale(0)";
+    setTimeout(() => {
+        const current = localStorage.getItem("theme");
+        setTheme(current === "dark" ? "light" : "dark");
+        void themeIcon.offsetWidth; // force reflow
+        themeIcon.style.transform = "scale(1)";
+    }, 120);
 });
 
 </script>

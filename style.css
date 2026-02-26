@@ -96,37 +96,31 @@ nav .active {
     color: var(--accent-hover);
 }
 
-.gallery-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    margin-top: 2rem;
+.gallery-masonry {
+    column-count: 3;         /* 3 rows visually */
+    column-gap: 1rem;        /* gap between items */
 }
 
 .gallery-item {
+    display: inline-block;    /* important for masonry columns */
+    width: 100%;              /* fit column width */
+    margin-bottom: 1rem;
     border: 1px solid var(--border);
-    padding: 0.5rem;
     border-radius: 6px;
     background: var(--bg);
+    padding: 0.5rem;
+    transition: transform 0.2s ease;
 }
 
+.gallery-item:hover {
+    transform: scale(1.02);
+}
 
 .gallery-item img {
     width: 100%;
-    height: auto;
+    height: auto;           /* height independent */
     border-radius: 4px;
     margin-bottom: 0.5rem;
-}
-
-.gallery-item h3 {
-    margin: 0.25rem 0;
-    font-size: 1rem;
-}
-
-.gallery-item p {
-    font-size: 0.85rem;
-    color: var(--muted);
-    margin: 0.1rem 0;
 }
 
 /* ===== Footer ===== */
