@@ -41,6 +41,7 @@
                 <p>i like <a href="https://geotastic.net" target="_blank" rel="noopener noreferrer">geotastic</a></p>
             </div>
         </section>
+
         
         <section class="guestbook">
             <h2>leave a comment!</h2>
@@ -52,7 +53,7 @@
         </form>
 
   <div id="guestbook-entries">
-    <p>Loading comments…</p>
+    <p>loading what others have to say…</p>
   </div>
 </section>
         
@@ -61,6 +62,7 @@
     <!-- Footer -->
     <footer>
         <p>minushadulwan@gmail.com</p>
+        <p>comments are hosted by <a href="https://supabase.com" target="_blank" rel="noopener noreferrer">Supabase</a></p>
     </footer>
 
 </div>
@@ -141,7 +143,7 @@ async function loadMessages() {
     guestbookEntries.innerHTML = "";
 
     if (!data.length) {
-      guestbookEntries.innerHTML = "<p>No comments yet. Be the first!</p>";
+      guestbookEntries.innerHTML = "<p>aww nothing :(</p>";
       return;
     }
 
