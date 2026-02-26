@@ -45,6 +45,20 @@ header {
     margin-bottom: 2rem;
 }
 
+.theme-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 0;
+}
+
+.theme-btn img {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
 nav {
     display: flex;
     gap: 1.5rem;

@@ -21,7 +21,9 @@
             <a href="#">projects</a>
             <a href="#">gallery</a>
             <a href="#">contact</a>
-            <button id="theme-toggle" style="margin-left:auto;">☀</button>
+            <button id="theme-toggle" class="theme-btn">
+                <img id="theme-icon" src="images/moon-icon.png" alt="Toggle theme">
+            </button>
         </nav>
     </header>
 
@@ -53,27 +55,28 @@
 <script>
 const themeLink = document.getElementById("theme-style");
 const toggleBtn = document.getElementById("theme-toggle");
+const themeIcon = document.getElementById("theme-icon");
 
-// Detect saved preference
 const savedTheme = localStorage.getItem("theme");
-
-// Detect system dark mode
 const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
-// Function to set theme
 function setTheme(mode) {
     if (mode === "dark") {
         themeLink.href = "dark.css";
         document.documentElement.style.colorScheme = "dark";
+        themeIcon.src = "images/sun-icon.png";
+        themeIcon.alt = "Switch to light mode";
         localStorage.setItem("theme", "dark");
     } else {
         themeLink.href = "light.css";
         document.documentElement.style.colorScheme = "light";
+        themeIcon.src = "images/moon-icon.png";
+        themeIcon.alt = "Switch to dark mode";
         localStorage.setItem("theme", "light");
     }
 }
 
-// Initial load logic
+// Initial load
 if (savedTheme) {
     setTheme(savedTheme);
 } else if (systemPrefersDark) {
@@ -82,7 +85,7 @@ if (savedTheme) {
     setTheme("light");
 }
 
-// Toggle button
+// Toggle click
 toggleBtn.addEventListener("click", () => {
     const current = localStorage.getItem("theme");
     setTheme(current === "dark" ? "light" : "dark");
