@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>amiminnie</title>
+    <title>amiminnie - gallery</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light dark">
     <meta name="theme-color" content="#111111">
     <link id="theme-style" rel="stylesheet" href="light.css">
-    <link id="style" rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="icon" href="assets/favicon.ico">
 </head>
 
@@ -18,10 +18,10 @@
     <!-- Header -->
     <header>
         <nav>
-            <a href="" class="active">about</a>
-            <a href="gallery.html">gallery</a>
+            <a href="index.html">about</a>
+            <a href="" class="active">gallery</a>
             <a href="#">social</a>
-            <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere with this!">
+            <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere!">
                 <img id="theme-icon" src="images/moon-icon.png" alt="Toggle theme">
             </button>
         </nav>
@@ -29,19 +29,18 @@
 
     <!-- Main -->
     <main>
-
         <section class="intro">
-            <p class="prefix">am i</p>
-            <h1>Minnie?</h1>
-            <p class="subtitle">artist ⁘ developer </p>
+            <p class="prefix">Minnie's</p>
+            <h1>gallery</h1>
+            <p class="subtitle">web-comics, sketches and stuff</p>
+        </section>
 
-            <div class="bio">
-                <p>i sometimes make web-comics</p>
-                <p>i'm working on a game, haven't thought of a name though</p>
-                <p>i like <a href="https://geotastic.net" target="_blank" rel="noopener noreferrer">geotastic</a></p>
+        <!-- Gallery Grid -->
+        <section class="gallery">
+            <div id="gallery-container" class="gallery-grid">
+                <p>Loading gallery...</p>
             </div>
         </section>
-        
     </main>
 
     <!-- Footer -->
@@ -49,9 +48,9 @@
         <p>minushadulwan@gmail.com</p>
         <p>© 2026 ChipFlare Studios</p>
     </footer>
-
 </div>
-    
+
+<!-- Theme Switcher Script -->
 <script>
 const themeLink = document.getElementById("theme-style");
 const toggleBtn = document.getElementById("theme-toggle");
@@ -85,12 +84,51 @@ if (savedTheme) {
     setTheme("light");
 }
 
-// Toggle click
+// Toggle click with pop animation
 toggleBtn.addEventListener("click", () => {
-    const current = localStorage.getItem("theme");
-    setTheme(current === "dark" ? "light" : "dark"); 
+    themeIcon.style.transform = "scale(0)";
+    setTimeout(() => {
+        const current = localStorage.getItem("theme");
+        setTheme(current === "dark" ? "light" : "dark");
+        void themeIcon.offsetWidth; // force reflow
+        themeIcon.style.transform = "scale(1)";
+    }, 120);
 });
+</script>
 
+<!-- Gallery Loader Script -->
+<script>
+async function loadGallery() {
+    const container = document.getElementById("gallery-container");
+
+    try {
+        const res = await fetch("gallery.json");
+        if (!res.ok) throw new Error("Failed to fetch gallery.json");
+
+        const items = await res.json();
+        container.innerHTML = ""; // clear loading text
+
+        items.forEach(item => {
+            const div = document.createElement("div");
+            div.className = "gallery-item";
+
+            div.innerHTML = `
+                <img src="${item.file}" alt="${item.name}">
+                <h3>${item.name}</h3>
+                <p>${item.description}</p>
+                <p><em>${item.date}</em></p>
+            `;
+
+            container.appendChild(div);
+        });
+
+    } catch (err) {
+        container.innerHTML = `<p>Could not load gallery: ${err.message}</p>`;
+        console.error(err);
+    }
+}
+
+loadGallery();
 </script>
 
 </body>
