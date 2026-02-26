@@ -240,6 +240,57 @@ nav .active {
   color: var(--text-muted);
 }
 
+.friends-list {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  border-top: solid 1px var(--border-solid)
+}
+
+.friends-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    background: var(--bg-main);
+    text-decoration: none;
+}
+
+.friends-item:hover {
+    background: var(--card-hover);
+}
+
+.friends-item img {
+    width: 50px;
+    border-radius: 50px
+}
+
+.friends-text h2 {
+    margin: 0;
+    color: var(--accent);
+    font-size: 1.2rem;
+}
+
+.friends-text p {
+    margin: 0;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  
+}
+
+
+.friends-list h1 {
+    font-size: 2rem;
+    margin-bottom: -1rem;
+}
+.prefixa {
+    color: var(--text-muted);
+    margin-bottom: -1.5rem;
+  margin-top: 1rem;
+}
+
 /* ===== Footer ===== */
 
 footer {
