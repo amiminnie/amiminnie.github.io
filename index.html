@@ -144,29 +144,43 @@ async function loadMessages() {
 
     if (!data.length) {
       guestbookEntries.innerHTML = "<p>aww nothing :(</p>";
-      return;
+      return; 
     }
 
     data.forEach(msg => {
       const div = document.createElement("div");
       div.className = "guestbook-entry";
-div.innerHTML = `
-  <div class="guestbook-entry-header" style="display: flex; justify-content: space-between; align-items: baseline;">
-    <strong>${msg.name}</strong>
-    <small style="color: var(--text-muted); font-size: 0.75rem;">
-      ${new Date(msg.created_at).toLocaleDateString({
-        day: "numeric",
-        month: "short",
-        year: "numeric"
-      })} - ${new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-    </small>
-  </div>
-  <p>${msg.message}</p>
-`;
+
+      div.innerHTML = `
+        <div class="guestbook-entry-header" style="display: flex; justify-content: space-between; align-items: baseline;">
+          <strong>${msg.name}</strong>
+          <small style="color: var(--text-muted); font-size: 0.75rem;">
+            ${new Date(msg.created_at).toLocaleDateString({
+              day: "numeric",
+              month: "short",
+              year: "numeric"
+            })} - ${new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          </small>
+        </div>
+        <p>${msg.message}</p>
+      `;
+
+      // If reply exists, add it under the message, slightly indented
+      if (msg.reply) {
+        const replyDiv = document.createElement("div");
+        replyDiv.className = "guestbook-reply";
+        replyDiv.style.marginLeft = "1.5rem"; // indent
+        replyDiv.style.borderLeft = "2px solid var(--border)"; // optional visual
+        replyDiv.style.paddingLeft = "0.5rem";
+        replyDiv.style.marginTop = "0.25rem";
+        replyDiv.innerHTML = `<strong> ↪ amiminnie:</strong> <span>${msg.reply}</span>`;
+        div.appendChild(replyDiv);
+      }
+
       guestbookEntries.appendChild(div);
     });
   } catch (err) {
-    guestbookEntries.innerHTML = `<p>Could not load comments: ${err.message}</p>`;
+    guestbookEntries.innerHTML = `<p>something is wrong: ${err.message}</p>`;
     console.error(err);
   }
 }
