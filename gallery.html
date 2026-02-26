@@ -114,7 +114,8 @@ async function loadGallery() {
 
             div.innerHTML = `
                 <a class="gallery-link" href="${item.file}" target="_blank" rel="noopener noreferrer">
-                <img class="gallery-image" src="${item.file}" alt="${item.name}"></a>
+                <img class="gallery-image" src="${item.file}" alt="${item.name}">
+                </a>
                 <h3 class="gallery-title">${item.name}</h3>
                 <p class="gallery-description">${item.description}</p>
                 <p class="gallery-date"><em>${item.date}</em></p>`;

@@ -141,6 +141,19 @@ nav .active {
     padding-bottom: 1rem;
 }
 
+/* Responsive Masonry Columns */
+@media (max-width: 900px) {
+    .gallery-masonry {
+        column-count: 2; /* 2 columns on medium screens */
+    }
+}
+
+@media (max-width: 600px) {
+    .gallery-masonry {
+        column-count: 1; /* 1 column on small/mobile screens */
+    }
+}
+
 /* ===== Footer ===== */
 
 footer {
