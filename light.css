@@ -7,11 +7,9 @@
     /* Text */
     --text-main: #2b2b2b;
     --text-muted: #777;
-    --text-light: #999;
 
     /* Borders */
     --border-solid: #ccc;
-    --border-dashed: #bbb;
 
     /* Accent */
     --accent: #d57eca;
@@ -60,7 +58,7 @@ nav a {
 
 nav a:hover {
     text-decoration: underline;
-    color: var(--text-light);
+    color: var(--accent-hover);
 }
 
 nav .active {
