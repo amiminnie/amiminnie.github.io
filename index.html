@@ -182,10 +182,7 @@ async function loadMessages() {
         <div class="guestbook-entry-header" style="display: flex; justify-content: space-between; align-items: baseline;">
           <strong>${msg.name}</strong>
           <small style="color: var(--text-muted); font-size: 0.75rem;">
-            ${new Date(msg.created_at).toLocaleDateString({
-              day: "numeric",
-              month: "short",
-              year: "numeric"
+            ${new Date(msg.created_at).toLocaleDateString({day: "numeric",month: "short",year: "numeric"
             })} - ${new Date(msg.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
           </small>
         </div>

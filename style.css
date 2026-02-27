@@ -235,6 +235,16 @@ nav .active {
   font-size: 1.2re
 }
 
+.guestbook-entry a {
+  color: var(--accent);
+  font-size: 1.2re;
+  text-decoration: none;
+}
+
+.guestbook-entry a:hover {
+  color: var(--accent-hover);
+}
+
 .guestbook-entry span {
   font-size: 0.75rem;
   color: var(--text-muted);
