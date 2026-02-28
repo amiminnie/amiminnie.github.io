@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>amiminnie</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#111111" />
+    <link id="theme-style" rel="stylesheet" href="light.css" />
+    <link id="style" rel="stylesheet" href="style.css" />
+    <link rel="icon" href="assets/favicon.ico" />
+  </head>
+
+  <body>
+    <div class="container">
+      <header>
+        <nav>
+          <a href="index.html">about</a>
+          <a href="gallery.html">gallery</a>
+          <a href="" class="active">thoughts</a>
+          <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere with this!">
+            <img id="theme-icon" src="images/moon-icon.png" alt="Toggle theme" />
+          </button>
+        </nav>
+      </header>
+
+      <main>
+        <section class="intro">
+          <p class="prefix">my random</p>
+          <h1>thoughts</h1>
+        </section>
+      </main>
+
+      <footer>
+        <p>amiminnie</p>
+      </footer>
+    </div>
+<script>
+    const themeLink = document.getElementById("theme-style");
+    const toggleBtn = document.getElementById("theme-toggle");
+    const themeIcon = document.getElementById("theme-icon");
+
+    const savedTheme = localStorage.getItem("theme");
+    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    function setTheme(mode) {
+        if (mode === "dark") {
+            themeLink.href = "dark.css";
+            document.documentElement.style.colorScheme = "dark";
+            themeIcon.src = "images/sun-icon.png";
+            themeIcon.alt = "Switch to light mode";
+            localStorage.setItem("theme", "dark");
+        } else {
+            themeLink.href = "light.css";
+            document.documentElement.style.colorScheme = "light";
+            themeIcon.src = "images/moon-icon.png";
+            themeIcon.alt = "Switch to dark mode";
+            localStorage.setItem("theme", "light");
+        }
+    }
+
+    // Initial load
+    if (savedTheme) {
+        setTheme(savedTheme);
+    } else if (systemPrefersDark) {
+        setTheme("dark");
+    } else {
+        setTheme("light");
+    }
+
+    // Toggle click with pop animation
+    toggleBtn.addEventListener("click", () => {
+        themeIcon.style.transform = "scale(0)";
+        setTimeout(() => {
+            const current = localStorage.getItem("theme");
+            setTheme(current === "dark" ? "light" : "dark");
+            void themeIcon.offsetWidth; // force reflow
+            themeIcon.style.transform = "scale(1)";
+        }, 120);
+    });
+</script>      
+
+  </body>
+</html>
