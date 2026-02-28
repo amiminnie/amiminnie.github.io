@@ -282,6 +282,10 @@ nav .active {
   border-left: solid 2px var(--accent);
 }
 
+.disabled-item {
+  filter: opacity(.5);
+}
+
 .social-item img {
   width: 40px;
 }
