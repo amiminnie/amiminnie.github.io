@@ -171,6 +171,7 @@ nav .active {
 #guestbook-form textarea {
   padding: 0.5rem;
   border: 1px solid var(--border-solid);
+    border-radius: 5px;
   background: var(--bg);
   color: var(--text-main);
   font-family: inherit;
@@ -179,11 +180,17 @@ nav .active {
 #guestbook-form button {
   padding: 0.5rem;
   border: none;
+  border-radius: 5px;
   background: var(--accent-dark);
   color: white;
   cursor: pointer;
   font-weight: bold;
 }
+
+#guestbook-form button:hover {
+  filter:opacity(.9)
+}
+
 
 .guestbook-entry {
   padding: 0.5rem 0;
@@ -229,6 +236,7 @@ nav .active {
 .friends-item:hover {
   background: var(--card-hover);
   border: dashed 1px var(--border-solid);
+  border-left: solid 2px var(--accent);
 }
 
 .friends-item img {
@@ -271,6 +279,7 @@ nav .active {
 .social-item:hover {
   background: var(--card-hover);
   border: dashed 1px var(--border-solid);
+  border-left: solid 2px var(--accent);
 }
 
 .social-item img {
@@ -297,6 +306,22 @@ nav .active {
   color: var(--text-muted);
   margin-bottom: -0.5rem;
   margin-top: 1rem;
+}
+
+
+@media (min-width: 768px) {
+  .social-wrapper {
+    display: flex;
+    flex-direction: row; 
+    align-items: flex-start; 
+  }
+
+
+  .friends-list, 
+  .social-list {
+    flex: 1; 
+    width: 100%; 
+  }
 }
 
 /* ===== Footer ===== */
