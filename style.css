@@ -324,6 +324,26 @@ nav .active {
   }
 }
 
+.heart-particle {
+  position: fixed;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  user-select: none;
+  z-index: 9999;
+  animation: heart-fly 800ms ease-out forwards;
+}
+
+@keyframes heart-fly {
+  0% {
+    transform: translate(-50%, -50%) scale(.5);
+    opacity: .8;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(2);
+    opacity: 0;
+  }
+}
 /* ===== Footer ===== */
 
 footer {

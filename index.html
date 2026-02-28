@@ -51,75 +51,75 @@
           </div>
         </section>
         <div class="social-wrapper">
-        <section class="friends-list">
-          <p class="prefixa">these are my</p>
-          <h1>friends!</h1>
-          <div class="friends-item">
-            <img src="images/coffee-fueled-student.jpeg" alt="Coffee feuled student" />
-            <div class="friends-text">
-              <h2>coffee_fueled_student &#9829;</h2>
-              <p>hide the coffee</p>
+          <section class="friends-list">
+            <p class="prefixa">these are my</p>
+            <h1>friends!</h1>
+            <a class="friends-item" href="https://s4qc.github.io" target="_blank" rel="noopener noreferrer">
+              <img src="images/logos/s4qc.png" alt="S4qC" />
+              <div class="friends-text">
+                <h2>S4qC</h2>
+                <p>don't ask him why he stopped using linux</p>
+              </div>
+            </a>
+            <div class="friends-item">
+              <img src="images/logos/coffee-fueled-student.jpeg" alt="Coffee feuled student" />
+              <div class="friends-text">
+                <h2>coffee_fueled_student</h2>
+                <p>hide the coffee</p>
+              </div>
             </div>
-          </div>
-          <a class="friends-item" href="https://s4qc.github.io" target="_blank" rel="noopener noreferrer">
-            <img src="images/s4qc.png" alt="S4qC" />
-            <div class="friends-text">
-              <h2>S4qC</h2>
-              <p>don't ask him why he stopped using linux</p>
+            <div class="friends-item">
+              <img src="images/logos/lucy.png" alt="Coffee feuled student" />
+              <div class="friends-text">
+                <h2>Lucy</h2>
+                <p>hope everything works out for them</p>
+              </div>
             </div>
-          </a>
-          <div class="friends-item">
-            <img src="images/lucy.png" alt="Coffee feuled student" />
-            <div class="friends-text">
-              <h2>Lucy</h2>
-              <p>hope everything works out for them</p>
-            </div>
-          </div>
-        </section>
+          </section>
 
-        <section class="social-list">
-          <p class="prefixa">check out my</p>
-          <h1>socials</h1>
-          <a class="social-item" href="https://discord.gg/HHTfSyZyKy" target="_blank" rel="noopener noreferrer">
-            <img src="images/discord.png" alt="Discord" />
-            <div class="social-text">
-              <h2>Discord</h2>
-              <p>@amiminnie - add me as a friend</p>
-            </div>
-          </a>
+          <section class="social-list">
+            <p class="prefixa">check out my</p>
+            <h1>socials</h1>
+            <a class="social-item" href="https://discord.gg/HHTfSyZyKy" target="_blank" rel="noopener noreferrer">
+              <img src="images/logos/discord.png" alt="Discord" />
+              <div class="social-text">
+                <h2>Discord</h2>
+                <p>@amiminnie - add me as a friend</p>
+              </div>
+            </a>
 
-          <a
-            class="social-item"
-            href="https://www.reddit.com/user/amiminnie/"
-            target="_blank"
-            rel="noopener noreferrer">
-            <img src="images/reddit.png" alt="Reddit" />
-            <div class="social-text">
-              <h2>Reddit</h2>
-              <p>r/amiminnie - don't check my post history</p>
-            </div>
-          </a>
+            <a
+              class="social-item"
+              href="https://www.reddit.com/user/amiminnie/"
+              target="_blank"
+              rel="noopener noreferrer">
+              <img src="images/logos/reddit.png" alt="Reddit" />
+              <div class="social-text">
+                <h2>Reddit</h2>
+                <p>r/amiminnie - don't check my post history</p>
+              </div>
+            </a>
 
-          <a class="social-item" href="https://twitter.com/amiminnie1" target="_blank" rel="noopener noreferrer">
-            <img src="images/twitter.png" alt="Twitter" />
-            <div class="social-text">
-              <h2>Twitter</h2>
-              <p>@amiminnie1 - i refuse to call it X</p>
-            </div>
-          </a>
+            <a class="social-item" href="https://twitter.com/amiminnie1" target="_blank" rel="noopener noreferrer">
+              <img src="images/logos/twitter.png" alt="Twitter" />
+              <div class="social-text">
+                <h2>Twitter</h2>
+                <p>@amiminnie1 - i refuse to call it X</p>
+              </div>
+            </a>
 
-          <a
-            class="social-item"
-            href="https://ibispaint.com/artist4/7838197604469341/"
-            target="_blank"
-            rel="noopener noreferrer">
-            <img src="images/ibis-paint.png" alt="Twitter" />
-            <div class="social-text">
-              <h2>ibisPaint</h2>
-              <p>Minnie - watch me draw on ibisPaint</p>
-            </div>
-          </a>
-        </section>
+            <a
+              class="social-item"
+              href="https://ibispaint.com/artist4/7838197604469341/"
+              target="_blank"
+              rel="noopener noreferrer">
+              <img src="images/logos/ibis-paint.png" alt="Twitter" />
+              <div class="social-text">
+                <h2>ibisPaint</h2>
+                <p>Minnie - watch me draw on ibisPaint</p>
+              </div>
+            </a>
+          </section>
         </div>
       </main>
 
@@ -205,7 +205,6 @@
             guestbookEntries.innerHTML = "<p>aww nothing :(</p>";
             return;
           }
-
           data.forEach((msg) => {
             const div = document.createElement("div");
             div.className = "guestbook-entry";
@@ -293,6 +292,46 @@
 
       // Initial load
       loadMessages();
+
+      document.querySelectorAll(".friends-item").forEach((item) => {
+        const img = item.querySelector("img");
+        if (!img) return;
+
+        item.addEventListener("mouseenter", () => {
+          spawnHeartsFromImage(img);
+        });
+      });
+
+      function spawnHeartsFromImage(img) {
+        const rect = img.getBoundingClientRect();
+
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        for (let i = 0; i < 12; i++) {
+          const heart = document.createElement("img");
+          heart.src = "images/heart.png";
+          heart.className = "heart-particle";
+
+          heart.style.left = `${centerX}px`;
+          heart.style.top = `${centerY}px`;
+
+          const angle = Math.random() * Math.PI * 2;
+          const distance = 50 + Math.random() * 20;
+
+          const x = Math.cos(angle) * distance;
+          const y = Math.sin(angle) * distance;
+
+          heart.style.setProperty("--x", `${x}px`);
+          heart.style.setProperty("--y", `${y}px`);
+
+          document.body.appendChild(heart);
+
+          setTimeout(() => {
+            heart.remove();
+          }, 800);
+        }
+      }
     </script>
   </body>
 </html>
