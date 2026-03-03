@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>amiminnie - thoughts</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#111111" />
+    <link id="theme-style" rel="stylesheet" href="light.css" />
+    <link id="style" rel="stylesheet" href="style.css" />
+    <link rel="icon" href="images/favicon.ico" />
+  </head>
+
+  <body>
+    <div class="container">
+      <header>
+        <nav>
+          <a href="index.html">about</a>
+          <a href="gallery.html">gallery</a>
+          <a href="thoughts.html">thoughts</a>
+          <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere with this!">
+            <img id="theme-icon" src="images/moon-icon.png" alt="Toggle theme" />
+          </button>
+        </nav>
+      </header>
+
+      <main>
+        <article id="thought-content" class="thought-content">
+          <p>Loading thought...</p>
+        </article>
+      </main>
+
+      <footer>
+        <p>amiminnie</p>
+      </footer>
+    </div>
+
+    <!-- Theme Script (unchanged) -->
+    <script>
+      const themeLink = document.getElementById("theme-style");
+      const toggleBtn = document.getElementById("theme-toggle");
+      const themeIcon = document.getElementById("theme-icon");
+
+      const savedTheme = localStorage.getItem("theme");
+      const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+      function setTheme(mode) {
+        if (mode === "dark") {
+          themeLink.href = "dark.css";
+          document.documentElement.style.colorScheme = "dark";
+          themeIcon.src = "images/sun-icon.png";
+          themeIcon.alt = "Switch to light mode";
+          localStorage.setItem("theme", "dark");
+        } else {
+          themeLink.href = "light.css";
+          document.documentElement.style.colorScheme = "light";
+          themeIcon.src = "images/moon-icon.png";
+          themeIcon.alt = "Switch to dark mode";
+          localStorage.setItem("theme", "light");
+        }
+      }
+
+      if (savedTheme) {
+        setTheme(savedTheme);
+      } else if (systemPrefersDark) {
+        setTheme("dark");
+      } else {
+        setTheme("light");
+      }
+
+      toggleBtn.addEventListener("click", () => {
+        themeIcon.style.transform = "scale(0)";
+        setTimeout(() => {
+          const current = localStorage.getItem("theme");
+          setTheme(current === "dark" ? "light" : "dark");
+          void themeIcon.offsetWidth;
+          themeIcon.style.transform = "scale(1)";
+        }, 120);
+      });
+    </script>
+
+    <script>
+      async function loadThought() {
+        const container = document.getElementById("thought-content");
+        const tag = window.location.hash.substring(1);
+
+        if (!tag) {
+          container.innerHTML = "<p>go ask for a tag first</p>";
+          return;
+        }
+
+        try {
+          const res = await fetch("thoughts.json");
+          if (!res.ok) throw new Error("Could not load thoughts.json");
+
+          const items = await res.json();
+          const thought = items.find((item) => item.tag === tag);
+
+          if (!thought) {
+            container.innerHTML = "<p>Thought not found.</p>";
+            return;
+          }
+
+          const fileRes = await fetch(`thoughts/${thought.tag}.html`);
+          if (!fileRes.ok) throw new Error("Thought file missing");
+
+          const html = await fileRes.text();
+
+          container.innerHTML = html;
+
+          // Update page title dynamically
+          document.title = `amiminnie - ${thought.title}`;
+        } catch (err) {
+          container.innerHTML = "<p>Error loading thought.</p>";
+          console.error(err);
+        }
+      }
+
+      loadThought();
+    </script>
+  </body>
+</html>

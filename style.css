@@ -171,7 +171,7 @@ nav .active {
 #guestbook-form textarea {
   padding: 0.5rem;
   border: 1px solid var(--border-solid);
-    border-radius: 5px;
+  border-radius: 5px;
   background: var(--bg);
   color: var(--text-main);
   font-family: inherit;
@@ -188,9 +188,8 @@ nav .active {
 }
 
 #guestbook-form button:hover {
-  filter:opacity(.9)
+  filter: opacity(0.9);
 }
-
 
 .guestbook-entry {
   padding: 0.5rem 0;
@@ -283,7 +282,7 @@ nav .active {
 }
 
 .disabled-item {
-  filter: opacity(.5);
+  filter: opacity(0.5);
 }
 
 .social-item img {
@@ -312,19 +311,17 @@ nav .active {
   margin-top: 1rem;
 }
 
-
 @media (min-width: 768px) {
   .social-wrapper {
     display: flex;
-    flex-direction: row; 
-    align-items: flex-start; 
+    flex-direction: row;
+    align-items: flex-start;
   }
 
-
-  .friends-list, 
+  .friends-list,
   .social-list {
-    flex: 1; 
-    width: 100%; 
+    flex: 1;
+    width: 100%;
   }
 }
 
@@ -340,14 +337,92 @@ nav .active {
 
 @keyframes heart-fly {
   0% {
-    transform: translate(-50%, -50%) scale(.5);
-    opacity: .8;
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0.8;
   }
   100% {
     transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(2);
     opacity: 0;
   }
 }
+
+.gallery-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+.thought-content {
+  max-width: 650px;
+  margin: 3rem auto;
+  line-height: 1.7;
+}
+
+.thought-content h1 {
+  margin-bottom: 0.5rem;
+}
+.thought-content p {
+  margin-bottom: 1rem;
+}
+
+.thought-content em {
+  color: var(--text-muted);
+}
+
+/* Conversation container */
+.conversation {
+  margin: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: var(--bg-dark);
+  padding: 2rem;
+  border-radius: 10px;
+}
+
+/* Base bubble */
+.bubble {
+  max-width: 75%;
+  padding: 0.6rem 1rem;
+  border-radius: 18px;
+  line-height: 1;
+  position: relative;
+  font-size: 0.95rem;
+}
+
+/* Left side (other person / brain) */
+.bubble-left {
+  align-self: flex-start;
+  background: var(--border-solid);
+  border-bottom-left-radius: 1px;
+}
+
+/* Right side (you) */
+.bubble-right {
+  align-self: flex-end;
+  background: var(--accent-dark, #888);
+  color: white;
+  border-bottom-right-radius: 1px;
+}
+
+/* Optional subtle fade-in */
+.bubble {
+  animation: bubbleFade 0.3s ease forwards;
+  opacity: 0;
+}
+
+@keyframes bubbleFade {
+  to {
+    opacity: 1;
+  }
+}
+iframe {
+  display: block;
+  margin: 2rem auto;
+  max-width: 100%;
+  border-radius: 10px;
+  border: none;
+}
+
 /* ===== Footer ===== */
 
 footer {
