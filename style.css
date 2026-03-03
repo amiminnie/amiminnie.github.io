@@ -346,10 +346,16 @@ nav .active {
   }
 }
 
-.gallery-link {
+.thought-link {
   display: block;
   text-decoration: none;
   color: inherit;
+  padding: 0 1rem;
+}
+.thought-link:hover {
+  background-color: var(--card-hover);
+  border: dashed 1px var(--border-solid);
+  border-left: solid 2px var(--accent);
 }
 .thought-content {
   max-width: 650px;

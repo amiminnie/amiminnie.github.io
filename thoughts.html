@@ -26,7 +26,7 @@
 
       <main>
         <section class="intro">
-          <p class="prefix">some</p>
+          <p class="prefix">some midnight</p>
           <h1>thoughts</h1>
           <p class="subtitle">may get a little deep</p>
         </section>
@@ -104,9 +104,9 @@
             div.className = "gallery-item";
 
             div.innerHTML = `
-        <a class="gallery-link" href="read.html#${item.tag}">
+        <a class="thought-link" href="read.html#${item.tag}">
             <h3 class="gallery-title">${item.title}</h3>
-            <p class="gallery-description">${item.description}</p>
+            <p class="gallery-description"><i>${item.description}</i></p>
             <p class="gallery-date"><em>${item.date}</em></p>
         </a>
       `;
