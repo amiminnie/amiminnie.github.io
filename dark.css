@@ -10,13 +10,13 @@
     --text-muted: #bb9ab5;
 
     /* Borders */
-    --border-solid: #4c3737; 
+    --border-solid: #4c3737;
 
     /* Accent */
     --accent: #ff8ef1;
     --accent-dark: #924d8a;
     --accent-hover: #9eafff;
-    
-    --card-hover: #ff8ef111; 
-}
+    --bubble: #ffffff22;
 
+    --card-hover: #ff8ef111;
+}

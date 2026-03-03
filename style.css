@@ -398,14 +398,14 @@ nav .active {
 /* Left side (other person / brain) */
 .bubble-left {
   align-self: flex-start;
-  background: var(--border-solid);
+  background: var(--bubble);
   border-bottom-left-radius: 1px;
 }
 
 /* Right side (you) */
 .bubble-right {
   align-self: flex-end;
-  background: var(--accent-dark, #888);
+  background: var(--accent-dark);
   color: white;
   border-bottom-right-radius: 1px;
 }
