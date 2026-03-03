@@ -385,6 +385,12 @@ nav .active {
   border-radius: 10px;
 }
 
+@media (max-width: 500px) {
+  .conversation {
+    margin: 2rem -2rem;
+  }
+}
+
 /* Base bubble */
 .bubble {
   max-width: 75%;

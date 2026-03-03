@@ -85,24 +85,24 @@
         const tag = window.location.hash.substring(1);
 
         if (!tag) {
-          container.innerHTML = "<p>go ask for a tag first</p>";
+          container.innerHTML = "<p>i think you dropped the tag</p>";
           return;
         }
 
         try {
           const res = await fetch("thoughts.json");
-          if (!res.ok) throw new Error("Could not load thoughts.json");
+          if (!res.ok) throw new Error("where is it?");
 
           const items = await res.json();
           const thought = items.find((item) => item.tag === tag);
 
           if (!thought) {
-            container.innerHTML = "<p>Thought not found.</p>";
+            container.innerHTML = "<p>i havent thought of that yet</p>";
             return;
           }
 
           const fileRes = await fetch(`thoughts/${thought.tag}.html`);
-          if (!fileRes.ok) throw new Error("Thought file missing");
+          if (!fileRes.ok) throw new Error("where did that thought go?");
 
           const html = await fileRes.text();
 
@@ -111,7 +111,7 @@
           // Update page title dynamically
           document.title = `amiminnie - ${thought.title}`;
         } catch (err) {
-          container.innerHTML = "<p>Error loading thought.</p>";
+          container.innerHTML = "<p>i think i got distracted</p>";
           console.error(err);
         }
       }
