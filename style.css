@@ -346,11 +346,18 @@ nav .active {
   }
 }
 
+.gallery-item {
+  width: 100%; /* fit column width */
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+}
+
 .thought-link {
   display: block;
   text-decoration: none;
   color: inherit;
   padding: 0 1rem;
+  padding-top: 0.5rem;
 }
 .thought-link:hover {
   background-color: var(--card-hover);
@@ -365,6 +372,7 @@ nav .active {
 
 .thought-content h1 {
   margin-bottom: 0.5rem;
+  color: var(--accent);
 }
 .thought-content p {
   margin-bottom: 1rem;
