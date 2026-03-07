@@ -374,12 +374,64 @@ nav .active {
   margin-bottom: 0.5rem;
   color: var(--accent);
 }
+.thought-content h3 {
+  color: var(--accent);
+  border-top: solid 1px var(--border-solid);
+}
 .thought-content p {
   margin-bottom: 1rem;
 }
-
+.thought-content a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.thought-content a:hover {
+  color: var(--accent-hover);
+}
 .thought-content em {
   color: var(--text-muted);
+}
+
+
+/* Container for the side-by-side layout */
+.thought-row {
+  display: flex;
+  flex-direction: column; /* Stacked by default (mobile) */
+  gap: 2rem;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+
+/* Desktop layout */
+@media (min-width: 768px) {
+  .thought-row {
+    flex-direction: row; /* Side-by-side on desktop */
+    align-items: flex-start;
+  }
+
+  .thought-text {
+    flex: 1; /* Takes up remaining space */
+  }
+
+  .thought-media {
+    flex: 0 0 300px; /* Fixed width for the image on desktop */
+  }
+}
+
+/* Your existing styles adjusted for the new structure */
+.thought-content {
+  max-width: 900px; /* Increased slightly to accommodate side-by-side */
+  margin: 3rem auto;
+  line-height: 1.7;
+}
+
+/* Ensure images don't overflow their container */
+.thought-media img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  display: block;
+  object-fit: cover;
 }
 
 /* Conversation container */
