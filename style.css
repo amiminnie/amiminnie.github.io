@@ -443,6 +443,23 @@ iframe {
   border: none;
 }
 
+.confetti {
+  position: fixed;
+  width: 6px;
+  height: 10px;
+  top: -10px;
+  pointer-events: none;
+  animation: confetti-fall 2.5s linear forwards;
+  opacity: 0.9;
+}
+
+@keyframes confetti-fall {
+  to {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
 /* ===== Footer ===== */
 
 footer {

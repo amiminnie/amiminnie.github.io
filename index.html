@@ -79,7 +79,7 @@
         </section>
 
         <section class="guestbook" id="guestbook">
-          <h2>wish me happy birthday! 🎊</h2>
+          <h2>leave a comment!</h2>
 
           <form id="guestbook-form">
             <input type="text" id="name" placeholder="nickname (optional)" />
@@ -386,6 +386,90 @@
           }
         }
       });
+    </script>
+
+    <script>
+      (function () {
+        const colors = ["#9eafff", "#ff8ef1", "#fcfffe"];
+
+        // Check if today is March 7th
+        const today = new Date();
+        if (today.getMonth() === 2 && today.getDate() === 7) {
+          // Month is 0-indexed
+          const guestbookHeader = document.querySelector("#guestbook h2");
+          if (guestbookHeader) {
+            guestbookHeader.textContent = "wish me happy birthday! 🎊";
+          }
+          function launchConfetti() {
+            for (let i = 0; i < 120; i++) {
+              const c = document.createElement("div");
+              c.className = "confetti";
+              c.style.left = Math.random() * 100 + "vw";
+              c.style.background = colors[Math.floor(Math.random() * colors.length)];
+              c.style.transform = `rotate(${Math.random() * 360}deg)`;
+              c.style.animationDuration = 1.5 + Math.random() * 2 + "s";
+              c.style.zIndex = "10000"; // on top
+              document.body.appendChild(c);
+
+              setTimeout(() => c.remove(), 3500);
+            }
+          }
+
+          function showBirthdayText() {
+            // Dark overlay
+            const overlay = document.createElement("div");
+            overlay.style.position = "fixed";
+            overlay.style.top = "0";
+            overlay.style.left = "0";
+            overlay.style.width = "100vw";
+            overlay.style.height = "100vh";
+            overlay.style.background = "rgba(0,0,0,0.6)";
+            overlay.style.zIndex = "9980";
+            overlay.style.pointerEvents = "none";
+            overlay.style.opacity = "0";
+            overlay.style.transition = "opacity 0.3s ease";
+            document.body.appendChild(overlay);
+            requestAnimationFrame(() => (overlay.style.opacity = "1"));
+
+            // Birthday text
+            const text = document.createElement("div");
+            text.textContent = "it's a special day!";
+            text.style.position = "fixed";
+            text.style.top = "50%";
+            text.style.left = "50%";
+            text.style.transform = "translate(-50%, -50%)";
+            text.style.fontSize = "3rem";
+            text.style.fontWeight = "bold";
+            text.style.color = "#fff";
+            text.style.zIndex = "9990"; // above overlay, below confetti
+            text.style.pointerEvents = "none";
+            text.style.opacity = "0";
+            text.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+            document.body.appendChild(text);
+
+            // Animate text in
+            requestAnimationFrame(() => {
+              text.style.opacity = "1";
+              text.style.transform = "translate(-50%, -50%) scale(1.1)";
+            });
+
+            // Remove overlay & text after 4s
+            setTimeout(() => {
+              text.style.opacity = "0";
+              overlay.style.opacity = "0";
+              setTimeout(() => {
+                text.remove();
+                overlay.remove();
+              }, 500);
+            }, 4000);
+          }
+
+          window.addEventListener("load", () => {
+            launchConfetti();
+            showBirthdayText();
+          });
+        }
+      })();
     </script>
   </body>
 </html>
