@@ -26,12 +26,17 @@
 
             <main>
                 <section class="intro">
-                    <p class="prefix">Minnie's</p>
+                    <p class="prefix">my art</p>
                     <h1>gallery</h1>
-                    <p class="subtitle">web-comics, sketches and stuff</p>
+                    <p class="subtitle">illustrations, web-comics and sketches</p>
                 </section>
 
                 <section class="gallery">
+                    <div class="tabs">
+                        <button class="tab-btn active" data-tab="illustrations">illustrations</button>
+                        <button class="tab-btn" data-tab="comics">comics</button>
+                        <button class="tab-btn" data-tab="sketches">other</button>
+                    </div>
                     <div id="gallery-container" class="gallery-masonry">
                         <p>Loading gallery...</p>
                     </div>
@@ -44,7 +49,7 @@
                     <img src="images/comment.png" alt="gallery" />
                     <div class="social-text">
                         <h2>leave a comment &gt;&gt;</h2>
-                        <p>i'd appreceate to read what you have to say about this!</p>
+                        <p>i'd appreciate to read what you have to say about this!</p>
                     </div>
                 </a>
             </section>
@@ -54,6 +59,7 @@
             </footer>
         </div>
 
+        <!-- Theme toggle script -->
         <script>
             const themeLink = document.getElementById("theme-style");
             const toggleBtn = document.getElementById("theme-toggle");
@@ -78,7 +84,6 @@
                 }
             }
 
-            // Initial load
             if (savedTheme) {
                 setTheme(savedTheme);
             } else if (systemPrefersDark) {
@@ -87,47 +92,67 @@
                 setTheme("light");
             }
 
-            // Toggle click with pop animation
             toggleBtn.addEventListener("click", () => {
                 themeIcon.style.transform = "scale(0)";
                 setTimeout(() => {
                     const current = localStorage.getItem("theme");
                     setTheme(current === "dark" ? "light" : "dark");
-                    void themeIcon.offsetWidth; // force reflow
+                    void themeIcon.offsetWidth;
                     themeIcon.style.transform = "scale(1)";
                 }, 120);
             });
         </script>
 
+        <!-- Gallery loading and tabs -->
         <script>
             async function loadGallery() {
                 const container = document.getElementById("gallery-container");
+                const tabs = document.querySelectorAll(".tab-btn");
+                let items = [];
 
                 try {
                     const res = await fetch("gallery.json");
-                    if (!res.ok) throw new Error("where did i keep the gallery again?");
-
-                    const items = await res.json();
-                    container.innerHTML = ""; // clear loading text
-
-                    items.forEach((item) => {
-                        const div = document.createElement("div");
-                        div.className = "gallery-item";
-
-                        div.innerHTML = `
-                    <a class="gallery-link" href="${item.file}" target="_blank" rel="noopener noreferrer">
-                        <img class="gallery-image" src="${item.file}" alt="${item.name}" loading="lazy">
-                    </a>
-                    <h3 class="gallery-title">${item.name}</h3>
-                    <p class="gallery-description">${item.description}</p>
-                    <p class="gallery-date"><em>${item.date}</em></p>
-                `;
-                        container.appendChild(div);
-                    });
+                    if (!res.ok) throw new Error("Gallery JSON not found!");
+                    items = await res.json();
                 } catch (err) {
                     container.innerHTML = `<p>Could not load gallery: ${err.message}</p>`;
                     console.error(err);
+                    return;
                 }
+
+                function renderGallery(type) {
+                    container.innerHTML = "";
+                    const filtered = items.filter((item) => item.type === type);
+                    if (!filtered.length) {
+                        container.innerHTML = "<p>No items to display.</p>";
+                        return;
+                    }
+
+                    filtered.forEach((item) => {
+                        const div = document.createElement("div");
+                        div.className = "gallery-item";
+                        div.innerHTML = `
+                        <a class="gallery-link" href="${item.file}" target="_blank" rel="noopener noreferrer">
+                            <img class="gallery-image" src="${item.file}" alt="${item.name}" loading="lazy">
+                        </a>
+                        <h3 class="gallery-title">${item.name}</h3>
+                        <p class="gallery-description">${item.description}</p>
+                        <p class="gallery-date"><em>${item.date}</em></p>
+                    `;
+                        container.appendChild(div);
+                    });
+                }
+
+                tabs.forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                        tabs.forEach((b) => b.classList.remove("active"));
+                        btn.classList.add("active");
+                        renderGallery(btn.dataset.tab);
+                    });
+                });
+
+                // Initial render
+                renderGallery("illustrations");
             }
 
             loadGallery();

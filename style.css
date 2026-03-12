@@ -118,7 +118,7 @@ nav .active-temp {
 }
 
 .gallery-item {
-  display: inline-block; /* important for masonry columns */
+  break-inside: avoid;
   width: 100%; /* fit column width */
   margin-bottom: 1rem;
   border: 1px solid var(--border);
@@ -156,10 +156,35 @@ nav .active-temp {
   padding-bottom: 1rem;
 }
 
-/* Responsive Masonry Columns */
+.tabs {
+  display: flex;
+  margin-bottom: 1em;
+  border-bottom: solid 1px var(--border-solid);
+  gap: 0; 
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 0.5em 1em;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 0; 
+  border-bottom: 2px solid transparent; 
+}
+.tab-btn:hover {
+  background: var(--border-solid);
+}
+
+.tab-btn.active {
+  background: var(--accent-dark);
+  font-weight: bold;
+  border-bottom-color: var(--accent); 
+}
+
 @media (max-width: 900px) {
   .gallery-masonry {
-    column-count: 2; /* 2 columns on medium screens */
+    column-count: 2; 
   }
 }
 
@@ -408,7 +433,6 @@ nav .active-temp {
   color: var(--text-muted);
 }
 
-
 /* Container for the side-by-side layout */
 .thought-row {
   display: flex;
@@ -575,7 +599,6 @@ iframe {
     opacity: 0;
   }
 }
-
 /* ===== Footer ===== */
 
 footer {

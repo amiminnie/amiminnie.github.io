@@ -3,60 +3,70 @@
     "file": "images/gallery/insult-or-not.png",
     "name": "Insult?",
     "description": "i kind of found it affirming though",
-    "date": "05 mar 2026"
+    "date": "05 mar 2026",
+    "type": "comics"
   },
   {
     "file": "images/gallery/wish.png",
     "name": "Wish",
     "description": "you don't wish you could wear feminine without being judged?",
-    "date": "01 mar 2026"
+    "date": "01 mar 2026",
+    "type": "comics"
   },
   {
     "file": "images/gallery/ghana-black-tape.png",
     "name": "Ghana black tape!",
     "description": "<i>what's that floating towards us? Ghana black tape!</i>",
-    "date": "27 feb 2026"
+    "date": "27 feb 2026",
+    "type": "illustrations"
   },
   {
     "file": "images/gallery/sunflower-minnie.png",
     "name": "Minnie in a sunflower field",
     "description": "updated version of Minnie walking in a sunflower field, for my discord avatar",
-    "date": "23 feb 2026"
+    "date": "23 feb 2026",
+    "type": "illustrations"
   },
   {
     "file": "images/gallery/then-vs-now-artist.png",
     "name": "it was simple back then",
     "description": "it isn't about being perfect, be proud of your work",
-    "date": "20 feb 2026"
+    "date": "20 feb 2026",
+    "type": "sketches"
   },
   {
     "file": "images/gallery/jack-in-space.jpg",
     "name": "Jack in space",
     "description": "fan-art of the popular youtuber, Jack&nbsp;Massey&nbsp;Welsh, in space",
-    "date": "19 feb 2026"
+    "date": "19 feb 2026",
+    "type": "illustrations"
   },
   {
     "file": "images/gallery/reality-of-transgender.png",
     "name": "expectations vs reality",
     "description": "reality is far more complicated than the expectation of being trans",
-    "date": "30 jan 2026"
+    "date": "30 jan 2026",
+    "type": "sketches"
   },
   {
     "file": "images/gallery/woke.png",
     "name": "Woke",
     "description": "was it a loss? of course not!",
-    "date": "23 jan 2026"
+    "date": "23 jan 2026",
+    "type": "comics"
   },
   {
     "file": "images/gallery/animation-minnie.gif",
     "name": "animation Minnie",
     "description": "animation style version of Minnie that i drew for a cancelled animation series",
-    "date": "19 jan 2026"
+    "date": "19 jan 2026",
+    "type": "sketches"
   },
   {
     "file": "images/gallery/first-minnie.png",
     "name": "first Minnie",
     "description": "first version of Minnie i drew",
-    "date": "06 jan 2026"
+    "date": "06 jan 2026",
+    "type": "sketches"
   }
 ]
