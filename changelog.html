@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>amiminnie - changelog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#111111" />
+    <link id="theme-style" rel="stylesheet" href="light.css" />
+    <link id="style" rel="stylesheet" href="style.css" />
+    <link rel="icon" href="images/favicon.ico" />
+  </head>
+
+  <body>
+    <div class="container">
+      <header>
+        <nav>
+          <a href="index.html">about</a>
+          <a href="gallery.html">gallery</a>
+          <a href="thoughts.html">thoughts</a>
+          <a href="changelog.html" class="active">changelog</a>
+
+          <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere with this!">
+            <img id="theme-icon" src="images/moon-icon.png" alt="Toggle theme" />
+          </button>
+        </nav>
+      </header>
+
+      <main>
+        <section class="changelog">
+          <div class="timeline">
+            
+            <div class="timeline-item" style="margin:0;">
+              <div class="timeline-content">
+                <h2>March 2026</h2>
+              </div>
+            </div>
+            
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <h3>added changelog page</h3>
+                <p>Github was keeping track of it fortunately</p>
+                <span class="date"><i>12 mar 2026</i></span>
+              </div>
+            </div>
+            
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <h3>added some birthday confetti</h3>
+                <p>happy birthday to myself ^^</p>
+                <span class="date"><i>07 mar 2026</i></span>
+              </div>
+            </div>
+            
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <h3>added new meta tags</h3>
+                <p>so web crawlers can have some fun too!</p>
+                <span class="date"><i>04 mar 2026</i></span>
+              </div>
+            </div>
+            
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <h3>sprinkled some hyperlinks</h3>
+                <p>to make it easier to jump to next action, and added cool little icons</p>
+                <span class="date"><i>03 mar 2026</i></span>
+              </div>
+            </div>
+            
+            <div class="timeline-item" style="margin:0;">
+              <div class="timeline-content">
+                <h2>February 2026</h2>
+              </div>
+            </div>
+            
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <h3>added layout guide</h3>
+                <p>little section that shows you what to do</p>
+                <span class="date"><i>28 feb 2026</i></span>
+              </div>
+            </div>
+            
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <h3>added hearts animation to friends</h3>
+                <p>to show how much i love them!</p>
+                <span class="date"><i>28 feb 2026</i></span>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <h3>added thoughts page</h3>
+                <p>replaced the socials page with thoughts page, moved socials to the home page</p>
+                <span class="date"><i>28 feb 2026</i></span>
+              </div>
+            </div>
+
+            <div class="timeline-item">
+              <div class="timeline-dot"></div>
+              <div class="timeline-content">
+                <h3>website launched!</h3>
+                <p>launched this website on Github pages</p>
+                <span class="date"><i>27 feb 2026</i></span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer>
+        <p>amiminnie</p>
+      </footer>
+    </div>
+
+    <!-- Theme Script (unchanged) -->
+    <script>
+      const themeLink = document.getElementById("theme-style");
+      const toggleBtn = document.getElementById("theme-toggle");
+      const themeIcon = document.getElementById("theme-icon");
+
+      const savedTheme = localStorage.getItem("theme");
+      const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+      function setTheme(mode) {
+        if (mode === "dark") {
+          themeLink.href = "dark.css";
+          document.documentElement.style.colorScheme = "dark";
+          themeIcon.src = "images/sun-icon.png";
+          themeIcon.alt = "Switch to light mode";
+          localStorage.setItem("theme", "dark");
+        } else {
+          themeLink.href = "light.css";
+          document.documentElement.style.colorScheme = "light";
+          themeIcon.src = "images/moon-icon.png";
+          themeIcon.alt = "Switch to dark mode";
+          localStorage.setItem("theme", "light");
+        }
+      }
+
+      if (savedTheme) {
+        setTheme(savedTheme);
+      } else if (systemPrefersDark) {
+        setTheme("dark");
+      } else {
+        setTheme("light");
+      }
+
+      toggleBtn.addEventListener("click", () => {
+        themeIcon.style.transform = "scale(0)";
+        setTimeout(() => {
+          const current = localStorage.getItem("theme");
+          setTheme(current === "dark" ? "light" : "dark");
+          void themeIcon.offsetWidth;
+          themeIcon.style.transform = "scale(1)";
+        }, 120);
+      });
+    </script>
+  </body>
+</html>
