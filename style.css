@@ -492,7 +492,6 @@ nav .active-temp {
   }
 }
 
-/* Base bubble */
 .bubble {
   max-width: 75%;
   padding: 0.6rem 1rem;
@@ -502,14 +501,12 @@ nav .active-temp {
   font-size: 0.95rem;
 }
 
-/* Left side (other person / brain) */
 .bubble-left {
   align-self: flex-start;
   background: var(--bubble);
   border-bottom-left-radius: 1px;
 }
 
-/* Right side (you) */
 .bubble-right {
   align-self: flex-end;
   background: var(--accent-dark);
@@ -517,7 +514,6 @@ nav .active-temp {
   border-bottom-right-radius: 1px;
 }
 
-/* Optional subtle fade-in */
 .bubble {
   animation: bubbleFade 0.3s ease forwards;
   opacity: 0;
