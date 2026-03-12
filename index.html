@@ -71,7 +71,7 @@
             <img src="images/github.png" alt="changelog" />
             <div class="social-text">
               <h2>changelog &gt;&gt;</h2>
-              <p>if you're bored enough to</p>
+              <p>if you're that bored</p>
             </div>
           </a>
           <div class="disabled-item">
@@ -128,9 +128,7 @@
               </div>
             </div>
             <div class="friends-item">
-              <img
-                src="images/logos/shizu.png"
-                alt="Shizu" />
+              <img src="images/logos/shizu.png" alt="Shizu" />
               <div class="friends-text">
                 <h2>szzuchuu~</h2>
                 <p><i>"Follow the instructions to win a $50 Steam Gift Card"</i></p>
@@ -240,11 +238,16 @@
     <script type="module">
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
+      // Detect localhost (development)
+      const isLocalhost =
+        location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "";
+
       // Supabase config
       const SUPABASE_URL = "https://miwcmqwhudshgetmrmhf.supabase.co";
       const SUPABASE_KEY = "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ";
 
-      const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
+      // Only create client if NOT localhost
+      const supabase = !isLocalhost ? createClient(SUPABASE_URL, SUPABASE_KEY) : null;
 
       // Elements
       const guestbookForm = document.getElementById("guestbook-form");
@@ -252,6 +255,11 @@
 
       // Load existing messages
       async function loadMessages() {
+        if (isLocalhost) {
+          guestbookEntries.innerHTML = "<p>guestbook disabled in local development</p>";
+          return;
+        }
+
         try {
           const { data, error } = await supabase
             .from("guestbook")
@@ -266,33 +274,33 @@
             guestbookEntries.innerHTML = "<p>aww nothing :(</p>";
             return;
           }
+
           data.forEach((msg) => {
             const div = document.createElement("div");
             div.className = "guestbook-entry";
 
             div.innerHTML = `
-                    <div class="guestbook-entry-header" style="display: flex; justify-content: space-between; align-items: baseline;">
-                        <strong>${msg.name}</strong>
-                        <small style="color: var(--text-muted); font-size: 0.75rem;">
-                            ${new Date(msg.created_at).toLocaleDateString({
-                              day: "numeric",
-                              month: "short",
-                              year: "numeric"
-                            })} - ${new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                        </small>
-                    </div>
-                    <p>${msg.message}</p>
-                `;
+        <div class="guestbook-entry-header" style="display: flex; justify-content: space-between; align-items: baseline;">
+          <strong>${msg.name}</strong>
+          <small style="color: var(--text-muted); font-size: 0.75rem;">
+            ${new Date(msg.created_at).toLocaleDateString({
+              day: "numeric",
+              month: "short",
+              year: "numeric"
+            })} - ${new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+          </small>
+        </div>
+        <p>${msg.message}</p>
+      `;
 
-            // If reply exists, add it under the message, slightly indented
             if (msg.reply) {
               const replyDiv = document.createElement("div");
               replyDiv.className = "guestbook-reply";
-              replyDiv.style.marginLeft = "1.5rem"; // indent
-              replyDiv.style.borderLeft = "2px solid var(--border-solid)"; // optional visual
+              replyDiv.style.marginLeft = "1.5rem";
+              replyDiv.style.borderLeft = "2px solid var(--border-solid)";
               replyDiv.style.paddingLeft = "0.5rem";
               replyDiv.style.marginTop = "0.25rem";
-              replyDiv.innerHTML = `<strong> Minnie:</strong> <span>${msg.reply}</span>`;
+              replyDiv.innerHTML = `<strong>Minnie:</strong> <span>${msg.reply}</span>`;
               div.appendChild(replyDiv);
             }
 
@@ -304,8 +312,7 @@
         }
       }
 
-      // Submit new message
-      // Helper function to strip HTML special characters
+      // Escape HTML helper
       const escapeHTML = (str) => {
         return str.replace(
           /[&<>"']/g,
@@ -320,21 +327,25 @@
         );
       };
 
+      // Submit new message
       guestbookForm.addEventListener("submit", async (e) => {
         e.preventDefault();
+
+        if (isLocalhost) {
+          alert("guestbook disabled in local development");
+          return;
+        }
 
         let rawName = document.getElementById("name").value.trim();
         const rawMessage = document.getElementById("message").value.trim();
 
         if (!rawMessage) return;
 
-        // Block if the message contains the forbidden character
         if (rawName.includes("✿")) {
           alert("hehe cheeky fella, verification badge is for my close friends!");
           return;
         }
 
-        // Sanitize the inputs
         const name = rawName ? escapeHTML(rawName) : "anonymous";
         const message = escapeHTML(rawMessage);
 
