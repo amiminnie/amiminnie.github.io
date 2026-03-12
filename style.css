@@ -171,6 +171,7 @@ nav .active-temp {
   cursor: pointer;
   border-radius: 0; 
   border-bottom: 2px solid transparent; 
+  font-family: "Times New Roman";
 }
 .tab-btn:hover {
   background: var(--border-solid);
