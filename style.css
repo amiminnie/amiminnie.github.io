@@ -486,6 +486,10 @@ nav .active-temp {
   border-radius: 10px;
 }
 
+.conversation h3{
+  border: none;
+}
+
 @media (max-width: 500px) {
   .conversation {
     margin: 2rem -2rem;

@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>amiminnie - minigames</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light dark" />
+<meta name="theme-color" content="#111111" />
+
+<meta property="og:title" content="amiminnie" />
+<meta property="og:description" content="my silly little site" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://amiminnie.github.io/images/heart.png" />
+<meta property="og:url" content="https://amiminnie.github.io" />
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:image" content="https://amiminnie.github.io/images/heart.png" />
+
+<link id="theme-style" rel="stylesheet" href="light.css" />
+<link id="style" rel="stylesheet" href="style.css" />
+
+<link rel="icon" href="images/favicon.ico" />
+<link rel="apple-touch-icon" href="images/heart.png" />
+</head>
+
+<body>
+
+<div class="container">
+
+<header>
+<nav>
+<a href="index.html">about</a>
+<a href="gallery.html">gallery</a>
+<a href="thoughts.html">thoughts</a>
+<a href="minigames.html" class="active">minigames</a>
+
+<button id="theme-toggle" class="theme-btn">
+<img id="theme-icon" src="images/moon-icon.png" alt="Toggle theme">
+</button>
+</nav>
+</header>
+
+<main>
+
+<section class="social-list">
+<h1>minigames</h1>
+<p class="subtitle">little experiments</p>
+
+<div id="game" style="
+margin-top:20px;
+width:100%;
+max-width:640px;
+height:360px;
+margin-left:auto;
+margin-right:auto;
+border:2px solid var(--border-solid);
+border-radius:10px;
+overflow:hidden;
+"></div>
+
+<p style="margin-top:10px;font-size:0.9rem;">
+arrow keys to move • collect hearts
+</p>
+
+</section>
+
+</main>
+
+<footer>
+<p>amiminnie</p>
+</footer>
+
+</div>
+
+
+<script>
+const themeLink = document.getElementById("theme-style");
+const toggleBtn = document.getElementById("theme-toggle");
+const themeIcon = document.getElementById("theme-icon");
+
+const savedTheme = localStorage.getItem("theme");
+const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+function setTheme(mode) {
+if (mode === "dark") {
+themeLink.href = "dark.css";
+document.documentElement.style.colorScheme = "dark";
+themeIcon.src = "images/sun-icon.png";
+localStorage.setItem("theme","dark");
+} else {
+themeLink.href = "light.css";
+document.documentElement.style.colorScheme = "light";
+themeIcon.src = "images/moon-icon.png";
+localStorage.setItem("theme","light");
+}
+}
+
+if (savedTheme) {
+setTheme(savedTheme);
+} else if (systemPrefersDark) {
+setTheme("dark");
+} else {
+setTheme("light");
+}
+
+toggleBtn.addEventListener("click", () => {
+const current = localStorage.getItem("theme");
+setTheme(current === "dark" ? "light" : "dark");
+});
+</script>
+
+
+<script type="module">
+
+import kaboom from "https://unpkg.com/kaboom/dist/kaboom.mjs"
+
+kaboom({
+root: document.getElementById("game"),
+width: 640,
+height: 360,
+letterbox: true,
+background: [20,20,25]
+})
+
+const player = add([
+rect(30,30),
+pos(100,100),
+area(),
+color(120,180,255),
+"player"
+])
+
+function spawnHeart(){
+add([
+circle(10),
+pos(rand(20,width()-20), rand(20,height()-20)),
+area(),
+color(255,100,150),
+"heart"
+])
+}
+
+loop(1.5, spawnHeart)
+
+let score = 0
+
+const scoreText = add([
+text("score: 0"),
+pos(10,10)
+])
+
+onUpdate("player", () => {
+
+const speed = 200
+
+if(isKeyDown("left")) player.move(-speed,0)
+if(isKeyDown("right")) player.move(speed,0)
+if(isKeyDown("up")) player.move(0,-speed)
+if(isKeyDown("down")) player.move(0,speed)
+
+})
+
+onCollide("player","heart",(p,h)=>{
+destroy(h)
+score++
+scoreText.text = "score: " + score
+})
+
+</script>
+
+</body>
+</html>
