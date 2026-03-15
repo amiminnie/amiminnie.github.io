@@ -139,11 +139,16 @@
           <section class="social-list">
             <p class="prefixa">check out my</p>
             <h1>socials</h1>
-            <a class="social-item" href="https://discord.gg/HHTfSyZyKy" target="_blank" rel="noopener noreferrer">
+            <a
+              id="discord-link"
+              class="social-item"
+              href="https://discord.gg/HHTfSyZyKy"
+              target="_blank"
+              rel="noopener noreferrer">
               <img src="images/logos/discord.png" alt="Discord" />
               <div class="social-text">
-                <h2>Discord</h2>
-                <p>@amiminnie - add me as a friend</p>
+                <h2 id="discord-name">Discord</h2>
+                <p id="discord-details">Loading status...</p>
               </div>
             </a>
 
@@ -166,18 +171,7 @@
                 <p>@amiminnie1 - i refuse to call it X</p>
               </div>
             </a>
-
-            <a
-              class="social-item"
-              href="https://ibispaint.com/artist4/7838197604469341/"
-              target="_blank"
-              rel="noopener noreferrer">
-              <img src="images/logos/ibis-paint.png" alt="ibis" />
-              <div class="social-text">
-                <h2>ibisPaint</h2>
-                <p>Minnie - watch me draw on ibisPaint</p>
-              </div>
-            </a>
+            
           </section>
         </div>
       </main>
@@ -415,6 +409,33 @@
           }
         }
       });
+
+      async function updateDiscordDetails() {
+        const nameEl = document.getElementById("discord-name");
+        const detailsEl = document.getElementById("discord-details");
+        const linkEl = document.getElementById("discord-link");
+
+        try {
+          const response = await fetch("https://discord.com/api/guilds/1476600817866768525/widget.json");
+          if (!response.ok) throw new Error();
+
+          const data = await response.json();
+
+          // Update the text with real-time data
+          nameEl.textContent = data.name;
+          detailsEl.textContent = `${data.presence_count} members online, please join :3`;
+
+          // Optional: Update the link to the instant invite from the widget
+          if (data.instant_invite) {
+            linkEl.href = data.instant_invite;
+          }
+        } catch (err) {
+          // Fallback if the widget is disabled in Discord settings
+          detailsEl.textContent = "Click to join the community!";
+        }
+      }
+
+      updateDiscordDetails();
     </script>
 
     <script>
