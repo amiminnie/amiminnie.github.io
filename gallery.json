@@ -1,5 +1,12 @@
 [
   {
+    "file": "images/gallery/minnie-walking-sunflowers.png",
+    "name": "Sunflower",
+    "description": "I just like sunflowers",
+    "date": "19 mar 2026",
+    "type": "illustrations"
+  },
+  {
     "file": "images/gallery/insult-or-not.png",
     "name": "Insult?",
     "description": "i kind of found it affirming though",
