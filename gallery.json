@@ -1,5 +1,12 @@
 [
   {
+    "file": "images/gallery/x.png",
+    "name": "X",
+    "description": "ragebait haeven",
+    "date": "24 mar 2026",
+    "type": "comics"
+  },
+  {
     "file": "images/gallery/button.png",
     "name": "Button",
     "description": "what? it doesnt work on girls?",
