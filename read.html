@@ -45,7 +45,6 @@
       </footer>
     </div>
 
-    <!-- Theme Script (unchanged) -->
     <script>
       const themeLink = document.getElementById("theme-style");
       const toggleBtn = document.getElementById("theme-toggle");
@@ -116,7 +115,25 @@
 
           const html = await fileRes.text();
 
+          // Inject the HTML
           container.innerHTML = html;
+
+          // Manually find and execute scripts within the injected HTML
+          const scripts = container.querySelectorAll("script");
+          scripts.forEach((oldScript) => {
+            const newScript = document.createElement("script");
+            
+            // Copy all attributes (src, type, etc.)
+            Array.from(oldScript.attributes).forEach(attr => {
+              newScript.setAttribute(attr.name, attr.value);
+            });
+
+            // Copy the script content
+            newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+            
+            // Replacing the element triggers execution
+            oldScript.parentNode.replaceChild(newScript, oldScript);
+          });
 
           // Update page title dynamically
           document.title = `amiminnie - ${thought.title}`;
@@ -126,6 +143,8 @@
         }
       }
 
+      // Listen for hash changes so the page updates without refreshing
+      window.addEventListener("hashchange", loadThought);
       loadThought();
     </script>
   </body>

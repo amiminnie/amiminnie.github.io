@@ -423,6 +423,10 @@ nav .active-temp {
 .thought-content p {
   margin-bottom: 1rem;
 }
+.thought-content li {
+  margin-left: 3rem;
+  margin-bottom: 1rem;
+}
 .thought-content a {
   color: var(--accent);
   text-decoration: none;
@@ -444,7 +448,7 @@ nav .active-temp {
 }
 
 /* Desktop layout */
-@media (min-width: 768px) {
+@media (min-width: 600px) {
   .thought-row {
     flex-direction: row; /* Side-by-side on desktop */
     align-items: flex-start;
@@ -455,7 +459,7 @@ nav .active-temp {
   }
 
   .thought-media {
-    flex: 0 0 300px; /* Fixed width for the image on desktop */
+    flex: 0 0 200px; /* Fixed width for the image on desktop */
   }
 }
 
