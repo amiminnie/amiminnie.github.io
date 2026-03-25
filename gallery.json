@@ -1,5 +1,12 @@
 [
   {
+    "file": "images/gallery/doubt.png",
+    "name": "Doubt",
+    "description": "i'm not faking it, hopefully",
+    "date": "25 mar 2026",
+    "type": "comics"
+  },
+  {
     "file": "images/gallery/x.png",
     "name": "X",
     "description": "ragebait haeven",
