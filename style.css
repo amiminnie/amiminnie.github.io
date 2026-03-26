@@ -91,6 +91,16 @@ nav .active-temp {
 .intro h1 {
   font-size: 2rem;
   margin-bottom: 0.5rem;
+
+  background: none;
+  transition: all 0.4s ease;
+}
+
+.intro h1:hover {
+  background: var(--trans);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: #ffffff66;
 }
 
 .subtitle {
@@ -351,11 +361,17 @@ nav .active-temp {
 }
 
 @media (min-width: 768px) {
-  .social-wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-  }
+.social-wrapper {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.social-wrapper > section {
+  flex: 1;
+  min-width: 280px; /* ensures they don’t shrink too much on desktop */
+}
 
   .friends-list,
   .social-list {

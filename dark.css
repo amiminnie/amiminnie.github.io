@@ -19,4 +19,6 @@
     --bubble: #ffffff22;
 
     --card-hover: #ff8ef111;
+    
+    --trans: linear-gradient(0deg, #9eafff 30%, #ff8ef1 40%, #ffffff 50%, #ff8ef1 60%,#9eafff 70%);
 }

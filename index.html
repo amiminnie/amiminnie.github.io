@@ -44,9 +44,6 @@
 
           <div class="bio">
             <p>i draw comics about my feelings</p>
-            <p>i'm working on some games</p>
-            <p>i like <a href="https://geotastic.net" target="_blank" rel="noopener noreferrer">geotastic</a></p>
-            <h3>here are my comics!</h3>
           </div>
         </section>
         <section class="comic-strip">
@@ -561,7 +558,7 @@
 
             div.innerHTML = `
         <a href="${item.file}" target="_blank">
-          <img src="${item.file}" alt="${item.name}">
+          <img src="${item.file}" alt="${item.name}" loading="lazy">
         </a>
       `;
 
