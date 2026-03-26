@@ -40,12 +40,18 @@
         <section class="intro">
           <p class="prefix">am i</p>
           <h1>Minnie?</h1>
-          <p class="subtitle">artist ⁘ developer</p>
+          <p class="subtitle">she/they ⁘ artist ⁘ developer</p>
 
           <div class="bio">
-            <p>i sometimes draw silly stuff</p>
-            <p>i'm working on a game, haven't thought of a name though</p>
+            <p>i draw comics about my feelings</p>
+            <p>i'm working on some games</p>
             <p>i like <a href="https://geotastic.net" target="_blank" rel="noopener noreferrer">geotastic</a></p>
+            <h3>here are my comics!</h3>
+          </div>
+        </section>
+        <section class="comic-strip">
+          <div id="comic-strip-container" class="comic-strip-row">
+            <p>wait a sec...</p>
           </div>
         </section>
 
@@ -55,25 +61,25 @@
           <a class="social-item" href="gallery.html">
             <img src="images/gallery.png" alt="gallery" />
             <div class="social-text">
-              <h2>my gallery &gt;&gt;</h2>
-              <p>illustrations, web-comics and sketches</p>
+              <h2>visit my gallery!</h2>
+              <p>mostly comics, but also some other stuff</p>
             </div>
           </a>
-
           <a class="social-item" href="thoughts.html">
             <img src="images/thoughts.png" alt="thoughts" />
             <div class="social-text">
-              <h2>3am thoughts &gt;&gt;</h2>
+              <h2>read some thoughts</h2>
               <p>gets a little deep sometimes</p>
             </div>
           </a>
           <a class="social-item" href="changelog.html">
             <img src="images/github.png" alt="changelog" />
             <div class="social-text">
-              <h2>changelog &gt;&gt;</h2>
+              <h2>changelog</h2>
               <p>if you're that bored</p>
             </div>
           </a>
+          <!--
           <div class="disabled-item">
             <div class="social-item">
               <img src="images/unavailable.png" alt="minigames" />
@@ -83,6 +89,7 @@
               </div>
             </div>
           </div>
+          -->
         </section>
 
         <section class="guestbook" id="guestbook">
@@ -527,6 +534,46 @@
           });
         }
       })();
+    </script>
+
+    <script>
+      async function loadComicStrip() {
+        const container = document.getElementById("comic-strip-container");
+
+        try {
+          const res = await fetch("gallery.json");
+          if (!res.ok) throw new Error("gallery.json missing");
+
+          const items = await res.json();
+
+          const comics = items.filter((item) => item.type === "comics").slice(0, 10); // limit if you want
+
+          container.innerHTML = "";
+
+          if (!comics.length) {
+            container.innerHTML = "<p>no comics yet :(</p>";
+            return;
+          }
+
+          comics.forEach((item) => {
+            const div = document.createElement("div");
+            div.className = "comic-item";
+
+            div.innerHTML = `
+        <a href="${item.file}" target="_blank">
+          <img src="${item.file}" alt="${item.name}">
+        </a>
+      `;
+
+            container.appendChild(div);
+          });
+        } catch (err) {
+          container.innerHTML = `<p>couldn't load comics: ${err.message}</p>`;
+          console.error(err);
+        }
+      }
+
+      loadComicStrip();
     </script>
   </body>
 </html>
