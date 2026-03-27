@@ -1,3 +1,7 @@
+/* ==========================================================================
+   1. BASE & ROOT SIZING
+   ========================================================================== */
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -6,53 +10,61 @@
 
 body {
   background: var(--bg-main);
-  background-attachment: fixed; /* This is the key! */
+  background-attachment: fixed;
   color: var(--text-main);
-  font-family: "Times New Roman";
+  font-family: "Overlock", sans-serif;
   line-height: 1.6;
   margin: 0;
   min-height: 100vh;
-  
-  /* Prevents horizontal scrollbars if petals go slightly off-screen */
   overflow-x: hidden; 
 }
+
+/* ==========================================================================
+   2. LAYOUT CONTAINERS
+   ========================================================================== */
 
 .container {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
-
+  border-radius: 10px;
+  background: var(--bg-dark);
+  backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(8px);
 }
 
-/* ===== Header ===== */
+.social-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+@media (min-width: 768px) {
+  .social-wrapper {
+    flex-direction: row;
+    gap: 2rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .social-wrapper > section {
+    flex: 1;
+    min-width: 280px;
+  }
+
+  .friends-list,
+  .social-list {
+    flex: 1;
+    width: 100%;
+  }
+}
+
+/* ==========================================================================
+   3. NAVIGATION & HEADER
+   ========================================================================== */
 
 header {
   padding-bottom: 1rem;
   margin-bottom: 2rem;
-  padding: 1rem;
-  background: var(--bg-dark);
-  backdrop-filter: blur(8px); 
-  -webkit-backdrop-filter: blur(8px);
-
-}
-
-.theme-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin-left: auto;
-  padding: 0;
-}
-
-.theme-btn img {
-  width: 20px;
-  height: 20px;
-  display: block;
-  transition: transform 0.25s ease;
-}
-
-.theme-btn img:active {
-  transform: scale(0.8);
 }
 
 nav {
@@ -79,38 +91,48 @@ nav .active {
 nav .active-temp {
   color: var(--text-main);
   text-decoration: underline;
-
   opacity: 0;
   transform: translateX(-50px);
   animation: activeFade 0.5s ease forwards;
 }
 
-@keyframes activeFade {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.theme-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  margin-left: auto;
+  padding: 0;
 }
 
-/* ===== Intro ===== */
+.theme-btn img {
+  width: 20px;
+  height: 20px;
+  display: block;
+  transition: transform 0.25s ease;
+}
+
+.theme-btn img:active {
+  transform: scale(0.8);
+}
+
+/* ==========================================================================
+   4. INTRO & TYPOGRAPHY
+   ========================================================================== */
 
 .prefix {
   color: var(--text-muted);
   margin-bottom: -0.5rem;
 }
 
-.intro {
-    border-radius: 10px;
-  padding: 1rem;
-  background: var(--bg-dark);
-  backdrop-filter: blur(8px); 
-  -webkit-backdrop-filter: blur(8px);
+.prefixa {
+  color: var(--text-muted);
+  margin-bottom: -0.5rem;
+  margin-top: 1rem;
 }
 
 .intro h1 {
   font-size: 2rem;
   margin-bottom: 0.5rem;
-
   background: none;
   transition: all 0.4s ease;
 }
@@ -137,20 +159,51 @@ nav .active-temp {
   color: var(--accent-hover);
 }
 
+/* ==========================================================================
+   5. GALLERY & TABS
+   ========================================================================== */
+
+.tabs {
+  display: flex;
+  margin-bottom: 1em;
+  gap: 0;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 0.5em 1em;
+  border: none;
+  background: var(--bg-dark);
+  cursor: pointer;
+  border-radius: 0;
+  border-bottom: 2px solid transparent;
+  font-family: "Overlock", sans-serif;
+}
+
+.tab-btn:hover {
+  background: var(--border-solid);
+}
+
+.tab-btn.active {
+  background: var(--accent-dark);
+  font-weight: bold;
+  border-bottom-color: var(--accent);
+}
+
 .gallery-masonry {
-  column-count: 3; /* 3 rows visually */
-  column-gap: 1rem; /* gap between items */
+  column-count: 3;
+  column-gap: 1rem;
 }
 
 .gallery-item {
   break-inside: avoid;
-  width: 100%; /* fit column width */
+  width: 100%;
   margin-bottom: 1rem;
-  border-radius: 10px;
-  padding: 1rem;
-  background: var(--bg-dark);
-  backdrop-filter: blur(8px); 
-  -webkit-backdrop-filter: blur(8px);
+  padding: 0.5rem;
+  /* Original border/bg values kept below */
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
   transition: transform 0.2s ease;
 }
 
@@ -181,49 +234,75 @@ nav .active-temp {
   padding-bottom: 1rem;
 }
 
-.tabs {
-  display: flex;
-  margin-bottom: 1em;
-  border-bottom: solid 1px var(--border-solid);
-  gap: 0;
-}
-
-.tab-btn {
-  flex: 1;
-  padding: 0.5em 1em;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  border-radius: 0;
-  border-bottom: 2px solid transparent;
-  font-family: "Times New Roman";
-}
-.tab-btn:hover {
-  background: var(--border-solid);
-}
-
-.tab-btn.active {
-  background: var(--accent-dark);
-  font-weight: bold;
-  border-bottom-color: var(--accent);
-}
-
 @media (max-width: 900px) {
-  .gallery-masonry {
-    column-count: 2;
-  }
+  .gallery-masonry { column-count: 2; }
 }
 
 @media (max-width: 600px) {
-  .gallery-masonry {
-    column-count: 1; /* 1 column on small/mobile screens */
-  }
+  .gallery-masonry { column-count: 1; }
 }
+
+/* ==========================================================================
+   6. LISTS (FRIENDS & SOCIALS)
+   ========================================================================== */
+
+.friends-list, .social-list {
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.friends-list h1, .social-list h1 {
+  font-size: 2rem;
+}
+
+.friends-item, .social-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: transparent;
+  text-decoration: none;
+  padding: 0.2rem 1rem;
+}
+
+.friends-item:hover, .social-item:hover {
+  background: var(--bg-dark);
+  border-left: solid 2px var(--accent); 
+}
+
+.friends-item img {
+  width: 50px;
+  border-radius: 50px;
+}
+
+.social-item img {
+  width: 40px;
+}
+
+.friends-text h2, .social-text h2 {
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+
+.friends-text p, .social-text p {
+  margin-bottom: 0.5rem;
+  margin-top: -0.2rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.disabled-item {
+  filter: opacity(0.5);
+}
+
+/* ==========================================================================
+   7. GUESTBOOK
+   ========================================================================== */
 
 .guestbook {
   background-color: var(--bg-dark);
   backdrop-filter: blur(8px); 
-  -webkit-backdrop-filter: blur(8px); /* Safari support */
+  -webkit-backdrop-filter: blur(8px);
   margin-top: 2rem;
   padding: 1rem;
   border: 1px dashed var(--border-solid);
@@ -262,12 +341,12 @@ nav .active-temp {
 
 .guestbook-entry {
   padding: 0.5rem 0;
-  border-top: 1px solid var(--border-solid);
+  border: none;
 }
 
 .guestbook-entry strong {
   color: var(--accent);
-  font-size: 1.2re;
+  font-size: 1.2re; /* matches original typo */
 }
 
 .guestbook-entry a {
@@ -285,238 +364,63 @@ nav .active-temp {
   color: var(--text-muted);
 }
 
-.friends-list {
-  margin-top: 3rem;
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  background: var(--bg-dark);
-  backdrop-filter: blur(8px); 
-  -webkit-backdrop-filter: blur(8px);
-}
-
-.friends-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  background: transparent;
-  text-decoration: none;
-  padding: 0.2rem 1rem;
-}
-
-.friends-item:hover {
-  background: var(--bg-dark);
-  border: dashed 1px var(--border-solid);
-  border-left: solid 2px var(--accent); 
-}
-
-.friends-item img {
-  width: 50px;
-  border-radius: 50px;
-}
-
-.friends-text h2 {
-  color: var(--accent);
-  font-size: 1.2rem;
-}
-
-.friends-text p {
-  margin-bottom: 0.5rem;
-  margin-top: -0.2rem;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-.friends-list h1 {
-  font-size: 2rem;
-}
-
-.social-list {
-  margin-top: 3rem;
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  padding: 1rem;
-  background: var(--bg-dark);
-  backdrop-filter: blur(8px); 
-  -webkit-backdrop-filter: blur(8px);
-
-}
-
-.social-item {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  background: transparent;
-  text-decoration: none;
-  padding: 0.2rem 1rem;
-}
-
-.social-item:hover {
-  background: var(--bg-dark);
-  border: dashed 1px var(--border-solid);
-  border-left: solid 2px var(--accent);
-}
-
-.disabled-item {
-  filter: opacity(0.5);
-}
-
-.social-item img {
-  width: 40px;
-}
-
-.social-text h2 {
-  color: var(--accent);
-  font-size: 1.2rem;
-}
-
-.social-text p {
-  margin-bottom: 0.5rem;
-  margin-top: -0.2rem;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-.social-list h1 {
-  font-size: 2rem;
-}
-
-.prefixa {
-  color: var(--text-muted);
-  margin-bottom: -0.5rem;
-  margin-top: 1rem;
-}
-
-@media (min-width: 768px) {
-  .social-wrapper {
-    display: flex;
-    gap: 2rem;
-    align-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .social-wrapper > section {
-    flex: 1;
-    min-width: 280px; /* ensures they don’t shrink too much on desktop */
-  }
-
-  .friends-list,
-  .social-list {
-    flex: 1;
-    width: 100%;
-  }
-}
-
-.heart-particle {
-  position: fixed;
-  width: 18px;
-  height: 18px;
-  pointer-events: none;
-  user-select: none;
-  z-index: 9999;
-  animation: heart-fly 800ms ease-out forwards;
-}
-
-@keyframes heart-fly {
-  0% {
-    transform: translate(-50%, -50%) scale(0.5);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(2);
-    opacity: 0;
-  }
-}
-
-.gallery-item {
-  width: 100%; /* fit column width */
-  margin-bottom: 1rem;
-  padding: 0.5rem;
-  
-  
-}
+/* ==========================================================================
+   8. THOUGHTS & ARTICLES
+   ========================================================================== */
 
 .thought-link {
   display: block;
   text-decoration: none;
   color: inherit;
+  padding: 0 1rem;
   padding-top: 0.5rem;
-  padding: 1rem;
-  background: var(--bg-dark);
-  backdrop-filter: blur(8px); 
-  -webkit-backdrop-filter: blur(8px);
 }
+
 .thought-link:hover {
   background-color: var(--card-hover);
   border: dashed 1px var(--border-solid);
   border-left: solid 2px var(--accent);
 }
+
 .thought-content {
-  max-width: 650px;
+  max-width: 900px;
   margin: 3rem auto;
   line-height: 1.7;
 }
 
-.thought-content h1 {
-  margin-bottom: 0.5rem;
+.thought-content h1, .thought-content h3 {
   color: var(--accent);
 }
-.thought-content h3 {
-  color: var(--accent);
-  border-top: solid 1px var(--border-solid);
-}
-.thought-content p {
-  margin-bottom: 1rem;
-}
-.thought-content li {
-  margin-left: 3rem;
-  margin-bottom: 1rem;
-}
+
+.thought-content h1 { margin-bottom: 0.5rem; }
+.thought-content p { margin-bottom: 1rem; }
+.thought-content li { margin-left: 3rem; margin-bottom: 1rem; }
+
 .thought-content a {
   color: var(--accent);
   text-decoration: none;
 }
-.thought-content a:hover {
-  color: var(--accent-hover);
-}
-.thought-content em {
-  color: var(--text-muted);
-}
 
-/* Container for the side-by-side layout */
+.thought-content a:hover { color: var(--accent-hover); }
+.thought-content em { color: var(--text-muted); }
+
 .thought-row {
   display: flex;
-  flex-direction: column; /* Stacked by default (mobile) */
+  flex-direction: column;
   gap: 2rem;
   margin-bottom: 2rem;
   align-items: center;
 }
 
-/* Desktop layout */
 @media (min-width: 600px) {
   .thought-row {
-    flex-direction: row; /* Side-by-side on desktop */
+    flex-direction: row;
     align-items: flex-start;
   }
-
-  .thought-text {
-    flex: 1; /* Takes up remaining space */
-  }
-
-  .thought-media {
-    flex: 0 0 200px; /* Fixed width for the image on desktop */
-  }
+  .thought-text { flex: 1; }
+  .thought-media { flex: 0 0 200px; }
 }
 
-/* Your existing styles adjusted for the new structure */
-.thought-content {
-  max-width: 900px; /* Increased slightly to accommodate side-by-side */
-  margin: 3rem auto;
-  line-height: 1.7;
-}
-
-/* Ensure images don't overflow their container */
 .thought-media img {
   width: 100%;
   height: auto;
@@ -525,7 +429,34 @@ nav .active-temp {
   object-fit: cover;
 }
 
-/* Conversation container */
+/* ==========================================================================
+   9. COMICS & CONVERSATIONS
+   ========================================================================== */
+
+.comic-strip-row {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding: 1rem 0;
+  scroll-snap-type: x mandatory;
+}
+
+.comic-strip-row::-webkit-scrollbar { height: 6px; }
+.comic-strip-row::-webkit-scrollbar-thumb {
+  background: var(--border-solid);
+  border-radius: 5px;
+}
+
+.comic-item {
+  flex: 0 0 200px;
+  scroll-snap-align: start;
+}
+
+.comic-item img {
+  width: 100%;
+  border-radius: 5px;
+}
+
 .conversation {
   margin: 2rem 0;
   display: flex;
@@ -536,14 +467,10 @@ nav .active-temp {
   border-radius: 10px;
 }
 
-.conversation h3 {
-  border: none;
-}
+.conversation h3 { border: none; }
 
 @media (max-width: 500px) {
-  .conversation {
-    margin: 2rem -2rem;
-  }
+  .conversation { margin: 2rem -2rem; }
 }
 
 .bubble {
@@ -553,6 +480,8 @@ nav .active-temp {
   line-height: 1;
   position: relative;
   font-size: 0.95rem;
+  animation: bubbleFade 0.3s ease forwards;
+  opacity: 0;
 }
 
 .bubble-left {
@@ -568,39 +497,11 @@ nav .active-temp {
   border-bottom-right-radius: 1px;
 }
 
-.bubble {
-  animation: bubbleFade 0.3s ease forwards;
-  opacity: 0;
-}
+/* ==========================================================================
+   10. TIMELINE (CHANGELOG)
+   ========================================================================== */
 
-@keyframes bubbleFade {
-  to {
-    opacity: 1;
-  }
-}
-iframe {
-  display: block;
-  margin: 2rem auto;
-  max-width: 100%;
-  border-radius: 10px;
-  border: none;
-}
-
-.confetti {
-  position: fixed;
-  width: 6px;
-  height: 10px;
-  top: -10px;
-  pointer-events: none;
-  animation: confetti-fall 2.5s linear forwards;
-  opacity: 0.9;
-}
-
-/* changelog timeline */
-
-.changelog {
-  margin-top: 3rem;
-}
+.changelog { margin-top: 3rem; }
 
 .timeline {
   position: relative;
@@ -624,10 +525,6 @@ iframe {
   border-radius: 50%;
 }
 
-.timeline-content {
-  padding-bottom: 0.5rem;
-}
-
 .timeline-content h3 {
   font-size: 1.2rem;
   font-weight: bold;
@@ -644,39 +541,9 @@ iframe {
   color: var(--text-muted);
 }
 
-@keyframes confetti-fall {
-  to {
-    transform: translateY(110vh) rotate(720deg);
-    opacity: 0;
-  }
-}
-
-.comic-strip-row {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  padding: 1rem 0;
-  scroll-snap-type: x mandatory;
-}
-
-.comic-strip-row::-webkit-scrollbar {
-  height: 6px;
-}
-
-.comic-strip-row::-webkit-scrollbar-thumb {
-  background: var(--border-solid);
-  border-radius: 5px;
-}
-
-.comic-item {
-  flex: 0 0 200px;
-  scroll-snap-align: start;
-}
-
-.comic-item img {
-  width: 100%;
-  border-radius: 5px;
-}
+/* ==========================================================================
+   11. ANIMATIONS & EFFECTS
+   ========================================================================== */
 
 #petals-canvas {
   position: fixed;
@@ -687,11 +554,57 @@ iframe {
   z-index: -1; 
 }
 
-/* ===== Footer ===== */
+.heart-particle {
+  position: fixed;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+  user-select: none;
+  z-index: 9999;
+  animation: heart-fly 800ms ease-out forwards;
+}
+
+.confetti {
+  position: fixed;
+  width: 6px;
+  height: 10px;
+  top: -10px;
+  pointer-events: none;
+  animation: confetti-fall 2.5s linear forwards;
+  opacity: 0.9;
+}
+
+@keyframes activeFade {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes heart-fly {
+  0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0.8; }
+  100% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(2); opacity: 0; }
+}
+
+@keyframes bubbleFade {
+  to { opacity: 1; }
+}
+
+@keyframes confetti-fall {
+  to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+
+/* ==========================================================================
+   12. MISC & FOOTER
+   ========================================================================== */
+
+iframe {
+  display: block;
+  margin: 2rem auto;
+  max-width: 100%;
+  border-radius: 10px;
+  border: none;
+}
 
 footer {
   margin-top: 3rem;
-  border-top: 1px solid var(--border-solid);
   padding-top: 1rem;
   font-size: 0.75rem;
   color: var(--text-muted);
