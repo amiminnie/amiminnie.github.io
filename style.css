@@ -377,8 +377,7 @@ nav .active-temp {
 }
 
 .thought-link:hover {
-  background-color: var(--card-hover);
-  border: dashed 1px var(--border-solid);
+  background-color: var(--bg-dark);
   border-left: solid 2px var(--accent);
 }
 
