@@ -27,9 +27,13 @@ body {
 /* ===== Header ===== */
 
 header {
-  border-bottom: 1px solid var(--border-solid);
   padding-bottom: 1rem;
   margin-bottom: 2rem;
+  padding: 1rem;
+  background: var(--bg-dark);
+  backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(8px);
+
 }
 
 .theme-btn {
@@ -95,6 +99,14 @@ nav .active-temp {
   margin-bottom: -0.5rem;
 }
 
+.intro {
+    border-radius: 10px;
+  padding: 1rem;
+  background: var(--bg-dark);
+  backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(8px);
+}
+
 .intro h1 {
   font-size: 2rem;
   margin-bottom: 0.5rem;
@@ -134,10 +146,11 @@ nav .active-temp {
   break-inside: avoid;
   width: 100%; /* fit column width */
   margin-bottom: 1rem;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--bg);
-  padding: 0.5rem;
+  border-radius: 10px;
+  padding: 1rem;
+  background: var(--bg-dark);
+  backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(8px);
   transition: transform 0.2s ease;
 }
 
@@ -165,7 +178,6 @@ nav .active-temp {
 .gallery-date {
   font-size: 0.75rem;
   color: var(--text-muted);
-  border-bottom: solid 1px var(--border-solid);
   padding-bottom: 1rem;
 }
 
@@ -277,7 +289,10 @@ nav .active-temp {
   margin-top: 3rem;
   display: flex;
   flex-direction: column;
-  border-top: solid 1px var(--border-solid);
+  padding: 1rem;
+  background: var(--bg-dark);
+  backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .friends-item {
@@ -292,9 +307,7 @@ nav .active-temp {
 .friends-item:hover {
   background: var(--bg-dark);
   border: dashed 1px var(--border-solid);
-  border-left: solid 2px var(--accent);
-  backdrop-filter: blur(8px); 
-  -webkit-backdrop-filter: blur(8px); /* Safari support */
+  border-left: solid 2px var(--accent); 
 }
 
 .friends-item img {
@@ -322,7 +335,12 @@ nav .active-temp {
   margin-top: 3rem;
   display: flex;
   flex-direction: column;
-  border-top: solid 1px var(--border-solid);
+  border-radius: 10px;
+  padding: 1rem;
+  background: var(--bg-dark);
+  backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(8px);
+
 }
 
 .social-item {
@@ -338,8 +356,6 @@ nav .active-temp {
   background: var(--bg-dark);
   border: dashed 1px var(--border-solid);
   border-left: solid 2px var(--accent);
-  backdrop-filter: blur(8px); 
-  -webkit-backdrop-filter: blur(8px); /* Safari support */
 }
 
 .disabled-item {
@@ -417,14 +433,19 @@ nav .active-temp {
   width: 100%; /* fit column width */
   margin-bottom: 1rem;
   padding: 0.5rem;
+  
+  
 }
 
 .thought-link {
   display: block;
   text-decoration: none;
   color: inherit;
-  padding: 0 1rem;
   padding-top: 0.5rem;
+  padding: 1rem;
+  background: var(--bg-dark);
+  backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(8px);
 }
 .thought-link:hover {
   background-color: var(--card-hover);

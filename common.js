@@ -50,7 +50,7 @@
             flutterPhase: Math.random() * Math.PI * 2,
             flutterSpeed: 0.01 + Math.random() * 0.02, // Slower oscillation
             
-            parallax: scale * 0.6,
+            parallax: scale,
             opacity: 0.2 + (scale * 0.6)
         };
     });
