@@ -2,15 +2,15 @@
 
 :root {
     /* Backgrounds */
-    --bg-main: #2a1908;
-    --bg-dark: #251607;
+    --bg-main: linear-gradient(0deg, #7a4d4a 0%, #2c345a 35%, #010e21 100%);
+    --bg-dark: #5c1e0021;
 
     /* Text */
     --text-main: #e2d7e0;
     --text-muted: #bb9ab5;
 
     /* Borders */
-    --border-solid: #4c3737;
+    --border-solid: #a87777;
 
     /* Accent */
     --accent: #ff8ef1;
@@ -19,6 +19,8 @@
     --bubble: #ffffff22;
 
     --card-hover: #ff8ef111;
-    
-    --trans: linear-gradient(0deg, #9eafff 30%, #ff8ef1 40%, #ffffff 50%, #ff8ef1 60%,#9eafff 70%);
+
+    --trans: linear-gradient(0deg, #9eafff 30%, #ff8ef1 40%, #ffffff 50%, #ff8ef1 60%, #9eafff 70%);
+
+    --petal-opacity: 50%;
 }

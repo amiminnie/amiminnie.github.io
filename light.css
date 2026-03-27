@@ -2,8 +2,8 @@
 
 :root {
  /* Backgrounds */
- --bg-main: #fff8e6;
- --bg-dark: #f6f0df;
+ --bg-main: linear-gradient(0deg, #ffdd99, #ffffff, #dbefff);
+ --bg-dark: #ffc90011;
 
  /* Text */
  --text-main: #2b2b2b;
@@ -13,12 +13,14 @@
  --border-solid: #ccc;
 
  /* Accent */
- --accent: #b56aab;
- --accent-dark: #e280d5;
+ --accent: #166ecd;
+ --accent-dark: #228cff;
  --accent-hover: #9eafff;
  --bubble: #00000011;
 
- --card-hover: #b56aab22;
+ --card-hover: #1e7fe911;
 
  --trans: linear-gradient(0deg, #2299ff 30%, #d54abf 40%, #aaaaaa 50%, #d54abf 60%, #2299ff 70%);
+ 
+ --petal-opacity: 100%;
 }

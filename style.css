@@ -6,19 +6,22 @@
 
 body {
   background: var(--bg-main);
+  background-attachment: fixed; /* This is the key! */
   color: var(--text-main);
   font-family: "Times New Roman";
   line-height: 1.6;
-  transition: background 0.3s ease;
+  margin: 0;
+  min-height: 100vh;
+  
+  /* Prevents horizontal scrollbars if petals go slightly off-screen */
+  overflow-x: hidden; 
 }
 
 .container {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
-  
-  backdrop-filter: blur(8px); 
-  -webkit-backdrop-filter: blur(8px); /* Safari support */
+
 }
 
 /* ===== Header ===== */
@@ -207,6 +210,8 @@ nav .active-temp {
 
 .guestbook {
   background-color: var(--bg-dark);
+  backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(8px); /* Safari support */
   margin-top: 2rem;
   padding: 1rem;
   border: 1px dashed var(--border-solid);
@@ -285,9 +290,11 @@ nav .active-temp {
 }
 
 .friends-item:hover {
-  background: var(--card-hover);
+  background: var(--bg-dark);
   border: dashed 1px var(--border-solid);
   border-left: solid 2px var(--accent);
+  backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(8px); /* Safari support */
 }
 
 .friends-item img {
@@ -328,9 +335,11 @@ nav .active-temp {
 }
 
 .social-item:hover {
-  background: var(--card-hover);
+  background: var(--bg-dark);
   border: dashed 1px var(--border-solid);
   border-left: solid 2px var(--accent);
+  backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(8px); /* Safari support */
 }
 
 .disabled-item {
@@ -653,7 +662,7 @@ iframe {
   top: 0;
   left: 0;
   pointer-events: none;
-  opacity: 50%;
+  opacity: var(--petal-opacity);
   z-index: -1; 
 }
 
