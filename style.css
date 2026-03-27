@@ -9,12 +9,16 @@ body {
   color: var(--text-main);
   font-family: "Times New Roman";
   line-height: 1.6;
+  transition: background 0.3s ease;
 }
 
 .container {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
+  
+  backdrop-filter: blur(8px); 
+  -webkit-backdrop-filter: blur(8px); /* Safari support */
 }
 
 /* ===== Header ===== */
@@ -107,7 +111,6 @@ nav .active-temp {
   color: var(--text-muted);
   margin-bottom: 1rem;
 }
-
 
 .bio a {
   text-decoration: none;
@@ -276,7 +279,7 @@ nav .active-temp {
   display: flex;
   align-items: center;
   gap: 1rem;
-  background: var(--bg-main);
+  background: transparent;
   text-decoration: none;
   padding: 0.2rem 1rem;
 }
@@ -319,7 +322,7 @@ nav .active-temp {
   display: flex;
   align-items: center;
   gap: 1rem;
-  background: var(--bg-main);
+  background: transparent;
   text-decoration: none;
   padding: 0.2rem 1rem;
 }
@@ -361,17 +364,17 @@ nav .active-temp {
 }
 
 @media (min-width: 768px) {
-.social-wrapper {
-  display: flex;
-  gap: 2rem;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
+  .social-wrapper {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
 
-.social-wrapper > section {
-  flex: 1;
-  min-width: 280px; /* ensures they don’t shrink too much on desktop */
-}
+  .social-wrapper > section {
+    flex: 1;
+    min-width: 280px; /* ensures they don’t shrink too much on desktop */
+  }
 
   .friends-list,
   .social-list {
@@ -636,13 +639,22 @@ iframe {
 }
 
 .comic-item {
-  flex: 0 0 200px; 
+  flex: 0 0 200px;
   scroll-snap-align: start;
 }
 
 .comic-item img {
   width: 100%;
   border-radius: 5px;
+}
+
+#petals-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  opacity: 50%;
+  z-index: -1; 
 }
 
 /* ===== Footer ===== */
