@@ -1,146 +1,147 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <title>amiminnie - gallery</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta name="color-scheme" content="light dark" />
-        <meta name="theme-color" content="#111111" />
-        <link id="theme-style" rel="stylesheet" href="light.css" />
-        <link rel="stylesheet" href="style.css" />
-        <link rel="icon" href="images/favicon.ico" />
+  <head>
+    <meta charset="UTF-8" />
+    <title>amiminnie - gallery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#111111" />
+    <link id="theme-style" rel="stylesheet" href="light.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="images/favicon.ico" />
 
-        <script src="common.js" type="module"></script>
-        
+    <script src="common.js" type="module"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Overlock:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
       rel="stylesheet" />
-    </head>
+  </head>
 
-    <body>
-        <div class="container">
-            <header>
-                <nav>
-                    <a href="index.html">about</a>
-                    <a href="" class="active">gallery</a>
-                    <a href="thoughts.html">thoughts</a>
-                    <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere!">
-                        <img id="theme-icon" src="images/moon-icon.png" alt="Toggle theme" />
-                    </button>
-                </nav>
-            </header>
+  <body>
+    <div class="container">
+      <header>
+        <nav>
+          <a href="index.html">about</a>
+          <a href="" class="active">gallery</a>
+          <a href="thoughts.html">thoughts</a>
+          <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere!">
+            <img id="theme-icon" src="images/moon-icon.png" alt="Toggle theme" />
+          </button>
+        </nav>
+      </header>
 
-            <main>
-                <section class="intro">
-                    <p class="prefix">my art</p>
-                    <h1>gallery</h1>
-                    <p class="subtitle">illustrations, web-comics and sketches</p>
-                </section>
+      <main>
+        <section class="intro">
+          <p class="prefix">my art</p>
+          <h1>gallery</h1>
+          <p class="subtitle">illustrations, web-comics and sketches</p>
+        </section>
 
-                <section class="gallery">
-                    <div class="tabs">
-                        <button class="tab-btn active" data-tab="comics">comics</button>
-                        <button class="tab-btn" data-tab="illustrations">illustrations</button>
-                        <button class="tab-btn" data-tab="sketches">other</button>
-                    </div>
-                    <div id="gallery-container" class="gallery-masonry">
-                        <p>Loading gallery...</p>
-                    </div>
-                </section>
-            </main>
+        <section class="gallery">
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="comics">comics</button>
+            <button class="tab-btn" data-tab="illustrations">illustrations</button>
+            <button class="tab-btn" data-tab="sketches">other</button>
+          </div>
+          <div id="gallery-container" class="gallery-masonry">
+            <p>Loading gallery...</p>
+          </div>
+        </section>
+      </main>
 
-            <section class="social-list" style="border: none">
-                <p>you've reached the end</p>
-                <a class="social-item" href="index.html#guestbook">
-                    <img src="images/comment.png" alt="gallery" />
-                    <div class="social-text">
-                        <h2>leave a comment &gt;&gt;</h2>
-                        <p>i'd appreciate to read what you have to say about this!</p>
-                    </div>
-                </a>
-            </section>
+      <section class="social-list" style="border: none">
+        <p>you've reached the end</p>
+        <a class="social-item" href="index.html#guestbook">
+          <img src="images/comment.png" alt="gallery" />
+          <div class="social-text">
+            <h2>leave a comment &gt;&gt;</h2>
+            <p>i'd appreciate to read what you have to say about this!</p>
+          </div>
+        </a>
+      </section>
 
-            <footer>
-                <p>amiminnie</p>
-            </footer>
-        </div>
+      <footer>
+        <p>amiminnie</p>
+      </footer>
+    </div>
 
-        <!-- Theme toggle script -->
-        <script>
-            const themeLink = document.getElementById("theme-style");
-            const toggleBtn = document.getElementById("theme-toggle");
-            const themeIcon = document.getElementById("theme-icon");
+    <!-- Theme toggle script -->
+    <script>
+      const themeLink = document.getElementById("theme-style");
+      const toggleBtn = document.getElementById("theme-toggle");
+      const themeIcon = document.getElementById("theme-icon");
 
-            const savedTheme = localStorage.getItem("theme");
-            const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      // Get the preference from the user's browser memory
+      const savedTheme = localStorage.getItem("theme");
 
-            function setTheme(mode) {
-                if (mode === "dark") {
-                    themeLink.href = "dark.css";
-                    document.documentElement.style.colorScheme = "dark";
-                    themeIcon.src = "images/sun-icon.png";
-                    themeIcon.alt = "Switch to light mode";
-                    localStorage.setItem("theme", "dark");
-                } else {
-                    themeLink.href = "light.css";
-                    document.documentElement.style.colorScheme = "light";
-                    themeIcon.src = "images/moon-icon.png";
-                    themeIcon.alt = "Switch to dark mode";
-                    localStorage.setItem("theme", "light");
-                }
-            }
+      function setTheme(mode) {
+        if (mode === "dark") {
+          themeLink.href = "dark.css";
+          document.documentElement.style.colorScheme = "dark";
+          themeIcon.src = "images/sun-icon.png";
+          themeIcon.alt = "light mode";
+          localStorage.setItem("theme", "dark");
+        } else {
+          themeLink.href = "light.css";
+          document.documentElement.style.colorScheme = "light";
+          themeIcon.src = "images/moon-icon.png";
+          themeIcon.alt = "dark mode";
+          localStorage.setItem("theme", "light");
+        }
+      }
 
-            if (savedTheme) {
-                setTheme(savedTheme);
-            } else if (systemPrefersDark) {
-                setTheme("dark");
-            } else {
-                setTheme("light");
-            }
+      // If the user has a saved preference, use it.
+      // If they are a new visitor, force the dark theme.
+      if (savedTheme) {
+        setTheme(savedTheme);
+      } else {
+        setTheme("dark");
+      }
 
-            toggleBtn.addEventListener("click", () => {
-                themeIcon.style.transform = "scale(0)";
-                setTimeout(() => {
-                    const current = localStorage.getItem("theme");
-                    setTheme(current === "dark" ? "light" : "dark");
-                    void themeIcon.offsetWidth;
-                    themeIcon.style.transform = "scale(1)";
-                }, 120);
-            });
-        </script>
+      // Handle the click event for the theme switcher button
+      toggleBtn.addEventListener("click", () => {
+        themeIcon.style.transform = "scale(0)";
+        setTimeout(() => {
+          const current = localStorage.getItem("theme");
+          setTheme(current === "dark" ? "light" : "dark");
+          void themeIcon.offsetWidth;
+          themeIcon.style.transform = "scale(1)";
+        }, 120);
+      });
+    </script>
 
-        <!-- Gallery loading and tabs -->
-        <script>
-            async function loadGallery() {
-                const container = document.getElementById("gallery-container");
-                const tabs = document.querySelectorAll(".tab-btn");
-                let items = [];
+    <!-- Gallery loading and tabs -->
+    <script>
+      async function loadGallery() {
+        const container = document.getElementById("gallery-container");
+        const tabs = document.querySelectorAll(".tab-btn");
+        let items = [];
 
-                try {
-                    const res = await fetch("gallery.json");
-                    if (!res.ok) throw new Error("Gallery JSON not found!");
-                    items = await res.json();
-                } catch (err) {
-                    container.innerHTML = `<p>Could not load gallery: ${err.message}</p>`;
-                    console.error(err);
-                    return;
-                }
+        try {
+          const res = await fetch("gallery.json");
+          if (!res.ok) throw new Error("Gallery JSON not found!");
+          items = await res.json();
+        } catch (err) {
+          container.innerHTML = `<p>Could not load gallery: ${err.message}</p>`;
+          console.error(err);
+          return;
+        }
 
-                function renderGallery(type) {
-                    container.innerHTML = "";
-                    const filtered = items.filter((item) => item.type === type);
-                    if (!filtered.length) {
-                        container.innerHTML = "<p>No items to display.</p>";
-                        return;
-                    }
+        function renderGallery(type) {
+          container.innerHTML = "";
+          const filtered = items.filter((item) => item.type === type);
+          if (!filtered.length) {
+            container.innerHTML = "<p>No items to display.</p>";
+            return;
+          }
 
-                    filtered.forEach((item) => {
-                        const div = document.createElement("div");
-                        div.className = "gallery-item";
+          filtered.forEach((item) => {
+            const div = document.createElement("div");
+            div.className = "gallery-item";
 
-                        div.innerHTML = `
+            div.innerHTML = `
                         <a class="gallery-link" href="${item.file}" target="_blank" rel="noopener noreferrer">
                             <img class="gallery-image" src="images/loading.png" alt="${item.name}" loading="lazy">
                         </a>
@@ -149,30 +150,30 @@
                         <p class="gallery-date"><em>${item.date}</em></p>
     `;
 
-                        const img = div.querySelector(".gallery-image");
-                        const realImg = new Image();
-                        realImg.src = item.file;
-                        realImg.onload = () => {
-                            img.src = realImg.src; // replace GIF with real image
-                        };
+            const img = div.querySelector(".gallery-image");
+            const realImg = new Image();
+            realImg.src = item.file;
+            realImg.onload = () => {
+              img.src = realImg.src; // replace GIF with real image
+            };
 
-                        container.appendChild(div);
-                    });
-                }
+            container.appendChild(div);
+          });
+        }
 
-                tabs.forEach((btn) => {
-                    btn.addEventListener("click", () => {
-                        tabs.forEach((b) => b.classList.remove("active"));
-                        btn.classList.add("active");
-                        renderGallery(btn.dataset.tab);
-                    });
-                });
+        tabs.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            tabs.forEach((b) => b.classList.remove("active"));
+            btn.classList.add("active");
+            renderGallery(btn.dataset.tab);
+          });
+        });
 
-                // Initial render
-                renderGallery("comics");
-            }
+        // Initial render
+        renderGallery("comics");
+      }
 
-            loadGallery();
-        </script>
-    </body>
+      loadGallery();
+    </script>
+  </body>
 </html>

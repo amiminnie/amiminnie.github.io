@@ -11,7 +11,7 @@
     <link rel="icon" href="images/favicon.ico" />
 
     <script src="common.js" type="module"></script>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -57,33 +57,34 @@
       const toggleBtn = document.getElementById("theme-toggle");
       const themeIcon = document.getElementById("theme-icon");
 
+      // Get the preference from the user's browser memory
       const savedTheme = localStorage.getItem("theme");
-      const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
       function setTheme(mode) {
         if (mode === "dark") {
           themeLink.href = "dark.css";
           document.documentElement.style.colorScheme = "dark";
           themeIcon.src = "images/sun-icon.png";
-          themeIcon.alt = "Switch to light mode";
+          themeIcon.alt = "light mode";
           localStorage.setItem("theme", "dark");
         } else {
           themeLink.href = "light.css";
           document.documentElement.style.colorScheme = "light";
           themeIcon.src = "images/moon-icon.png";
-          themeIcon.alt = "Switch to dark mode";
+          themeIcon.alt = "dark mode";
           localStorage.setItem("theme", "light");
         }
       }
 
+      // If the user has a saved preference, use it.
+      // If they are a new visitor, force the dark theme.
       if (savedTheme) {
         setTheme(savedTheme);
-      } else if (systemPrefersDark) {
-        setTheme("dark");
       } else {
-        setTheme("light");
+        setTheme("dark");
       }
 
+      // Handle the click event for the theme switcher button
       toggleBtn.addEventListener("click", () => {
         themeIcon.style.transform = "scale(0)";
         setTimeout(() => {

@@ -52,37 +52,39 @@
     </div>
 
     <script>
+
       const themeLink = document.getElementById("theme-style");
       const toggleBtn = document.getElementById("theme-toggle");
       const themeIcon = document.getElementById("theme-icon");
 
+      // Get the preference from the user's browser memory
       const savedTheme = localStorage.getItem("theme");
-      const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
 
       function setTheme(mode) {
         if (mode === "dark") {
           themeLink.href = "dark.css";
           document.documentElement.style.colorScheme = "dark";
           themeIcon.src = "images/sun-icon.png";
-          themeIcon.alt = "Switch to light mode";
+          themeIcon.alt = "light mode";
           localStorage.setItem("theme", "dark");
         } else {
           themeLink.href = "light.css";
           document.documentElement.style.colorScheme = "light";
           themeIcon.src = "images/moon-icon.png";
-          themeIcon.alt = "Switch to dark mode";
+          themeIcon.alt = "dark mode";
           localStorage.setItem("theme", "light");
         }
       }
 
+      // If the user has a saved preference, use it.
+      // If they are a new visitor, force the dark theme.
       if (savedTheme) {
         setTheme(savedTheme);
-      } else if (systemPrefersDark) {
-        setTheme("dark");
       } else {
-        setTheme("light");
+        setTheme("dark");
       }
 
+      // Handle the click event for the theme switcher button
       toggleBtn.addEventListener("click", () => {
         themeIcon.style.transform = "scale(0)";
         setTimeout(() => {
@@ -128,15 +130,15 @@
           const scripts = container.querySelectorAll("script");
           scripts.forEach((oldScript) => {
             const newScript = document.createElement("script");
-            
+
             // Copy all attributes (src, type, etc.)
-            Array.from(oldScript.attributes).forEach(attr => {
+            Array.from(oldScript.attributes).forEach((attr) => {
               newScript.setAttribute(attr.name, attr.value);
             });
 
             // Copy the script content
             newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-            
+
             // Replacing the element triggers execution
             oldScript.parentNode.replaceChild(newScript, oldScript);
           });
