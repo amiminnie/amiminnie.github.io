@@ -1,5 +1,12 @@
 [
   {
+    "file": "images/gallery/rough.png",
+    "name": "Rough",
+    "description": "i'm immune to that kind of tricks",
+    "date": "05 apr 2026",
+    "type": "comics"
+  },
+  {
     "file": "images/gallery/doubt.png",
     "name": "Doubt",
     "description": "i'm not faking it, hopefully",
