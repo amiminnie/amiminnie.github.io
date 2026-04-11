@@ -16,7 +16,13 @@ body {
   line-height: 1.3;
   margin: 0;
   min-height: 100vh;
-  overflow-x: hidden; 
+  overflow-x: hidden;
+}
+
+@font-face {
+  font-family: "CustomSecretFont";
+  src: url("ShizuScript.ttf") format("truetype");
+  font-display: swap;
 }
 
 /* ==========================================================================
@@ -29,7 +35,7 @@ body {
   padding: 2rem;
   border-radius: 10px;
   background: var(--bg-dark);
-  backdrop-filter: blur(8px); 
+  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
 }
 
@@ -235,28 +241,35 @@ nav .active-temp {
 }
 
 @media (max-width: 900px) {
-  .gallery-masonry { column-count: 2; }
+  .gallery-masonry {
+    column-count: 2;
+  }
 }
 
 @media (max-width: 600px) {
-  .gallery-masonry { column-count: 1; }
+  .gallery-masonry {
+    column-count: 1;
+  }
 }
 
 /* ==========================================================================
    6. LISTS (FRIENDS & SOCIALS)
    ========================================================================== */
 
-.friends-list, .social-list {
+.friends-list,
+.social-list {
   margin-top: 3rem;
   display: flex;
   flex-direction: column;
 }
 
-.friends-list h1, .social-list h1 {
+.friends-list h1,
+.social-list h1 {
   font-size: 2rem;
 }
 
-.friends-item, .social-item {
+.friends-item,
+.social-item {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -265,9 +278,10 @@ nav .active-temp {
   padding: 0.2rem 1rem;
 }
 
-.friends-item:hover, .social-item:hover {
+.friends-item:hover,
+.social-item:hover {
   background: var(--bg-dark);
-  border-left: solid 2px var(--accent); 
+  border-left: solid 2px var(--accent);
 }
 
 .friends-item img {
@@ -279,12 +293,14 @@ nav .active-temp {
   width: 40px;
 }
 
-.friends-text h2, .social-text h2 {
+.friends-text h2,
+.social-text h2 {
   color: var(--accent);
   font-size: 1.2rem;
 }
 
-.friends-text p, .social-text p {
+.friends-text p,
+.social-text p {
   margin-bottom: 0.5rem;
   margin-top: -0.2rem;
   font-size: 0.8rem;
@@ -301,7 +317,7 @@ nav .active-temp {
 
 .guestbook {
   background-color: var(--bg-dark);
-  backdrop-filter: blur(8px); 
+  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   margin-top: 2rem;
   padding: 1rem;
@@ -386,21 +402,33 @@ nav .active-temp {
   margin: 3rem auto;
 }
 
-.thought-content h1, .thought-content h3 {
+.thought-content h1,
+.thought-content h3 {
   color: var(--accent);
 }
 
-.thought-content h1 { margin-bottom: 0.5rem; }
-.thought-content p { margin-bottom: 1rem; }
-.thought-content li { margin-left: 3rem; margin-bottom: 1rem; }
+.thought-content h1 {
+  margin-bottom: 0.5rem;
+}
+.thought-content p {
+  margin-bottom: 1rem;
+}
+.thought-content li {
+  margin-left: 3rem;
+  margin-bottom: 1rem;
+}
 
 .thought-content a {
   color: var(--accent);
   text-decoration: none;
 }
 
-.thought-content a:hover { color: var(--accent-hover); }
-.thought-content em { color: var(--text-muted); }
+.thought-content a:hover {
+  color: var(--accent-hover);
+}
+.thought-content em {
+  color: var(--text-muted);
+}
 
 .thought-row {
   display: flex;
@@ -415,8 +443,12 @@ nav .active-temp {
     flex-direction: row;
     align-items: flex-start;
   }
-  .thought-text { flex: 1; }
-  .thought-media { flex: 0 0 200px; }
+  .thought-text {
+    flex: 1;
+  }
+  .thought-media {
+    flex: 0 0 200px;
+  }
 }
 
 .thought-media img {
@@ -439,7 +471,9 @@ nav .active-temp {
   scroll-snap-type: x mandatory;
 }
 
-.comic-strip-row::-webkit-scrollbar { height: 6px; }
+.comic-strip-row::-webkit-scrollbar {
+  height: 6px;
+}
 .comic-strip-row::-webkit-scrollbar-thumb {
   background: var(--border-solid);
   border-radius: 5px;
@@ -465,10 +499,14 @@ nav .active-temp {
   border-radius: 10px;
 }
 
-.conversation h3 { border: none; }
+.conversation h3 {
+  border: none;
+}
 
 @media (max-width: 500px) {
-  .conversation { margin: 2rem -2rem; }
+  .conversation {
+    margin: 2rem -2rem;
+  }
 }
 
 .bubble {
@@ -499,7 +537,9 @@ nav .active-temp {
    10. TIMELINE (CHANGELOG)
    ========================================================================== */
 
-.changelog { margin-top: 3rem; }
+.changelog {
+  margin-top: 3rem;
+}
 
 .timeline {
   position: relative;
@@ -549,7 +589,7 @@ nav .active-temp {
   left: 0;
   pointer-events: none;
   opacity: var(--petal-opacity);
-  z-index: -1; 
+  z-index: -1;
 }
 
 .heart-particle {
@@ -573,20 +613,34 @@ nav .active-temp {
 }
 
 @keyframes activeFade {
-  to { opacity: 1; transform: translateY(0); }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes heart-fly {
-  0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0.8; }
-  100% { transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(2); opacity: 0; }
+  0% {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(2);
+    opacity: 0;
+  }
 }
 
 @keyframes bubbleFade {
-  to { opacity: 1; }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes confetti-fall {
-  to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  to {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0;
+  }
 }
 
 /* ==========================================================================
