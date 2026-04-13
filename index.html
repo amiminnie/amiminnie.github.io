@@ -31,10 +31,18 @@
       rel="stylesheet" />
 
     <style>
-      .goog-te-banner-frame.skiptranslate { display: none !important; }
-      body { top: 0px !important; }
-      .goog-logo-link { display: none !important; }
-      .goog-te-gadget { color: transparent !important; }
+      .goog-te-banner-frame.skiptranslate {
+        display: none !important;
+      }
+      body {
+        top: 0px !important;
+      }
+      .goog-logo-link {
+        display: none !important;
+      }
+      .goog-te-gadget {
+        color: transparent !important;
+      }
     </style>
   </head>
 
@@ -71,14 +79,14 @@
           <h1>i take commissions!</h1>
           <p class="subtitle">seriously it can help me out a lot!</p>
           <div class="disabled-item">
-          <a class="social-item" href="">
-            <img src="images/unavailable.png" alt="gallery" />
-            <div class="social-text">
-              <h2>read more</h2>
-              <p>page in progress</p>
-            </div>
-          </a>
-            </div>
+            <a class="social-item" href="">
+              <img src="images/unavailable.png" alt="gallery" />
+              <div class="social-text">
+                <h2>read more</h2>
+                <p>page in progress</p>
+              </div>
+            </a>
+          </div>
         </section>
 
         <section class="social-list">
@@ -127,14 +135,16 @@
               <img src="images/logos/s4qc.png" alt="S4qC" />
               <div class="friends-text">
                 <h2>S4qC</h2>
-                <p>don't ask him why he stopped using linux</p>
+                <p>don't do it twin -_-</p>
               </div>
             </a>
-            <div class="friends-item" id="shizu-card" style="cursor: pointer;">
+            <div class="friends-item" id="shizu-card" style="cursor: pointer">
               <img src="images/logos/shizu.png" alt="Shizu" />
               <div class="friends-text">
                 <h2>Shizu</h2>
-                <p style="font-family: 'CustomSecretFont', sans-serif;"><i>"      $   "</i></p>
+                <p style="font-family: &quot;CustomSecretFont&quot;, sans-serif">
+                  <i>"      $   "</i>
+                </p>
               </div>
             </div>
             <div class="friends-item">
@@ -158,7 +168,12 @@
           <section class="social-list">
             <p class="prefixa">check out my</p>
             <h1>socials</h1>
-            <a id="discord-link" class="social-item" href="https://discord.gg/HHTfSyZyKy" target="_blank" rel="noopener noreferrer">
+            <a
+              id="discord-link"
+              class="social-item"
+              href="https://discord.gg/HHTfSyZyKy"
+              target="_blank"
+              rel="noopener noreferrer">
               <img src="images/logos/discord.png" alt="Discord" />
               <div class="social-text">
                 <h2 id="discord-name">Discord</h2>
@@ -166,7 +181,11 @@
               </div>
             </a>
 
-            <a class="social-item" href="https://www.reddit.com/user/amiminnie/" target="_blank" rel="noopener noreferrer">
+            <a
+              class="social-item"
+              href="https://www.reddit.com/user/amiminnie/"
+              target="_blank"
+              rel="noopener noreferrer">
               <img src="images/logos/reddit.png" alt="Reddit" />
               <div class="social-text">
                 <h2>Reddit</h2>
@@ -203,39 +222,51 @@
 
       <footer>
         <p>amiminnie</p>
-        <p>comments are hosted by <a href="https://supabase.com" target="_blank" rel="noopener noreferrer">Supabase</a></p>
-        <p>here's the <a href="https://github.com/amiminnie/amiminnie.github.io" target="_blank" rel="noopener noreferrer">source code!</a></p>
+        <p>
+          comments are hosted by <a href="https://supabase.com" target="_blank" rel="noopener noreferrer">Supabase</a>
+        </p>
+        <p>
+          here's the
+          <a href="https://github.com/amiminnie/amiminnie.github.io" target="_blank" rel="noopener noreferrer"
+            >source code!</a
+          >
+        </p>
       </footer>
     </div>
 
-    <div id="google_translate_element" style="display:none;"></div>
+    <div id="google_translate_element" style="display: none"></div>
     <script type="text/javascript">
       function googleTranslateElementInit() {
-        new google.translate.TranslateElement({
-          pageLanguage: 'en',
-          includedLanguages: 'zh-CN',
-          autoDisplay: false
-        }, 'google_translate_element');
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: "en",
+            includedLanguages: "zh-CN",
+            autoDisplay: false
+          },
+          "google_translate_element"
+        );
       }
     </script>
-    <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script
+      type="text/javascript"
+      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <script>
-      document.getElementById('shizu-card').addEventListener('click', function() {
-        const selectField = document.querySelector('.goog-te-combo');
+      document.getElementById("shizu-card").addEventListener("click", function () {
+        const selectField = document.querySelector(".goog-te-combo");
         if (selectField) {
-          selectField.value = 'zh-CN';
-          selectField.dispatchEvent(new Event('change'));
+          selectField.value = "zh-CN";
+          selectField.dispatchEvent(new Event("change"));
         }
       });
     </script>
 
     <script>
-      const preload = new Image();
-      preload.src = "images/loading.png";
       const themeLink = document.getElementById("theme-style");
       const toggleBtn = document.getElementById("theme-toggle");
       const themeIcon = document.getElementById("theme-icon");
+
+      // Get the preference from the user's browser memory
       const savedTheme = localStorage.getItem("theme");
 
       function setTheme(mode) {
@@ -254,8 +285,15 @@
         }
       }
 
-      if (savedTheme) { setTheme(savedTheme); } else { setTheme("dark"); }
+      // If the user has a saved preference, use it.
+      // If they are a new visitor, force the dark theme.
+      if (savedTheme) {
+        setTheme(savedTheme);
+      } else {
+        setTheme("dark");
+      }
 
+      // Handle the click event for the theme switcher button
       toggleBtn.addEventListener("click", () => {
         themeIcon.style.transform = "scale(0)";
         setTimeout(() => {
@@ -269,7 +307,8 @@
 
     <script type="module">
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-      const isLocalhost = location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "";
+      const isLocalhost =
+        location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "";
       const SUPABASE_URL = "https://miwcmqwhudshgetmrmhf.supabase.co";
       const SUPABASE_KEY = "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ";
       const supabase = !isLocalhost ? createClient(SUPABASE_URL, SUPABASE_KEY) : null;
@@ -282,14 +321,20 @@
           return;
         }
         try {
-          const { data, error } = await supabase.from("guestbook").select("*").order("created_at", { ascending: false });
+          const { data, error } = await supabase
+            .from("guestbook")
+            .select("*")
+            .order("created_at", { ascending: false });
           if (error) throw error;
           guestbookEntries.innerHTML = "";
-          if (!data.length) { guestbookEntries.innerHTML = "<p>aww nothing </p>"; return; }
+          if (!data.length) {
+            guestbookEntries.innerHTML = "<p>aww nothing </p>";
+            return;
+          }
           data.forEach((msg) => {
             const div = document.createElement("div");
             div.className = "guestbook-entry";
-            div.innerHTML = `<div class="guestbook-entry-header" style="display: flex; justify-content: space-between; align-items: baseline;"><strong>${msg.name}</strong><small style="color: var(--text-muted); font-size: 0.75rem;">${new Date(msg.created_at).toLocaleDateString({day: "numeric", month: "short", year: "numeric"})} - ${new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</small></div><p>${msg.message}</p>`;
+            div.innerHTML = `<div class="guestbook-entry-header" style="display: flex; justify-content: space-between; align-items: baseline;"><strong>${msg.name}</strong><small style="color: var(--text-muted); font-size: 0.75rem;">${new Date(msg.created_at).toLocaleDateString({ day: "numeric", month: "short", year: "numeric" })} - ${new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</small></div><p>${msg.message}</p>`;
             if (msg.reply) {
               const replyDiv = document.createElement("div");
               replyDiv.className = "guestbook-reply";
@@ -302,18 +347,31 @@
             }
             guestbookEntries.appendChild(div);
           });
-        } catch (err) { guestbookEntries.innerHTML = `<p>idk, they say ${err.message} happened :/</p>`; }
+        } catch (err) {
+          guestbookEntries.innerHTML = `<p>idk, they say ${err.message} happened :/</p>`;
+        }
       }
 
-      const escapeHTML = (str) => { return str.replace(/[&<>"']/g, (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[m]); };
+      const escapeHTML = (str) => {
+        return str.replace(
+          /[&<>"']/g,
+          (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[m]
+        );
+      };
 
       guestbookForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        if (isLocalhost) { alert("guestbook disabled in local development"); return; }
+        if (isLocalhost) {
+          alert("guestbook disabled in local development");
+          return;
+        }
         let rawName = document.getElementById("name").value.trim();
         const rawMessage = document.getElementById("message").value.trim();
         if (!rawMessage) return;
-        if (rawName.includes("✿")) { alert("hehe cheeky fella, verification badge is for my close friends!"); return; }
+        if (rawName.includes("✿")) {
+          alert("hehe cheeky fella, verification badge is for my close friends!");
+          return;
+        }
         const name = rawName ? escapeHTML(rawName) : "anonymous";
         const message = escapeHTML(rawMessage);
         try {
@@ -321,7 +379,9 @@
           if (error) throw error;
           guestbookForm.reset();
           loadMessages();
-        } catch (err) { alert("sorry, something happened: " + err.message); }
+        } catch (err) {
+          alert("sorry, something happened: " + err.message);
+        }
       });
 
       loadMessages();
@@ -329,7 +389,9 @@
       document.querySelectorAll(".friends-item").forEach((item) => {
         const img = item.querySelector("img");
         if (!img) return;
-        item.addEventListener("mouseenter", () => { spawnHeartsFromImage(img); });
+        item.addEventListener("mouseenter", () => {
+          spawnHeartsFromImage(img);
+        });
       });
 
       function spawnHeartsFromImage(img) {
@@ -349,7 +411,9 @@
           heart.style.setProperty("--x", `${x}px`);
           heart.style.setProperty("--y", `${y}px`);
           document.body.appendChild(heart);
-          setTimeout(() => { heart.remove(); }, 800);
+          setTimeout(() => {
+            heart.remove();
+          }, 800);
         }
       }
 
@@ -363,8 +427,12 @@
           const data = await response.json();
           nameEl.textContent = data.name;
           detailsEl.textContent = `${data.presence_count} members online, please join :3`;
-          if (data.instant_invite) { linkEl.href = data.instant_invite; }
-        } catch (err) { detailsEl.textContent = "Click to join the community!"; }
+          if (data.instant_invite) {
+            linkEl.href = data.instant_invite;
+          }
+        } catch (err) {
+          detailsEl.textContent = "Click to join the community!";
+        }
       }
       updateDiscordDetails();
     </script>
@@ -378,14 +446,19 @@
           const items = await res.json();
           const comics = items.filter((item) => item.type === "comics").slice(0, 10);
           container.innerHTML = "";
-          if (!comics.length) { container.innerHTML = "<p>no comics yet </p>"; return; }
+          if (!comics.length) {
+            container.innerHTML = "<p>no comics yet </p>";
+            return;
+          }
           comics.forEach((item) => {
             const div = document.createElement("div");
             div.className = "comic-item";
             div.innerHTML = `<a href="${item.file}" target="_blank"><img src="${item.file}" alt="${item.name}" loading="lazy"></a>`;
             container.appendChild(div);
           });
-        } catch (err) { container.innerHTML = `<p>couldn't load comics: ${err.message}</p>`; }
+        } catch (err) {
+          container.innerHTML = `<p>couldn't load comics: ${err.message}</p>`;
+        }
       }
       loadComicStrip();
     </script>
