@@ -434,7 +434,6 @@ nav .active-temp {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin-bottom: 2rem;
   align-items: center;
 }
 
