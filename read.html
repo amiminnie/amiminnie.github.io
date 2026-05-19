@@ -2,13 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>amiminnie - thoughts</title>
+    <title>amiminnie - articles</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#111111" />
     <link id="theme-style" rel="stylesheet" href="light.css" />
     <link id="style" rel="stylesheet" href="style.css" />
     <link rel="icon" href="images/favicon.ico" />
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -23,7 +25,7 @@
         <nav>
           <a href="index.html">about</a>
           <a href="gallery.html">gallery</a>
-          <a href="thoughts.html">thoughts</a>
+          <a href="articles.html">articles</a>
           <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere with this!">
             <img id="theme-icon" src="images/moon-icon.png" alt="Toggle theme" />
           </button>
@@ -47,17 +49,16 @@
       </section>
 
       <footer>
+        <p>Supabase Supabase, thank you Supabase</p>
         <p>amiminnie</p>
       </footer>
     </div>
 
     <script>
-
       const themeLink = document.getElementById("theme-style");
       const toggleBtn = document.getElementById("theme-toggle");
       const themeIcon = document.getElementById("theme-icon");
 
-      // Get the preference from the user's browser memory
       const savedTheme = localStorage.getItem("theme");
 
       function setTheme(mode) {
@@ -76,15 +77,12 @@
         }
       }
 
-      // If the user has a saved preference, use it.
-      // If they are a new visitor, force the dark theme.
       if (savedTheme) {
         setTheme(savedTheme);
       } else {
         setTheme("dark");
       }
 
-      // Handle the click event for the theme switcher button
       toggleBtn.addEventListener("click", () => {
         themeIcon.style.transform = "scale(0)";
         setTimeout(() => {
@@ -97,6 +95,10 @@
     </script>
 
     <script>
+      const SUB_URL = "https://miwcmqwhudshgetmrmhf.supabase.co";
+      const SUB_KEY = "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ";
+      const supabaseClient = supabase.createClient(SUB_URL, SUB_KEY);
+
       async function loadThought() {
         const container = document.getElementById("thought-content");
         const tag = window.location.hash.substring(1);
@@ -107,44 +109,40 @@
         }
 
         try {
-          const res = await fetch("thoughts.json");
-          if (!res.ok) throw new Error("where is it?");
+          // Fetch from Supabase 'blogs' table where 'tag' matches URL hash
+          const { data: post, error } = await supabaseClient
+            .from('blogs')
+            .select('title, content')
+            .eq('tag', tag)
+            .single();
 
-          const items = await res.json();
-          const thought = items.find((item) => item.tag === tag);
-
-          if (!thought) {
+          if (error || !post) {
             container.innerHTML = "<p>i havent thought of that yet</p>";
             return;
           }
 
-          const fileRes = await fetch(`thoughts/${thought.tag}.html`);
-          if (!fileRes.ok) throw new Error("where did that thought go?");
+          // Inject content from DB
+          container.innerHTML = post.content;
 
-          const html = await fileRes.text();
-
-          // Inject the HTML
-          container.innerHTML = html;
-
-          // Manually find and execute scripts within the injected HTML
+          // Find and execute scripts within the injected HTML
           const scripts = container.querySelectorAll("script");
           scripts.forEach((oldScript) => {
             const newScript = document.createElement("script");
 
-            // Copy all attributes (src, type, etc.)
+            // Copy attributes
             Array.from(oldScript.attributes).forEach((attr) => {
               newScript.setAttribute(attr.name, attr.value);
             });
 
-            // Copy the script content
+            // Copy script internal text content
             newScript.appendChild(document.createTextNode(oldScript.innerHTML));
 
-            // Replacing the element triggers execution
+            // Execute by replacing element
             oldScript.parentNode.replaceChild(newScript, oldScript);
           });
 
           // Update page title dynamically
-          document.title = `amiminnie - ${thought.title}`;
+          document.title = `amiminnie - ${post.title}`;
         } catch (err) {
           container.innerHTML = "<p>i think i got distracted</p>";
           console.error(err);

@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>minnie's editor</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <link rel="stylesheet" href="dark.css" id="theme-style" />
+        <link rel="stylesheet" href="style.css" id="production-style" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Alata&family=Overlock:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+        <style>
+            body {
+                display: flex;
+                height: 100vh;
+                margin: 0;
+                overflow: hidden;
+                background: #111;
+                font-family: "Alata", sans-serif;
+                color: #eee;
+            }
+
+            /* Scope editor UI explicitly so it stays stable regardless of live site CSS */
+            .editor-sidebar {
+                width: 400px;
+                background: #161616;
+                border-right: 1px solid #222;
+                display: flex;
+                flex-direction: column;
+                padding: 25px;
+                overflow-y: auto;
+                z-index: 100;
+                flex-shrink: 0;
+                font-family: "Alata", sans-serif;
+                color: #eee;
+                box-sizing: border-box;
+            }
+            .editor-sidebar * { box-sizing: border-box; }
+
+            .preview-pane {
+                flex-grow: 1;
+                overflow-y: auto;
+                background: var(--bg-main, #111);
+                padding: 3rem 1rem;
+                transition: background 0.2s;
+            }
+
+            .block-item[draggable="true"] { cursor: grab; }
+            .block-item.dragging {
+                opacity: 0.5;
+                border: 1px dashed var(--accent, #52a3ff);
+            }
+
+            @media (max-width: 768px) {
+                body { flex-direction: column; }
+                .editor-sidebar { width: 100%; height: 50vh; border-right: none; border-top: 2px solid #222; order: 2; padding: 20px; }
+                .preview-pane { height: 50vh; order: 1; padding-bottom: 80px; }
+            }
+
+            .editor-sidebar h2 { font-size: 1.4rem; margin-bottom: 20px; color: #52a3ff; letter-spacing: -1px; margin-top: 0; }
+            .input-group { margin-bottom: 15px; }
+            .editor-sidebar label { display: block; font-size: 10px; color: #666; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 1px; }
+
+            .editor-sidebar input, .editor-sidebar textarea {
+                width: 100%;
+                background: #222;
+                border: 1px solid #333;
+                color: white;
+                padding: 12px;
+                border-radius: 6px;
+                font-family: "Alata", sans-serif;
+                outline: none;
+                font-size: 0.9rem;
+                transition: border 0.2s;
+            }
+            .editor-sidebar input:focus, .editor-sidebar textarea:focus { border-color: #52a3ff; }
+
+            .input-with-btn { display: flex; gap: 8px; }
+            .input-with-btn input { flex-grow: 1; }
+
+            .block-item {
+                background: #1e1e1e;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 12px;
+                border: 1px solid #282828;
+                position: relative;
+            }
+
+            .admin-box { border: 1px dashed #444; background: #1a1a1a; margin-bottom: 25px; }
+
+            .editor-sidebar button {
+                background: #252525;
+                color: #ccc;
+                border: 1px solid #333;
+                padding: 10px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-family: "Alata", sans-serif;
+                font-size: 0.8rem;
+                transition: all 0.2s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .editor-sidebar button:hover { background: #333; color: white; border-color: #52a3ff; }
+
+            .publish-btn {
+                background: #1a5cff;
+                width: 100%;
+                padding: 15px;
+                margin-top: 20px;
+                font-weight: bold;
+                font-size: 1rem;
+                color: white;
+                border: none;
+                display: block;
+            }
+            .publish-btn:hover { filter: brightness(1.2); }
+
+            .remove-btn {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: none !important;
+                border: none !important;
+                color: #ff5252 !important;
+                font-size: 10px;
+                opacity: 0.5;
+            }
+            .remove-btn:hover { opacity: 1; }
+
+            .editor-sidebar::-webkit-scrollbar { width: 4px; }
+            .editor-sidebar::-webkit-scrollbar-thumb { background: #333; }
+
+            /* Simple styling rule to force live layout fonts inside the preview environment */
+            .container { font-family: "Overlock", sans-serif; }
+            
+            /* Visual utility styling for Theme Switcher inside Editor */
+            .preview-theme-control {
+                display: flex;
+                justify-content: flex-end;
+                margin-bottom: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="editor-sidebar">
+            <h2>ARTICLE EDITOR</h2>
+
+            <div class="preview-theme-control">
+                <button onclick="togglePreviewTheme()" id="theme-toggle-btn">Toggle Preview View: Dark</button>
+            </div>
+
+            <div class="block-item admin-box">
+                <label style="color: #52a3ff">Authentication</label>
+                <div class="input-group">
+                    <label>password</label>
+                    <input type="password" id="editor-key" placeholder="••••••••" />
+                </div>
+                <div class="input-group">
+                    <label>article tag</label>
+                    <input type="text" id="article-tag" placeholder="random-post" oninput="render()" />
+                </div>
+            </div>
+
+            <div class="block-item">
+                <label>List Metadata</label>
+                <div class="input-group">
+                    <label>Thumbnail URL</label>
+                    <div class="input-with-btn">
+                        <input type="text" id="thumb-url" placeholder="images/thumbnail.png" oninput="render()" />
+                        <button onclick="uploadImage('thumb-url')">
+                            <span class="material-symbols-outlined" style="font-size: 18px">upload</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>title on list</label>
+                    <textarea id="short-desc" rows="2" placeholder="What this is all about" oninput="render()"></textarea>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Post Title</label>
+                <input type="text" id="title" placeholder="Article Title" oninput="render()" />
+            </div>
+
+            <div class="input-group">
+                <label>Date</label>
+                <input type="text" id="date" placeholder="02 May 2026" oninput="render()" />
+            </div>
+
+            <div id="blocks-container"></div>
+
+            <div style="margin-top: 10px; display: flex; gap: 8px">
+                <button onclick="addBlock('p')" style="flex: 1">+ Text</button>
+                <button onclick="addBlock('h3')" style="flex: 1">+ Head</button>
+                <button onclick="addBlock('ul')" style="flex: 1">+ List</button>
+                <button onclick="addBlock('thought')" style="flex: 1">+ Img Text</button>
+                <button onclick="addBlock('html')" style="flex: 1; border-color: #52a3ff; color: #52a3ff;">+ HTML</button>
+            </div>
+
+            <button class="publish-btn" id="publish-btn" onclick="publishToSupabase()">SAVE TO DATABASE</button>
+        </div>
+
+        <div class="preview-pane">
+            <div class="container">
+                <header>
+                    <nav>
+                        <a href="index.html">about</a>
+                        <a href="gallery.html">gallery</a>
+                        <a href="articles.html">articles</a>
+                    </nav>
+                </header>
+                <main>
+                    <article id="thought-content" class="thought-content"></article>
+                </main>
+                <footer>
+                    <p>Supabase Supabase, thank you Supabase</p>
+                    <p>amiminnie</p>
+                </footer>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+        <script>
+            const SUB_URL = "https://miwcmqwhudshgetmrmhf.supabase.co";
+            const ANON_KEY = "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ";
+            const sbPublic = supabase.createClient(SUB_URL, ANON_KEY);
+
+            let blocks = [];
+            let currentPreviewTheme = "dark";
+
+            // Allows testing light layout vs dark layout directly inside your compiler workspace
+            function togglePreviewTheme() {
+                const themeLink = document.getElementById("theme-style");
+                const btn = document.getElementById("theme-toggle-btn");
+                if (currentPreviewTheme === "dark") {
+                    themeLink.href = "light.css";
+                    currentPreviewTheme = "light";
+                    btn.innerText = "Toggle Preview View: Light";
+                } else {
+                    themeLink.href = "dark.css";
+                    currentPreviewTheme = "dark";
+                    btn.innerText = "Toggle Preview View: Dark";
+                }
+            }
+
+            function addBlock(type, content = "", media = "", alt = "") {
+                const id = Date.now() + Math.random();
+                blocks.push({ id, type, v1: content, v2: media, v3: alt });
+                renderEditor();
+            }
+
+            function removeBlock(id) {
+                blocks = blocks.filter((b) => b.id !== id);
+                renderEditor();
+            }
+
+            // Fixed updating key bug
+            function update(id, field, val) {
+                const b = blocks.find((x) => x.id === id);
+                if (b) b[field] = val;
+                render();
+            }
+
+            async function uploadImage(inputFieldId) {
+                const password = document.getElementById("editor-key").value;
+                if (!password) { alert("Enter Editor Password first!"); return; }
+
+                const fileInput = document.createElement("input");
+                fileInput.type = "file";
+                fileInput.accept = "image/*";
+
+                fileInput.onchange = async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+
+                    const sbAdmin = supabase.createClient(SUB_URL, ANON_KEY, {
+                        global: { headers: { "x-editor-key": password } }
+                    });
+
+                    const fileName = `${Date.now()}-${file.name.replace(/\s/g, "_")}`;
+                    const { data, error } = await sbAdmin.storage.from("blog-assets").upload(fileName, file);
+
+                    if (error) {
+                        alert("Upload failed: " + error.message);
+                    } else {
+                        const publicUrl = `${SUB_URL}/storage/v1/object/public/blog-assets/${fileName}`;
+                        const input = document.getElementById(inputFieldId);
+                        input.value = publicUrl;
+
+                        const parts = inputFieldId.split("-");
+                        const blockId = parts[parts.length - 1];
+                        if (!isNaN(blockId)) update(parseFloat(blockId), "v2", publicUrl);
+                        render();
+                    }
+                };
+                fileInput.click();
+            }
+
+            function renderEditor() {
+                const container = document.getElementById("blocks-container");
+                container.innerHTML = "";
+
+                blocks.forEach((b, index) => {
+                    const div = document.createElement("div");
+                    div.className = "block-item";
+                    div.setAttribute("draggable", true);
+                    div.dataset.index = index;
+
+                    div.addEventListener("dragstart", (e) => {
+                        e.target.classList.add("dragging");
+                        e.dataTransfer.setData("text/plain", index);
+                    });
+                    div.addEventListener("dragend", (e) => e.target.classList.remove("dragging"));
+                    div.addEventListener("dragover", (e) => e.preventDefault());
+                    div.addEventListener("drop", (e) => {
+                        e.preventDefault();
+                        const draggedIndex = parseInt(e.dataTransfer.getData("text/plain"));
+                        const targetIndex = index;
+                        if (draggedIndex !== targetIndex) {
+                            const [movedItem] = blocks.splice(draggedIndex, 1);
+                            blocks.splice(targetIndex, 0, movedItem);
+                            renderEditor();
+                        }
+                    });
+
+                    let inner = `<button class="remove-btn" onclick="removeBlock(${b.id})"><span class="material-symbols-outlined"> delete </span></button>`;
+
+                    if (b.type === "p") {
+                        inner += `<label>Text Paragraph</label><textarea rows="4" oninput="update(${b.id}, 'v1', this.value)">${b.v1}</textarea>`;
+                    } else if (b.type === "h3") {
+                        inner += `<label>Sub-heading</label><input type="text" value="${b.v1}" oninput="update(${b.id}, 'v1', this.value)">`;
+                    } else if (b.type === "ul") {
+                        inner += `<label>Unordered List (One item per line)</label><textarea rows="4" placeholder="Item 1\nItem 2" oninput="update(${b.id}, 'v1', this.value)">${b.v1}</textarea>`;
+                    } else if (b.type === "html") {
+                        inner += `<label>Raw HTML Block</label><textarea rows="6" style="font-family: monospace;" placeholder="<div>\n  <h1>Custom HTML</h1>\n</div>" oninput="update(${b.id}, 'v1', this.value)">${b.v1}</textarea>`;
+                    } else if (b.type === "thought") {
+                        inner += `
+                            <label>Row Text</label><textarea oninput="update(${b.id}, 'v1', this.value)">${b.v1}</textarea>
+                            <label style="margin-top:8px;">Image Path</label>
+                            <div class="input-with-btn">
+                                <input type="text" id="img-${b.id}" value="${b.v2}" oninput="update(${b.id}, 'v2', this.value)">
+                                <button onclick="uploadImage('img-${b.id}')"><span class="material-symbols-outlined" style="font-size:18px;">upload</span></button>
+                            </div>
+                            <label style="margin-top:8px;">Image Alt</label><input type="text" value="${b.v3}" oninput="update(${b.id}, 'v3', this.value)">
+                        `;
+                    }
+                    div.innerHTML = inner;
+                    container.appendChild(div);
+                });
+                render();
+            }
+
+            function render() {
+                const target = document.getElementById("thought-content");
+                const title = document.getElementById("title").value || "Post Title";
+                const date = document.getElementById("date").value || "Publication Date";
+
+                let html = `<h1>${title}</h1>\n<p><em>${date}</em></p>\n`;
+
+                blocks.forEach((b) => {
+                    if (b.type === "p" && b.v1) {
+                        html += `<p>${b.v1.replace(/\n/g, "<br>")}</p>\n`;
+                    } else if (b.type === "h3" && b.v1) {
+                        html += `<h3>${b.v1}</h3>\n`;
+                    } else if (b.type === "html" && b.v1) {
+                        html += `${b.v1}\n`;
+                    } else if (b.type === "ul" && b.v1) {
+                        const items = b.v1.split('\n').filter(i => i.trim() !== "");
+                        html += `<ul>\n${items.map(i => `  <li>${i}</li>`).join('\n')}\n</ul>\n`;
+                    } else if (b.type === "thought") {
+                        html += `
+                            <div class="thought-row">
+                                <div class="thought-text"><p>${b.v1.replace(/\n/g, "<br>")}</p></div>
+                                <div class="thought-media"><img src="${b.v2}" alt="${b.v3}" /></div>
+                            </div>\n`;
+                    }
+                });
+                target.innerHTML = html;
+                return html;
+            }
+
+            async function publishToSupabase() {
+                const password = document.getElementById("editor-key").value;
+                const tag = document.getElementById("article-tag").value;
+                const btn = document.getElementById("publish-btn");
+
+                if (!password || !tag) { alert("Key and Tag required."); return; }
+
+                const sbAdmin = supabase.createClient(SUB_URL, ANON_KEY, {
+                    global: { headers: { "x-editor-key": password } }
+                });
+
+                btn.innerText = "SAVING...";
+                btn.disabled = true;
+
+                const { error } = await sbAdmin.from("blogs").upsert(
+                    {
+                        tag: tag,
+                        title: document.getElementById("title").value,
+                        description: document.getElementById("short-desc").value,
+                        date: document.getElementById("date").value,
+                        thumbnail_url: document.getElementById("thumb-url").value,
+                        content: render(),
+                        raw_json: blocks 
+                    },
+                    { onConflict: "tag" }
+                );
+
+                if (error) alert("Error: " + error.message);
+                else alert("Article successfully synced!");
+
+                btn.innerText = "SAVE TO DATABASE";
+                btn.disabled = false;
+            }
+
+            window.onload = async () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const editTag = urlParams.get("edit");
+
+                if (editTag) {
+                    const { data } = await sbPublic.from("blogs").select("*").eq("tag", editTag).single();
+                    if (data) {
+                        document.getElementById("article-tag").value = data.tag;
+                        document.getElementById("title").value = data.title;
+                        document.getElementById("date").value = data.date;
+                        document.getElementById("thumb-url").value = data.thumbnail_url;
+                        document.getElementById("short-desc").value = data.description;
+                        
+                        if (data.raw_json && Array.isArray(data.raw_json)) {
+                            blocks = data.raw_json;
+                            renderEditor();
+                        } else {
+                            blocks = [];
+                            addBlock("p", data.content);
+                        }
+                    }
+                } else {
+                    addBlock("p");
+                }
+            };
+        </script>
+    </body>
+</html>

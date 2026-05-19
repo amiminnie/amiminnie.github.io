@@ -2,5 +2,6 @@
     "livePreviewUseDevServer": false,
     "livePreviewServerProjectPath": "/",
     "livePreviewHotReloadSupported": false,
-    "livePreviewFramework": "Custom"
+    "livePreviewFramework": "Custom",
+    "livePreviewServerURL": "http://192.168.8.130:50583/"
 }
