@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>amiminnie</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="color-scheme" content="light dark" />
+        <meta name="theme-color" content="#111111" />
+
+        <meta property="og:title" content="amiminnie" />
+        <meta property="og:description" content="my silly little site" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://amiminnie.github.io/images/heart.png" />
+        <meta property="og:url" content="https://amiminnie.github.io" />
+
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:image" content="https://amiminnie.github.io/images/heart.png" />
+
+        <link id="theme-style" rel="stylesheet" href="light.css" />
+        <link id="style" rel="stylesheet" href="style.css" />
+
+        <link rel="icon" href="images/favicon.ico" />
+        <link rel="apple-touch-icon" href="images/heart.png" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Overlock:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+            rel="stylesheet" />
+
+        <style>
+            .goog-te-banner-frame.skiptranslate {
+                display: none !important;
+            }
+            body {
+                top: 0px !important;
+            }
+            .goog-logo-link {
+                display: none !important;
+            }
+            .goog-te-gadget {
+                color: transparent !important;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="container">
+            <header>
+                <nav>
+                    <a href="index.html">about</a>
+                    <a href="gallery.html">gallery</a>
+                    <a href="articles.html">articles</a>
+                    <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere with this!">
+                        <img id="theme-icon" src="images/moon-icon.png" alt="Toggle theme" />
+                    </button>
+                </nav>
+            </header>
+
+            <main>
+                <section class="intro">
+                    <p class="prefix">where am i?</p>
+                    <h1 style="color: white">404: resource not found</h1>
+
+                    <div class="bio">
+                        <a href="index.html">go back home</a>
+                    </div>
+                    <p class="subtitle">or play this little game!</p>
+                </section>
+            </main>
+            <iframe src="games/maze.html" title="game" style="width: 80%; aspect-ratio: 4 / 3; border: none;"></iframe>
+            <p>This is a little game I made a few years ago, I hope you enjoy!</p>
+
+            <footer>
+                <p>amiminnie</p>
+            </footer>
+        </div>
+
+        <script>
+            const themeLink = document.getElementById("theme-style");
+            const toggleBtn = document.getElementById("theme-toggle");
+            const themeIcon = document.getElementById("theme-icon");
+
+            // Get the preference from the user's browser memory
+            const savedTheme = localStorage.getItem("theme");
+
+            function setTheme(mode) {
+                if (mode === "dark") {
+                    themeLink.href = "dark.css";
+                    document.documentElement.style.colorScheme = "dark";
+                    themeIcon.src = "images/sun-icon.png";
+                    themeIcon.alt = "light mode";
+                    localStorage.setItem("theme", "dark");
+                } else {
+                    themeLink.href = "light.css";
+                    document.documentElement.style.colorScheme = "light";
+                    themeIcon.src = "images/moon-icon.png";
+                    themeIcon.alt = "dark mode";
+                    localStorage.setItem("theme", "light");
+                }
+            }
+
+            // If the user has a saved preference, use it.
+            // If they are a new visitor, force the dark theme.
+            if (savedTheme) {
+                setTheme(savedTheme);
+            } else {
+                setTheme("dark");
+            }
+
+            // Handle the click event for the theme switcher button
+            toggleBtn.addEventListener("click", () => {
+                themeIcon.style.transform = "scale(0)";
+                setTimeout(() => {
+                    const current = localStorage.getItem("theme");
+                    setTheme(current === "dark" ? "light" : "dark");
+                    void themeIcon.offsetWidth;
+                    themeIcon.style.transform = "scale(1)";
+                }, 120);
+            });
+        </script>
+    </body>
+</html>
