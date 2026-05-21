@@ -10,7 +10,6 @@
     <link id="style" rel="stylesheet" href="style.css" />
     <link rel="icon" href="images/favicon.ico" />
 
-    <script src="common.js" type="module"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -23,96 +22,135 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
-    <style>
-      /* Hide admin elements by default */
-      .admin-toolbar,
-      .item-actions {
-        display: none;
-      }
+<style>
+  /* Base state: Hidden but positioned, prepared to animate */
+  .desktop-sidebar {
+    position: fixed;
+    top: 120px;
+    left: 40px;
+    width: 240px;
+    max-height: calc(100vh - 160px);
+    overflow-y: auto;
+    z-index: 10;
+    
+    /* Smooth Transition Settings */
+    opacity: 0;
+    pointer-events: none; /* Prevents clicking invisible elements */
+    transform: translateX(-15px); /* Starts slightly to the left */
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  }
 
-      .admin-toolbar {
-        justify-content: flex-end;
-        margin-bottom: 2rem;
-      }
-      .btn-add {
-        background: none;
-        border: 1px solid #333;
-        color: inherit;
-        padding: 6px 14px;
-        cursor: pointer;
-        font-family: "Overlock", sans-serif;
-        border-radius: 4px;
-        font-size: 0.85rem;
-        transition: 0.2s;
-      }
-      .btn-add:hover {
-        border-color: #4caf50;
-        color: #4caf50;
-      }
+  /* Responsive Media Query updates */
+  @media screen and (min-width: 1300px) {
+    /* Reveal state: Triggered smoothly when body gets .article-open */
+    body.article-open .desktop-sidebar {
+      opacity: 1;
+      pointer-events: auto; /* Re-enables interactions */
+      transform: translateX(0); /* Slides into its default position */
+    }
 
-      .thought-item {
-        position: relative;
-      }
+    .sidebar-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
 
-      .item-actions {
-        position: absolute;
-        top: 0;
-        right: 0;
-        gap: 12px;
-      }
-      .action-link {
-        background: none;
-        border: none;
-        font-family: "Overlock", sans-serif;
-        font-size: 0.7rem;
-        cursor: pointer;
-        letter-spacing: 1px;
-        opacity: 0.5;
-        transition: 0.2s;
-      }
-      .action-link:hover {
-        opacity: 1;
-      }
-      .edit-color {
-        color: #4caf50;
-      }
-      .delete-color {
-        color: #ff5252;
-      }
-    </style>
+    .sidebar-item a {
+      display: block;
+      padding: 0.4rem 0.75rem;
+      text-decoration: none;
+      color: inherit;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; 
+      opacity: 0.65;
+      transition: all 0.2s ease;
+      border-left: 2px solid transparent;
+    }
+
+    .sidebar-item a:hover {
+      opacity: 1;
+      background: rgba(128, 128, 128, 0.1);
+    }
+
+    /* Compact Active State Marker */
+    .sidebar-item.active-article a {
+      opacity: 1;
+      font-weight: 700;
+      background: var(--bg-dark);
+      border-left-color: var(--accent);
+    }
+  }
+</style>
   </head>
 
   <body>
+    <aside class="desktop-sidebar">
+      <ul id="sidebar-thoughts-list" class="sidebar-list">
+        </ul>
+    </aside>
+
     <div class="container">
       <header>
-        <nav>
+        <nav id="main-nav">
+          <button class="nav-back-btn" onclick="window.location.hash = ''" >
+            <span class="material-symbols-outlined">arrow_back</span>
+            <span>back</span>
+          </button>
+          
           <a href="index.html">about</a>
           <a href="gallery.html">gallery</a>
-          <a href="" class="active">articles</a>
+          <a href="articles.html" class="active">articles</a>
+
           <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere with this!">
             <img id="theme-icon" src="images/moon-icon.png" alt="Toggle theme" />
           </button>
         </nav>
       </header>
 
-      <main>
-        <section class="intro">
-          <p class="prefix">some</p>
-          <h1>articles</h1>
-          <p class="subtitle">
-            has been moved to the cloud recently, no idea what kind of ungodly horrors the process has created
-          </p>
-        </section>
+      <main class="view-slider-window">
+        <div id="view-track" class="view-slider-track">
+          
+          <div id="list-view">
+            <section class="intro">
+              <p class="prefix">some</p>
+              <h1>articles</h1>
+              <p class="subtitle">
+                has been moved to the cloud recently, no idea what kind of ungodly horrors the process has created
+              </p>
+            </section>
 
-        <section class="thoughts">
-          <div class="admin-toolbar" id="admin-toolbar">
-            <button class="btn-add" onclick="window.location.href='builder.html'">+ write new post</button>
+            <section class="thoughts">
+              <div class="admin-toolbar" id="admin-toolbar">
+                <button class="btn-add" onclick="window.location.href='builder.html'">+ write new post</button>
+              </div>
+
+              <ul id="thoughts-list" class="thoughts-list">
+                <li>loading...</li>
+              </ul>
+            </section>
           </div>
 
-          <ul id="thoughts-list" class="thoughts-list">
-            <li>loading...</li>
-          </ul>
-        </section>
+          <div id="read-view">
+            <article id="thought-content" class="thought-content">
+            </article>
+
+            <section class="social-list" style="border: none">
+              <a class="social-item" href="index.html#guestbook">
+                <img src="images/comment.png" alt="gallery" />
+                <div class="social-text">
+                  <h2>leave a comment &gt;&gt;</h2>
+                  <p>i'd appreceate to read what you have to say about this!</p>
+                </div>
+              </a>
+            </section>
+          </div>
+
+        </div>
       </main>
 
       <footer>
@@ -166,34 +204,37 @@
       const SUB_KEY = "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ";
       const supabaseClient = supabase.createClient(SUB_URL, SUB_KEY);
 
-      // Check if user is in admin mode (?admin=true)
       const urlParams = new URLSearchParams(window.location.search);
       const isAdmin = urlParams.get("admin") === "true";
 
+      let fetchedArticlesCache = [];
+
       async function loadThoughts() {
         const list = document.getElementById("thoughts-list");
+        const sidebarList = document.getElementById("sidebar-thoughts-list");
         const toolbar = document.getElementById("admin-toolbar");
 
-        // Show toolbar if admin query parameter is true
         if (isAdmin) {
           toolbar.style.display = "flex";
         }
 
         try {
-          const { data: items, error } = await supabaseClient
-            .from("blogs")
-            .select("tag, title, description, date")
-            .order("id", { ascending: false });
+          if (fetchedArticlesCache.length === 0) {
+            const { data: items, error } = await supabaseClient
+              .from("blogs")
+              .select("tag, title, description, date")
+              .order("id", { ascending: false });
 
-          if (error) throw error;
+            if (error) throw error;
+            fetchedArticlesCache = items;
+          }
 
+          // 1. Core full-sized listing component
           list.innerHTML = "";
-
-          items.forEach((item) => {
+          fetchedArticlesCache.forEach((item) => {
             const div = document.createElement("div");
             div.className = "thought-item";
 
-            // Generate Admin buttons dynamically if isAdmin is true
             const adminButtons = isAdmin
               ? `
               <div class="item-actions" style="display: flex;">
@@ -202,9 +243,8 @@
               </div>`
               : "";
 
-            // Using amiminnie's specific HTML structure and CSS classes
             div.innerHTML = `
-              <a class="thought-link" href="read.html#${item.tag}">
+              <a class="thought-link" href="#${item.tag}">
                   <h3 class="gallery-title">${item.title}</h3>
                   <p class="gallery-description"><i>${item.description}</i></p>
                   <p class="gallery-date"><em>${item.date}</em></p>
@@ -213,9 +253,105 @@
             `;
             list.appendChild(div);
           });
+
+          // 2. Ultra-compact navigation layout listing (Title only)
+          sidebarList.innerHTML = "";
+          fetchedArticlesCache.forEach((item) => {
+            const li = document.createElement("li");
+            li.className = "sidebar-item";
+            li.setAttribute("data-tag", item.tag);
+            li.innerHTML = `
+              <a href="#${item.tag}" title="${item.title}">
+                ${item.title}
+              </a>
+            `;
+            sidebarList.appendChild(li);
+          });
+
+          highlightActiveSidebar();
+
         } catch (err) {
           list.innerHTML = `<li>Could not load articles.</li>`;
+          sidebarList.innerHTML = `<li>Could not load layout.</li>`;
           console.error(err);
+        }
+      }
+
+      function highlightActiveSidebar() {
+        const currentTag = window.location.hash.substring(1);
+        const sidebarItems = document.querySelectorAll(".sidebar-item");
+        
+        sidebarItems.forEach((item) => {
+          if (item.getAttribute("data-tag") === currentTag) {
+            item.classList.add("active-article");
+          } else {
+            item.classList.remove("active-article");
+          }
+        });
+      }
+
+      async function loadThought(tag) {
+        const container = document.getElementById("thought-content");
+        const track = document.getElementById("view-track");
+        
+        try {
+          const { data: post, error } = await supabaseClient
+            .from('blogs')
+            .select('title, content')
+            .eq('tag', tag)
+            .single();
+
+          if (error || !post) {
+            container.innerHTML = "<p>i havent thought of that yet</p>";
+            track.classList.add("show-article");
+            return;
+          }
+
+          container.innerHTML = post.content;
+
+          const scripts = container.querySelectorAll("script");
+          scripts.forEach((oldScript) => {
+            const newScript = document.createElement("script");
+            Array.from(oldScript.attributes).forEach((attr) => {
+              newScript.setAttribute(attr.name, attr.value);
+            });
+            newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+            oldScript.parentNode.replaceChild(newScript, oldScript);
+          });
+          
+          document.title = `amiminnie - ${post.title}`;
+          
+          track.classList.add("show-article");
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        } catch (err) {
+          container.innerHTML = "<p>i think i got distracted</p>";
+          track.classList.add("show-article");
+          console.error(err);
+        }
+      }
+
+      function handleRouting() {
+        const track = document.getElementById("view-track");
+        const container = document.getElementById("thought-content");
+        const mainNav = document.getElementById("main-nav");
+        const tag = window.location.hash.substring(1);
+
+        highlightActiveSidebar();
+
+        if (tag) {
+          // Inside an active article: toggle layout state variables
+          document.body.classList.add("article-open");
+          mainNav.classList.add("article-active");
+          container.innerHTML = "<p>Loading thought...</p>";
+          loadThought(tag);
+        } else {
+          // Returning back to home index overview: clear layout toggles instantly
+          document.body.classList.remove("article-open");
+          mainNav.classList.remove("article-active");
+          track.classList.remove("show-article");
+          container.innerHTML = "";
+          document.title = "amiminnie - articles";
         }
       }
 
@@ -234,7 +370,8 @@
             alert("Delete failed: " + error.message);
           } else {
             alert("Article removed.");
-            loadThoughts();
+            fetchedArticlesCache = []; 
+            loadThoughts().then(() => handleRouting());
           }
         }
       }
@@ -243,7 +380,10 @@
         window.location.href = `builder.html?edit=${tag}`;
       }
 
-      loadThoughts();
+      window.addEventListener("hashchange", handleRouting);
+      
+      // Initialize list rendering pipelines
+      loadThoughts().then(() => handleRouting());
     </script>
   </body>
 </html>

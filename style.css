@@ -64,6 +64,28 @@ body {
   }
 }
 
+.view-slider-window {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+.view-slider-track {
+  display: flex;
+  width: 200%;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  transform: translateX(0);
+}
+
+.view-slider-track.show-article {
+  transform: translateX(-50%);
+}
+
+#list-view, 
+#read-view {
+  width: 50%;
+  box-sizing: border-box;
+}
+
 /* ==========================================================================
    3. NAVIGATION & HEADER
    ========================================================================== */
@@ -77,6 +99,7 @@ nav {
   display: flex;
   gap: 1.5rem;
   font-size: 0.9rem;
+  align-items: center;
 }
 
 nav a {
@@ -100,6 +123,39 @@ nav .active-temp {
   opacity: 0;
   transform: translateX(-50px);
   animation: activeFade 0.5s ease forwards;
+}
+
+/* Back button safely merged into Nav ecosystem */
+.nav-back-btn {
+  display: none; 
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: inherit;
+  font-family: "Overlock", sans-serif;
+  font-size: inherit;
+  cursor: pointer;
+  padding: 0;
+  
+  opacity: 0;
+  width: 0; 
+  white-space: nowrap;
+  overflow: hidden;
+  transition: 
+    width 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+    opacity 0.3s ease,
+    display 0.4s allow-discrete;
+}
+
+.nav-back-btn .material-symbols-outlined {
+  font-size: 1.15rem;
+}
+
+nav.article-active .nav-back-btn {
+  display: inline-flex;
+  opacity: 1;
+  width: 50px; 
 }
 
 .theme-btn {
@@ -206,7 +262,6 @@ nav .active-temp {
   width: 100%;
   margin-bottom: 1rem;
   padding: 0.5rem;
-  /* Original border/bg values kept below */
   border: 1px solid var(--border);
   border-radius: 6px;
   background: var(--bg);
@@ -310,7 +365,7 @@ nav .active-temp {
   left: -10%;
   width: 120% !important; 
   height: 120%;
-  pointer-events: none; 
+  pointer-events: none;  
   z-index: 2;
 }
 
@@ -387,12 +442,12 @@ nav .active-temp {
 
 .guestbook-entry strong {
   color: var(--accent);
-  font-size: 1.2re; /* matches original typo */
+  font-size: 1.2rem; 
 }
 
 .guestbook-entry a {
   color: var(--accent);
-  font-size: 1.2re;
+  font-size: 1.2rem;
   text-decoration: none;
 }
 
@@ -408,6 +463,67 @@ nav .active-temp {
 /* ==========================================================================
    8. THOUGHTS & ARTICLES
    ========================================================================== */
+
+.admin-toolbar,
+.item-actions {
+  display: none;
+}
+
+.admin-toolbar {
+  justify-content: flex-end;
+  margin-bottom: 2rem;
+}
+
+.btn-add {
+  background: none;
+  border: 1px solid #333;
+  color: inherit;
+  padding: 6px 14px;
+  cursor: pointer;
+  font-family: "Overlock", sans-serif;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  transition: 0.2s;
+}
+
+.btn-add:hover {
+  border-color: #4caf50;
+  color: #4caf50;
+}
+
+.thought-item {
+  position: relative;
+}
+
+.item-actions {
+  position: absolute;
+  top: 0;
+  right: 0;
+  gap: 12px;
+}
+
+.action-link {
+  background: none;
+  border: none;
+  font-family: "Overlock", sans-serif;
+  font-size: 0.7rem;
+  cursor: pointer;
+  letter-spacing: 1px;
+  opacity: 0.5;
+  transition: 0.2s;
+}
+
+.action-link:hover {
+  opacity: 1;
+}
+
+.edit-color {
+  color: #4caf50;
+}
+
+.delete-color {
+  color: #ff5252;
+}
 
 .thought-link {
   display: block;

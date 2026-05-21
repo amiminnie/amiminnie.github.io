@@ -17,6 +17,30 @@
     <link
       href="https://fonts.googleapis.com/css2?family=Overlock:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
       rel="stylesheet" />
+
+    <style>
+      @keyframes printFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(5px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .thought-content > * {
+        opacity: 0;
+        animation: printFadeIn 0.5s ease-out forwards;
+      }
+
+      .thought-content > *:nth-child(1) { animation-delay: 0.05s; }
+      .thought-content > *:nth-child(2) { animation-delay: 0.20s; }
+      .thought-content > *:nth-child(3) { animation-delay: 0.35s; }
+      .thought-content > *:nth-child(4) { animation-delay: 0.50s; }
+      .thought-content > *:nth-child(n+5) { animation-delay: 0.65s; }
+    </style>
   </head>
 
   <body>
@@ -34,7 +58,6 @@
 
       <main>
         <article id="thought-content" class="thought-content">
-          <p>Loading thought...</p>
         </article>
       </main>
 
@@ -109,7 +132,6 @@
         }
 
         try {
-          // Fetch from Supabase 'blogs' table where 'tag' matches URL hash
           const { data: post, error } = await supabaseClient
             .from('blogs')
             .select('title, content')
@@ -121,35 +143,25 @@
             return;
           }
 
-          // Inject content from DB
+          container.classList.remove("thought-content");
           container.innerHTML = post.content;
-
-          // Find and execute scripts within the injected HTML
+          void container.offsetWidth;
+          container.classList.add("thought-content");
           const scripts = container.querySelectorAll("script");
           scripts.forEach((oldScript) => {
             const newScript = document.createElement("script");
-
-            // Copy attributes
             Array.from(oldScript.attributes).forEach((attr) => {
               newScript.setAttribute(attr.name, attr.value);
             });
-
-            // Copy script internal text content
             newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-
-            // Execute by replacing element
             oldScript.parentNode.replaceChild(newScript, oldScript);
           });
-
-          // Update page title dynamically
           document.title = `amiminnie - ${post.title}`;
         } catch (err) {
           container.innerHTML = "<p>i think i got distracted</p>";
           console.error(err);
         }
       }
-
-      // Listen for hash changes so the page updates without refreshing
       window.addEventListener("hashchange", loadThought);
       loadThought();
     </script>
