@@ -599,6 +599,63 @@ nav.article-active .nav-back-btn {
   display: block;
   object-fit: cover;
 }
+  .desktop-sidebar {
+    position: fixed;
+    top: 120px;
+    left: 40px;
+    width: 240px;
+    max-height: calc(100vh - 160px);
+    overflow-y: auto;
+    z-index: 10;
+    
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-15px); 
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  }
+
+  @media screen and (min-width: 1300px) {
+    body.article-open .desktop-sidebar {
+      opacity: 1;
+      pointer-events: auto; 
+      transform: translateX(0);
+    }
+
+    .sidebar-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .sidebar-item a {
+      display: block;
+      padding: 0.4rem 0.75rem;
+      text-decoration: none;
+      color: inherit;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; 
+      opacity: 0.65;
+      transition: all 0.2s ease;
+      border-left: 2px solid transparent;
+    }
+
+    .sidebar-item a:hover {
+      opacity: 1;
+      background: rgba(128, 128, 128, 0.1);
+    }
+
+    .sidebar-item.active-article a {
+      opacity: 1;
+      font-weight: 700;
+      background: var(--bg-dark);
+      border-left-color: var(--accent);
+    }
+  }
 
 /* ==========================================================================
    9. COMICS & CONVERSATIONS
