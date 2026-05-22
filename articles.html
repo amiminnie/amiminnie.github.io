@@ -21,13 +21,12 @@
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-
   </head>
 
   <body>
     <aside class="desktop-sidebar">
       <ul id="sidebar-thoughts-list" class="sidebar-list">
-        </ul>
+      </ul>
     </aside>
 
     <div class="container">
@@ -41,6 +40,10 @@
           <a href="index.html">about</a>
           <a href="gallery.html">gallery</a>
           <a href="articles.html" class="active">articles</a>
+
+          <button id="admin-login-btn" class="theme-btn" onclick="toggleAdminAuth()" style="padding: 0 10px; width: auto; font-family: inherit;">
+            login
+          </button>
 
           <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere with this!">
             <img id="theme-icon" src="images/moon-icon.png" alt="Toggle theme" />
@@ -61,8 +64,9 @@
             </section>
 
             <section class="thoughts">
-              <div class="admin-toolbar" id="admin-toolbar">
-                <button class="btn-add" onclick="window.location.href='builder.html'">+ write new post</button>
+              <div class="admin-toolbar" id="admin-toolbar" style="display:none;">
+                <button class="btn-add" onclick="window.location.href='builder.html'">+ write</button>
+                <button class="btn-add" onclick="logoutAdmin()" style="background:#cc241d; margin-left: 10px;">logout</button>
               </div>
 
               <ul id="thoughts-list" class="thoughts-list">
@@ -140,32 +144,114 @@
       const SUB_KEY = "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ";
       const supabaseClient = supabase.createClient(SUB_URL, SUB_KEY);
 
-      const urlParams = new URLSearchParams(window.location.search);
-      const isAdmin = urlParams.get("admin") === "true";
+      // Setup state derived strictly from local credential validation presence
+      let isAdmin = !!localStorage.getItem("admin_password");
 
       let fetchedArticlesCache = [];
+
+      function updateAdminUI() {
+        const toolbar = document.getElementById("admin-toolbar");
+        const loginBtn = document.getElementById("admin-login-btn");
+        
+        if (isAdmin) {
+          toolbar.style.display = "flex";
+          loginBtn.innerText = "admin";
+        } else {
+          toolbar.style.display = "none";
+          loginBtn.innerText = "login";
+        }
+      }
+
+      function createAuthClient(password) {
+        return supabase.createClient(SUB_URL, SUB_KEY, {
+          global: { headers: { "x-editor-key": password } }
+        });
+      }
+
+      function getAuthClient() {
+        const savedPassword = localStorage.getItem("admin_password");
+        if (!savedPassword) return supabaseClient;
+        return createAuthClient(savedPassword);
+      }
+
+      async function toggleAdminAuth() {
+        if (localStorage.getItem("admin_password")) {
+          alert("You are already authenticated with a saved password!");
+          return;
+        }
+        
+        const password = prompt("Enter Editor/Database Key password:");
+        if (!password) return;
+
+        try {
+          const testClient = createAuthClient(password);
+          
+          // 1. Fetch a target public entry tag using the standard client
+          const { data: sample, error: sampleError } = await supabaseClient
+            .from("blogs")
+            .select("tag, public")
+            .limit(1)
+            .maybeSingle();
+          
+          if (sampleError || !sample) {
+            alert("No available entries found to test write configurations against.");
+            return;
+          }
+
+          // 2. Run the mock update and return the resulting data array directly
+          const { data, error } = await testClient
+            .from("blogs")
+            .update({ public: sample.public }) 
+            .eq("tag", sample.tag)
+            .select("tag"); // Returns updated row array if permitted, or empty array [] if blocked by RLS
+
+          // If a database error occurred OR if RLS dropped the update (returning an empty array)
+          if (error || !data || data.length === 0) {
+            throw new Error("Write clearance missing or invalid key.");
+          }
+
+          // Write permissions verified successfully!
+          localStorage.setItem("admin_password", password);
+          isAdmin = true;
+          updateAdminUI();
+          fetchedArticlesCache = []; 
+          loadThoughts();
+          alert("Authenticated successfully!");
+
+        } catch (err) {
+          alert("Authentication failed! Write clearance missing or invalid key.");
+          console.error("Authorization check caught error:", err);
+        }
+      }
+
+      function logoutAdmin() {
+        localStorage.removeItem("admin_password");
+        isAdmin = false;
+        updateAdminUI();
+        fetchedArticlesCache = [];
+        loadThoughts().then(() => handleRouting());
+      }
 
       async function loadThoughts() {
         const list = document.getElementById("thoughts-list");
         const sidebarList = document.getElementById("sidebar-thoughts-list");
-        const toolbar = document.getElementById("admin-toolbar");
-
-        if (isAdmin) {
-          toolbar.style.display = "flex";
-        }
+        updateAdminUI();
 
         try {
           if (fetchedArticlesCache.length === 0) {
-            const { data: items, error } = await supabaseClient
-              .from("blogs")
-              .select("tag, title, description, date")
-              .order("id", { ascending: false });
+            let query = supabaseClient.from("blogs").select("tag, title, description, date, public");
+            
+            // Database-level enforcement check fallback
+            if (!isAdmin) {
+              query = query.eq("public", true);
+            }
+
+            const { data: items, error } = await query.order("id", { ascending: false });
 
             if (error) throw error;
             fetchedArticlesCache = items;
           }
 
-          // 1. Core full-sized listing component
           list.innerHTML = "";
           fetchedArticlesCache.forEach((item) => {
             const div = document.createElement("div");
@@ -173,7 +259,10 @@
 
             const adminButtons = isAdmin
               ? `
-              <div class="item-actions" style="display: flex;">
+              <div class="item-actions" style="display: flex; gap: 8px; align-items: center;">
+                <button class="action-link" style="color: ${item.public ? '#b8bb26' : '#fb4934'}" onclick="togglePublicVisibility('${item.tag}', ${item.public})" title="Toggle Visibility Status">
+                  <span class="material-symbols-outlined">${item.public ? 'visibility' : 'visibility_off'}</span>
+                </button>
                 <button class="action-link edit-color" onclick="editArticle('${item.tag}')"><span class="material-symbols-outlined"> edit </span></button>
                 <button class="action-link delete-color" onclick="deleteArticle('${item.tag}')"><span class="material-symbols-outlined"> delete </span></button>
               </div>`
@@ -181,7 +270,7 @@
 
             div.innerHTML = `
               <a class="thought-link" href="#${item.tag}">
-                  <h3 class="gallery-title">${item.title}</h3>
+                  <h3 class="gallery-title">${item.title} ${!item.public && isAdmin ? '<span style="font-size:11px; background:#fb4934; color:#fff; padding:2px 6px; border-radius:4px; vertical-align:middle;margin-left:5px;">Draft</span>' : ''}</h3>
                   <p class="gallery-description"><i>${item.description}</i></p>
                   <p class="gallery-date"><em>${item.date}</em></p>
               </a>
@@ -190,7 +279,6 @@
             list.appendChild(div);
           });
 
-          // 2. Ultra-compact navigation layout listing (Title only)
           sidebarList.innerHTML = "";
           fetchedArticlesCache.forEach((item) => {
             const li = document.createElement("li");
@@ -198,7 +286,7 @@
             li.setAttribute("data-tag", item.tag);
             li.innerHTML = `
               <a href="#${item.tag}" title="${item.title}">
-                ${item.title}
+                ${item.title} ${!item.public && isAdmin ? 'admin' : ''}
               </a>
             `;
             sidebarList.appendChild(li);
@@ -231,14 +319,18 @@
         const track = document.getElementById("view-track");
         
         try {
-          const { data: post, error } = await supabaseClient
-            .from('blogs')
-            .select('title, content')
-            .eq('tag', tag)
-            .single();
+          let query = supabaseClient.from('blogs').select('title, content, public').eq('tag', tag);
+          const { data: post, error } = await query.single();
 
           if (error || !post) {
             container.innerHTML = "<p>i havent thought of that yet</p>";
+            track.classList.add("show-article");
+            return;
+          }
+
+          // Fallback visibility protection gate context
+          if (!post.public && !isAdmin) {
+            container.innerHTML = "<p>This content is currently restricted or hidden by the author.</p>";
             track.classList.add("show-article");
             return;
           }
@@ -276,13 +368,11 @@
         highlightActiveSidebar();
 
         if (tag) {
-          // Inside an active article: toggle layout state variables
           document.body.classList.add("article-open");
           mainNav.classList.add("article-active");
           container.innerHTML = "<p>Loading thought...</p>";
           loadThought(tag);
         } else {
-          // Returning back to home index overview: clear layout toggles instantly
           document.body.classList.remove("article-open");
           mainNav.classList.remove("article-active");
           track.classList.remove("show-article");
@@ -291,15 +381,32 @@
         }
       }
 
+      async function togglePublicVisibility(tag, currentStatus) {
+        const sbAuth = getAuthClient();
+        const nextStatus = !currentStatus;
+
+        const { error } = await sbAuth
+          .from("blogs")
+          .update({ public: nextStatus })
+          .eq("tag", tag);
+
+        if (error) {
+          alert("Visibility alteration failed: " + error.message);
+        } else {
+          fetchedArticlesCache = []; 
+          loadThoughts().then(() => handleRouting());
+        }
+      }
+
       async function deleteArticle(tag) {
-        const password = prompt("Enter Editor Password to delete this post:");
-        if (!password) return;
+        let password = localStorage.getItem("admin_password");
+        if (!password) {
+          password = prompt("Enter Editor Password to delete this post:");
+          if (!password) return;
+        }
 
         if (confirm(`Are you sure you want to permanently delete "${tag}"?`)) {
-          const sbAuth = supabase.createClient(SUB_URL, SUB_KEY, {
-            global: { headers: { "x-editor-key": password } }
-          });
-
+          const sbAuth = createAuthClient(password);
           const { error } = await sbAuth.from("blogs").delete().eq("tag", tag);
 
           if (error) {
@@ -317,8 +424,8 @@
       }
 
       window.addEventListener("hashchange", handleRouting);
-      
-      // Initialize list rendering pipelines
+
+      // Execute on document ready
       loadThoughts().then(() => handleRouting());
     </script>
   </body>
