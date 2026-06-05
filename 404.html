@@ -24,135 +24,12 @@
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Overlock:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet" />
-
-        <style>
-            /* --- Nonogram Styles --- */
-            .nonogram-container {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin: 10px auto;
-                font-family: 'Overlock', sans-serif;
-                user-select: none;
-                max-width: 100%;
-            }
-
-            .nonogram-wrapper {
-                display: grid;
-                grid-template-columns: auto 1fr;
-                background-color: #0000;
-            }
-
-            .col-hints {
-                grid-column: 2;
-                grid-row: 1;
-                display: grid;
-                grid-template-columns: repeat(10, 30px);
-                gap: 1px;
-                align-items: end;
-            }
-
-            .hint-col {
-                display: flex;
-                flex-direction: column;
-                justify-content: flex-end;
-                align-items: center;
-                font-size: 11px;
-                padding-bottom: 5px;
-                padding-top: 20px;
-                line-height: 1.2;
-                box-sizing: border-box;
-                background-color: transparent;
-                transition: background-color 0.2s, font-weight 0.2s;
-            }
-
-            .row-hints {
-                grid-column: 1;
-                grid-row: 2;
-                display: grid;
-                grid-template-rows: repeat(10, 30px);
-                gap: 1px;
-                align-items: center;
-                padding-right: 8px;
-            }
-
-            .hint-row {
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-                gap: 10px;
-                font-size: 11px;
-                white-space: nowrap;
-                height: 30px;
-                padding-right: 10px;
-                padding-left: 20px;
-                box-sizing: border-box;
-                margin-right: 0;
-                background-color: transparent;
-                transform: translateX(7px)
-            }
-
-            /* Switches color only when the line is correct */
-            .hint-row.completed {
-                background: linear-gradient(-90deg, var(--bubble), #0000); 
-            }
-            .hint-col.completed {
-                background: linear-gradient(0deg, var(--bubble), #0000); 
-            }
-
-            .grid {
-                grid-column: 2;
-                grid-row: 2;
-                display: grid;
-                grid-template-columns: repeat(10, 30px);
-                grid-template-rows: repeat(10, 30px);
-                gap: 1px;
-                background-color: transparent; 
-                border: none;
-            }
-
-            .cell {
-                background-color: var(--card-hover);
-                cursor: pointer;
-                position: relative;
-                box-sizing: border-box;
-                border-bottom: solid 4px #0001;
-                transition: transform 0.1s ease, background-color 0.2s ease;
-            }
-
-            :root {
-                --cell-crossed: #ccc;
-            }
-            html[style*="color-scheme: dark"] {
-                --cell-crossed: #444;
-            }
-
-            .cell.filled {
-                background-color: var(--accent, #ff4a5a);
-                border-bottom: solid 2px #0002;
-                transform:  translateY(1px);
-            }
-
-            .cell.crossed::before, .cell.crossed::after {
-                content: '';
-                position: absolute;
-                width: 60%;
-                height: 2px;
-                background-color: #999;
-                top: 50%;
-                left: 20%;
-            }
-            .cell.crossed::before { transform: rotate(45deg); }
-            .cell.crossed::after { transform: rotate(-45deg); }
-
-            #win-message {
-                margin-top: 15px;
-                color: var(--accent-hover);
-                font-weight: bold;
-                visibility: hidden;
-            }
-        </style>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Overlock:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+            rel="stylesheet" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     </head>
 
     <body>
@@ -171,10 +48,12 @@
             <main>
                 <section class="intro">
                     <p class="prefix">where am i?</p>
-                    <h1 style="color: var(--text-main)">404: resource not found</h1>
+                    <h1 style="color: var(--text-main)">
+                        <span class="material-symbols-outlined"> attach_file_off </span> 404: resource not found
+                    </h1>
 
                     <div class="bio">
-                        <a href="index.html">go back home</a>
+                        <a href="index.html"> <span class="material-symbols-outlined" style="vertical-align: -5px; font-size: 18px;"> home </span> go back home</a>
                     </div>
                     <p class="subtitle">or play this little game!</p>
                 </section>
@@ -187,8 +66,11 @@
                     <div id="row-hints" class="row-hints"></div>
                     <div id="grid" class="grid"></div>
                 </div>
-                <p style="font-size: 12px; opacity: 0.6; margin-top: 10px; margin-bottom: 5px;">Left-click to draw | Right-click to cross</p>
-                <div id="win-message">Thanks for playing my little nonogram!</div>
+                <p style="font-size: 12px; opacity: 0.6; margin-top: 10px; margin-bottom: 5px">
+                    <span class="material-symbols-outlined" style="vertical-align: -5px"> left_click </span> Draw |
+                    <span class="material-symbols-outlined" style="vertical-align: -5px"> right_click </span> Cross
+                </p>
+                <div id="win-message">Thanks for playing!</div>
             </div>
 
             <footer>
@@ -234,22 +116,24 @@
                     themeIcon.style.transform = "scale(1)";
                 }, 120);
             });
-            
+
             /* --- Dynamic Atlas Nonogram Logic --- */
             let solution = []; // Extracted dynamically from atlas image matrix
-            let currentMode = 'fill'; 
+            let currentMode = "fill";
             let isDrawing = false;
-            let drawType = null; 
-            const userGrid = Array(10).fill(null).map(() => Array(10).fill(0));
+            let drawType = null;
+            const userGrid = Array(10)
+                .fill(null)
+                .map(() => Array(10).fill(0));
 
             // Setup image loading pipeline
             const atlasImage = new Image();
-            atlasImage.src = 'games/nonograms.png';
+            atlasImage.src = "games/nonograms.png";
 
-            atlasImage.onload = function() {
+            atlasImage.onload = function () {
                 // Initialize off-screen virtual canvas to process pixel data
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
+                const canvas = document.createElement("canvas");
+                const ctx = canvas.getContext("2d");
                 canvas.width = atlasImage.width;
                 canvas.height = atlasImage.height;
                 ctx.drawImage(atlasImage, 0, 0);
@@ -264,7 +148,7 @@
                     for (let px = 0; px < colsInAtlas; px++) {
                         const gridMatrix = [];
                         const imgData = ctx.getImageData(px * puzzleSize, py * puzzleSize, puzzleSize, puzzleSize).data;
-                        
+
                         for (let r = 0; r < puzzleSize; r++) {
                             const row = [];
                             for (let c = 0; c < puzzleSize; c++) {
@@ -275,8 +159,8 @@
                                 const alpha = imgData[index + 3];
 
                                 // True (1) if pixel is mostly opaque and not pure white
-                                const isFilled = (alpha > 50 && !(rValue > 220 && gValue > 220 && bValue > 220));
-                                row.push(isFilled ? 0 :1 );
+                                const isFilled = alpha > 50 && !(rValue > 220 && gValue > 220 && bValue > 220);
+                                row.push(isFilled ? 0 : 1);
                             }
                             gridMatrix.push(row);
                         }
@@ -288,7 +172,7 @@
                 // Swap the assignment below with the commented line to make it random on load!
                 // const selectedPuzzleIndex = 0;
                 const selectedPuzzleIndex = Math.floor(Math.random() * puzzles.length);
-                
+
                 solution = puzzles[selectedPuzzleIndex];
 
                 // Fire up game compilation once matrix array is ready
@@ -297,24 +181,32 @@
 
             function generateHints() {
                 const rowHints = [];
-                for(let r=0; r<10; r++) {
-                    let hints = [], count = 0;
-                    for(let c=0; c<10; c++) {
-                        if(solution[r][c] === 1) count++;
-                        else if(count > 0) { hints.push(count); count = 0; }
+                for (let r = 0; r < 10; r++) {
+                    let hints = [],
+                        count = 0;
+                    for (let c = 0; c < 10; c++) {
+                        if (solution[r][c] === 1) count++;
+                        else if (count > 0) {
+                            hints.push(count);
+                            count = 0;
+                        }
                     }
-                    if(count > 0) hints.push(count);
+                    if (count > 0) hints.push(count);
                     rowHints.push(hints.length ? hints : [0]);
                 }
 
                 const colHints = [];
-                for(let c=0; c<10; c++) {
-                    let hints = [], count = 0;
-                    for(let r=0; r<10; r++) {
-                        if(solution[r][c] === 1) count++;
-                        else if(count > 0) { hints.push(count); count = 0; }
+                for (let c = 0; c < 10; c++) {
+                    let hints = [],
+                        count = 0;
+                    for (let r = 0; r < 10; r++) {
+                        if (solution[r][c] === 1) count++;
+                        else if (count > 0) {
+                            hints.push(count);
+                            count = 0;
+                        }
                     }
-                    if(count > 0) hints.push(count);
+                    if (count > 0) hints.push(count);
                     colHints.push(hints.length ? hints : [0]);
                 }
                 return { rowHints, colHints };
@@ -322,48 +214,48 @@
 
             function setupGame() {
                 const { rowHints, colHints } = generateHints();
-                const gridEl = document.getElementById('grid');
-                const rowEl = document.getElementById('row-hints');
-                const colEl = document.getElementById('col-hints');
+                const gridEl = document.getElementById("grid");
+                const rowEl = document.getElementById("row-hints");
+                const colEl = document.getElementById("col-hints");
 
                 // Sanitize elements
-                gridEl.innerHTML = '';
-                rowEl.innerHTML = '';
-                colEl.innerHTML = '';
+                gridEl.innerHTML = "";
+                rowEl.innerHTML = "";
+                colEl.innerHTML = "";
 
                 rowHints.forEach((hints, index) => {
-                    const div = document.createElement('div');
-                    div.className = 'hint-row';
+                    const div = document.createElement("div");
+                    div.className = "hint-row";
                     div.id = `hint-row-${index}`;
-                    div.innerHTML = hints.map(h => `<span>${h}</span>`).join('');
+                    div.innerHTML = hints.map((h) => `<span>${h}</span>`).join("");
                     rowEl.appendChild(div);
                 });
 
                 colHints.forEach((hints, index) => {
-                    const div = document.createElement('div');
-                    div.className = 'hint-col';
+                    const div = document.createElement("div");
+                    div.className = "hint-col";
                     div.id = `hint-col-${index}`;
-                    div.innerHTML = hints.map(h => `<span>${h}</span>`).join('');
+                    div.innerHTML = hints.map((h) => `<span>${h}</span>`).join("");
                     colEl.appendChild(div);
                 });
 
                 for (let r = 0; r < 10; r++) {
                     for (let c = 0; c < 10; c++) {
-                        const cell = document.createElement('div');
-                        cell.className = 'cell';
+                        const cell = document.createElement("div");
+                        cell.className = "cell";
                         cell.dataset.row = r;
                         cell.dataset.col = c;
 
-                        cell.addEventListener('contextmenu', e => e.preventDefault());
+                        cell.addEventListener("contextmenu", (e) => e.preventDefault());
 
-                        cell.addEventListener('mousedown', (e) => {
+                        cell.addEventListener("mousedown", (e) => {
                             e.preventDefault();
                             isDrawing = true;
-                            currentMode = (e.button === 2) ? 'cross' : 'fill';
+                            currentMode = e.button === 2 ? "cross" : "fill";
                             handleCellAction(cell, r, c);
                         });
 
-                        cell.addEventListener('mouseenter', () => {
+                        cell.addEventListener("mouseenter", () => {
                             if (isDrawing) handleCellAction(cell, r, c);
                         });
 
@@ -371,7 +263,7 @@
                     }
                 }
 
-                window.addEventListener('mouseup', () => {
+                window.addEventListener("mouseup", () => {
                     if (isDrawing) {
                         isDrawing = false;
                         drawType = null;
@@ -381,24 +273,24 @@
             }
 
             function handleCellAction(cell, r, c) {
-                if (currentMode === 'fill') {
-                    if (drawType === null) drawType = cell.classList.contains('filled') ? 'clear' : 'fill';
-                    if (drawType === 'fill') {
-                        cell.classList.remove('crossed');
-                        cell.classList.add('filled');
+                if (currentMode === "fill") {
+                    if (drawType === null) drawType = cell.classList.contains("filled") ? "clear" : "fill";
+                    if (drawType === "fill") {
+                        cell.classList.remove("crossed");
+                        cell.classList.add("filled");
                         userGrid[r][c] = 1;
                     } else {
-                        cell.classList.remove('filled');
+                        cell.classList.remove("filled");
                         userGrid[r][c] = 0;
                     }
-                } else if (currentMode === 'cross') {
-                    if (drawType === null) drawType = cell.classList.contains('crossed') ? 'clear' : 'cross';
-                    if (drawType === 'cross') {
-                        cell.classList.remove('filled');
-                        cell.classList.add('crossed');
+                } else if (currentMode === "cross") {
+                    if (drawType === null) drawType = cell.classList.contains("crossed") ? "clear" : "cross";
+                    if (drawType === "cross") {
+                        cell.classList.remove("filled");
+                        cell.classList.add("crossed");
                         userGrid[r][c] = 0;
                     } else {
-                        cell.classList.remove('crossed');
+                        cell.classList.remove("crossed");
                     }
                 }
             }
@@ -418,8 +310,8 @@
                     }
                     const rowHintEl = document.getElementById(`hint-row-${r}`);
                     if (rowHintEl) {
-                        if (rowCorrect) rowHintEl.classList.add('completed');
-                        else rowHintEl.classList.remove('completed');
+                        if (rowCorrect) rowHintEl.classList.add("completed");
+                        else rowHintEl.classList.remove("completed");
                     }
                 }
 
@@ -435,24 +327,24 @@
                     }
                     const colHintEl = document.getElementById(`hint-col-${c}`);
                     if (colHintEl) {
-                        if (colCorrect) colHintEl.classList.add('completed');
-                        else colHintEl.classList.remove('completed');
+                        if (colCorrect) colHintEl.classList.add("completed");
+                        else colHintEl.classList.remove("completed");
                     }
                 }
 
                 if (puzzleSolved) {
-                    document.getElementById('win-message').style.visibility = 'visible';
+                    document.getElementById("win-message").style.visibility = "visible";
                 }
             }
 
             // Safe optional bindings if resetting functions are expanded in the future
-            document.getElementById('mode-fill')?.addEventListener('click', () => currentMode = 'fill');
-            document.getElementById('mode-cross')?.addEventListener('click', () => currentMode = 'cross');
-            document.getElementById('reset-btn')?.addEventListener('click', () => {
-                document.querySelectorAll('.cell').forEach(cell => cell.className = 'cell');
-                for(let r=0; r<10; r++) userGrid[r].fill(0);
-                document.querySelectorAll('.hint-row, .hint-col').forEach(el => el.classList.remove('completed'));
-                document.getElementById('win-message').style.visibility = 'hidden';
+            document.getElementById("mode-fill")?.addEventListener("click", () => (currentMode = "fill"));
+            document.getElementById("mode-cross")?.addEventListener("click", () => (currentMode = "cross"));
+            document.getElementById("reset-btn")?.addEventListener("click", () => {
+                document.querySelectorAll(".cell").forEach((cell) => (cell.className = "cell"));
+                for (let r = 0; r < 10; r++) userGrid[r].fill(0);
+                document.querySelectorAll(".hint-row, .hint-col").forEach((el) => el.classList.remove("completed"));
+                document.getElementById("win-message").style.visibility = "hidden";
             });
         </script>
     </body>
