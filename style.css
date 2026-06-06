@@ -344,15 +344,31 @@ nav.article-active .nav-back-btn {
 }
 .friends-item.agender:hover{
   background: var(--card-agender);
+  text-shadow: 3px 3px 10px #000000;
 }
 .friends-item.transgender:hover{
   background: var(--card-trans);
+  text-shadow: 3px 3px 10px #000000;
 }
 .friends-item.nonbinary:hover{
   background: var(--card-nonbinary);
+  text-shadow: 3px 3px 10px #000000;
+}
+.friends-item.pansexual:hover{
+  background: var(--card-pansexual);
+  text-shadow: 3px 3px 10px #000000;
+}
+.friends-item.pride:hover{
+  background: var(--card-pride);
+  text-shadow: 3px 3px 10px #000000;
+}
+.friends-item.bilexicon:hover{
+  background: var(--card-bilexicon);
+  text-shadow: 3px 3px 10px #000000;
 }
 .friends-item.starbucks:hover{
   background: var(--card-starbucks);
+  text-shadow: 3px 3px 10px #000000;
 }
 .friends-item img {
   width: 35px;
