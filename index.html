@@ -121,7 +121,9 @@
         </section>
 
         <section class="guestbook" id="guestbook">
-          <h2><span class="material-symbols-outlined" style="vertical-align: -5px;"> comment </span> leave a comment!</h2>
+          <h2>
+            <span class="material-symbols-outlined" style="vertical-align: -5px"> comment </span> leave a comment!
+          </h2>
           <form id="guestbook-form">
             <input type="text" id="name" placeholder="nickname (optional)" />
             <textarea id="message" placeholder="what do you think?" required></textarea>
@@ -136,6 +138,22 @@
           <section class="friends-list">
             <p class="prefixa">these are my internet</p>
             <h1>friends!</h1>
+
+            <a href="https://www.starbucks.com/menu"  target="_blank" rel="noopener noreferrer" class="friends-item starbucks">
+              <div class="avatar-wrapper">
+                <img
+                  src="https://cdn.discordapp.com/media/v1/collectibles-shop/1493391761085567066/animated"
+                  class="decoration"
+                  alt="" />
+                <img
+                  src="https://cdn.discordapp.com/avatars/1360805395609813002/209386929724a04483f63e86010dd4e6.webp?size=1024"
+                  alt="Isuru" />
+              </div>
+              <div class="friends-text">
+                <h2>Isuru</h2>
+                <p>coffee- hide the coffee</p>
+              </div>
+            </a>
             <a class="friends-item" href="https://s4qc.github.io" target="_blank" rel="noopener noreferrer">
               <div class="avatar-wrapper">
                 <img
@@ -175,14 +193,12 @@
                 <p>green door 🙏</p>
               </div>
             </div>
-            <div class="friends-item">
+            <div class="friends-item agender">
               <div class="avatar-wrapper">
-                <!--
                 <img
                   src="https://cdn.discordapp.com/media/v1/collectibles-shop/1485784028710830242/animated"
                   class="decoration"
                   alt="" />
-                  -->
                 <img
                   src="https://cdn.discordapp.com/avatars/1255062122145120370/a_9e797cc1573b7d03689b1340ebc112d4.webp?size=128&animated=true"
                   alt="Rose" />
@@ -192,7 +208,7 @@
                 <p>Justice, The High Priestes</p>
               </div>
             </div>
-            <div class="friends-item">
+            <div class="friends-item nonbinary">
               <img
                 src="https://styles.redditmedia.com/t5_d7ptkk/styles/profileIcon_gh8o5szz2ang1.jpeg?s=8fb5d83e31562cef1062a40b5962c6dbbd14ca02"
                 alt="Lucy" />
@@ -217,9 +233,33 @@
               </div>
               <div class="friends-text">
                 <h2>Dihan</h2>
-                <p>유령이 잘 지내고 있기를 바랍니다 :3</p>
+                <p>behold our lord whiskers :3</p>
               </div>
             </a>
+            <a class="friends-item transgender" href="https://soverthe.github.io/" target="_blank" rel="noopener noreferrer">
+              <div class="avatar-wrapper">
+                <!--
+                <img
+                  src="https://cdn.discordapp.com/media/v1/collectibles-shop/1212569433839636530/animated"
+                  class="decoration"
+                  alt="" />
+                  -->
+                <img src="https://avatars.githubusercontent.com/u/63641392?v=4" alt="Soverthe" />
+              </div>
+              <div class="friends-text">
+                <h2>Emily</h2>
+                <p>it's <span id="budapest-time">...</span> in some parts of europe</p>
+              </div>
+            </a>
+            <div class="friends-item">
+              <img
+                src="https://cdn.discordapp.com/avatars/848899344865820672/6ab5e4ba5ca359eaf873e6d721d8bb46.webp?size=1024"
+                alt="Atulya" />
+              <div class="friends-text">
+                <h2>Atulya</h2>
+                <p>samsung is the best!</p>
+              </div>
+            </div>
           </section>
 
           <section class="social-list">
@@ -518,6 +558,30 @@
         }
       }
       loadComicStrip();
+
+      function updateBudapestTime() {
+        const timeEl = document.getElementById("budapest-time");
+        if (!timeEl) return;
+
+        try {
+          // Formats the current time directly into Budapest's timezone
+          const options = {
+            timeZone: "Europe/Budapest",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false 
+          };
+
+          const formatter = new Intl.DateTimeFormat("en-US", options);
+          timeEl.textContent = formatter.format(new Date());
+        } catch (err) {
+          timeEl.textContent = "unknown time";
+        }
+      }
+
+      updateBudapestTime();
+      setInterval(updateBudapestTime, 1000);
     </script>
   </body>
 </html>
