@@ -347,7 +347,7 @@ nav.article-active .nav-back-btn {
   text-shadow: 3px 3px 10px #000000;
 }
 .friends-item.transgender:hover{
-  background: var(--card-trans);
+  background: var(--card-transgender);
   text-shadow: 3px 3px 10px #000000;
 }
 .friends-item.nonbinary:hover{
