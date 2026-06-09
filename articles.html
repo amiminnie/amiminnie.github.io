@@ -144,7 +144,6 @@
       const SUB_KEY = "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ";
       const supabaseClient = supabase.createClient(SUB_URL, SUB_KEY);
 
-      // Setup state derived strictly from local credential validation presence
       let isAdmin = !!localStorage.getItem("admin_password");
 
       let fetchedArticlesCache = [];
@@ -186,7 +185,6 @@
         try {
           const testClient = createAuthClient(password);
           
-          // 1. Fetch a target public entry tag using the standard client
           const { data: sample, error: sampleError } = await supabaseClient
             .from("blogs")
             .select("tag, public")
@@ -198,19 +196,16 @@
             return;
           }
 
-          // 2. Run the mock update and return the resulting data array directly
           const { data, error } = await testClient
             .from("blogs")
             .update({ public: sample.public }) 
             .eq("tag", sample.tag)
-            .select("tag"); // Returns updated row array if permitted, or empty array [] if blocked by RLS
+            .select("tag"); 
 
-          // If a database error occurred OR if RLS dropped the update (returning an empty array)
           if (error || !data || data.length === 0) {
             throw new Error("Write clearance missing or invalid key.");
           }
 
-          // Write permissions verified successfully!
           localStorage.setItem("admin_password", password);
           isAdmin = true;
           updateAdminUI();
@@ -241,7 +236,6 @@
           if (fetchedArticlesCache.length === 0) {
             let query = supabaseClient.from("blogs").select("tag, title, description, date, public");
             
-            // Database-level enforcement check fallback
             if (!isAdmin) {
               query = query.eq("public", true);
             }
@@ -328,7 +322,6 @@
             return;
           }
 
-          // Fallback visibility protection gate context
           if (!post.public && !isAdmin) {
             container.innerHTML = "<p>This content is currently restricted or hidden by the author.</p>";
             track.classList.add("show-article");
@@ -425,7 +418,6 @@
 
       window.addEventListener("hashchange", handleRouting);
 
-      // Execute on document ready
       loadThoughts().then(() => handleRouting());
     </script>
   </body>

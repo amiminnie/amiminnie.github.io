@@ -77,13 +77,10 @@
       </footer>
     </div>
 
-    <!-- Theme toggle script -->
     <script>
       const themeLink = document.getElementById("theme-style");
       const toggleBtn = document.getElementById("theme-toggle");
       const themeIcon = document.getElementById("theme-icon");
-
-      // Get the preference from the user's browser memory
       const savedTheme = localStorage.getItem("theme");
 
       function setTheme(mode) {
@@ -102,15 +99,12 @@
         }
       }
 
-      // If the user has a saved preference, use it.
-      // If they are a new visitor, force the dark theme.
       if (savedTheme) {
         setTheme(savedTheme);
       } else {
         setTheme("dark");
       }
 
-      // Handle the click event for the theme switcher button
       toggleBtn.addEventListener("click", () => {
         themeIcon.style.transform = "scale(0)";
         setTimeout(() => {
@@ -164,7 +158,7 @@
             const realImg = new Image();
             realImg.src = item.file;
             realImg.onload = () => {
-              img.src = realImg.src; // replace GIF with real image
+              img.src = realImg.src; 
             };
 
             container.appendChild(div);
@@ -179,7 +173,6 @@
         //  });
         //});
 
-        // Initial render
         renderGallery("comics");
       }
 

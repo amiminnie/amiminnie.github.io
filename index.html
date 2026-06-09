@@ -164,7 +164,7 @@
               </div>
             </a>
             <!--<a class="friends-item" href="https://s4qc.github.io" target="_blank" rel="noopener noreferrer">-->
-            <div class="friends-item" style="filter: saturate(0) blur(1px);">
+            <div class="friends-item no-heart" style="filter: saturate(0) blur(1px);">
               <div class="avatar-wrapper">
                 <img
                   src="https://cdn.discordapp.com/media/v1/collectibles-shop/1287835633615765524/animated"
@@ -228,17 +228,17 @@
               </div>
             </div>
             <a
-              class="friends-item"
+              class="friends-item america"
               href="https://dihanramanayaka.github.io/hello/"
               target="_blank"
               rel="noopener noreferrer">
               <div class="avatar-wrapper">
                 <img
-                  src="https://cdn.discordapp.com/media/v1/collectibles-shop/1212569433839636530/animated"
+                  src="https://cdn.discordapp.com/media/v1/collectibles-shop/1498445907169902712/animated"
                   class="decoration"
                   alt="" />
                 <img
-                  src="https://cdn.discordapp.com/avatars/1068541705596448788/189d59b6106eaf897ba7cb48ef3e725a.webp?size=512"
+                  src="https://cdn.discordapp.com/avatars/1068541705596448788/fb0f0d2f336a853bc2b962d0d13a9080.webp?size=1024"
                   alt="Dihan" />
               </div>
               <div class="friends-text">
@@ -377,7 +377,6 @@
       const toggleBtn = document.getElementById("theme-toggle");
       const themeIcon = document.getElementById("theme-icon");
 
-      // Get the preference from the user's browser memory
       const savedTheme = localStorage.getItem("theme");
 
       function setTheme(mode) {
@@ -396,15 +395,12 @@
         }
       }
 
-      // If the user has a saved preference, use it.
-      // If they are a new visitor, force the dark theme.
       if (savedTheme) {
         setTheme(savedTheme);
       } else {
         setTheme("dark");
       }
 
-      // Handle the click event for the theme switcher button
       toggleBtn.addEventListener("click", () => {
         themeIcon.style.transform = "scale(0)";
         setTimeout(() => {
@@ -504,6 +500,7 @@
         pansexual: ["#ff218d", "#ffd800", "#21b1ff"],
         starbucks: ["#00704a", "#f2f0eb", "#1e4135"],
         bilexicon: ["#7bb5ef", "#5a6edc", "#3d1a78"],
+        america: ["#0055ff", "#ffffff", "#aa0000"],
         default: ["#ff8ef1"]
       };
 
@@ -541,7 +538,7 @@
       </svg>
     `;
 
-          // Position and Physics
+  
           heart.style.left = `${centerX}px`;
           heart.style.top = `${centerY}px`;
           const angle = Math.random() * Math.PI * 2;
@@ -607,7 +604,6 @@
         if (!timeEl) return;
 
         try {
-          // Formats the current time directly into Budapest's timezone
           const options = {
             timeZone: "Europe/Budapest",
             hour: "2-digit",
