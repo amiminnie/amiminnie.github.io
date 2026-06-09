@@ -337,7 +337,6 @@ nav.article-active .nav-back-btn {
   padding: 0 1rem !important;
 }
 
-
 .friends-item:hover,
 .social-item:hover {
   background: var(--bg-dark);
@@ -372,9 +371,11 @@ nav.article-active .nav-back-btn {
   text-shadow: 3px 3px 10px #000000;
 }
 .friends-item.america {
+  font-family: "JetBrains Mono", monospace;
+
   position: relative;
-  overflow: hidden;   
-  display: flex;     
+  overflow: hidden;
+  display: flex;
   align-items: center;
   text-decoration: none;
 }
@@ -386,7 +387,7 @@ nav.article-active .nav-back-btn {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 1; 
+  z-index: 1;
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100% 100%;
@@ -396,11 +397,11 @@ nav.article-active .nav-back-btn {
 .friends-item.america .avatar-wrapper,
 .friends-item.america .friends-text {
   position: relative;
-  z-index: 2; 
+  z-index: 2;
 }
 
 .friends-item.america:hover::before {
-  filter: blur(2px); 
+  filter: blur(2px);
   text-shadow: 3px 3px 10px #000000;
   background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.7)),
     url("https://i.pinimg.com/1200x/b8/b4/b3/b8b4b35bbaa9e4f3d6f02e0e5001bb7e.jpg");
