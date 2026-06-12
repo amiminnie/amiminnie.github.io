@@ -331,6 +331,7 @@ nav.article-active .nav-back-btn {
   background-color: var(--surface);
   border-top: 1px dashed var(--border-solid);
   z-index: 5;
+  box-shadow: 5px 5px 0 var(--shading);
 }
 
 .friends-item:hover,
@@ -340,6 +341,7 @@ nav.article-active .nav-back-btn {
   transform: translateY(5px);
   margin-top: -4px;
   z-index: 1;
+  box-shadow: none;
 }
 
 .friends-list > :last-child,
@@ -488,9 +490,9 @@ nav.article-active .nav-back-btn {
   background-color: var(--surface);
   margin-top: 2rem;
   padding: 1rem;
-  border-bottom: 10px solid var(--surface-shadow);
+  border-bottom: 5px solid var(--surface-shadow);
   border-top: 1px solid var(--highlight);
-  box-shadow: 0 -5px 10px var(--surface-dsb);
+    box-shadow: 5px 5px 0 var(--shading);
 }
 .guestbook h2 {
   color: var(--text-main);
@@ -529,14 +531,17 @@ nav.article-active .nav-back-btn {
   color: var(--surface-text);
   cursor: pointer;
   font-weight: bold;
+  box-shadow: 5px 5px 0 var(--shading);
 }
 
 #guestbook-form button:hover {
   border-bottom: 6px solid var(--surface-hgt-shadow);
   margin-top: -1px;
+  box-shadow: 6px 6px 0 var(--shading);
 }
 #guestbook-form button:active {
   border-bottom: 3px solid var(--surface-hgt-shadow);
+    box-shadow: 3px 2px 0 var(--shading);
   margin-top: 2px;
 }
 
