@@ -1,24 +1,36 @@
 /* ===== THEME VARIABLES ===== */
 
 :root {
-  /* Backgrounds */
-  --bg-main: linear-gradient(0deg, #ffdd99, #ffffff, #dbefff);
-  --bg-dark: #ffc90011;
+    /* Backgrounds */
+    --bg-main: #fff6fa;
+    --bg-dark: #ffe6f0;
 
-  /* Text */
-  --text-main: #2b2b2b;
-  --text-muted: #777;
+    --surface-hgt: #ffa2c5;
+    --surface-hgt-shadow: #ff86b6;
+    --surface-text: #ffffff;
+    
+    --surface: #ffedf3;
+    --surface-shadow: #ffdfe9;
+    --surface-dsb: #fffbfd;
 
-  /* Borders */
-  --border-solid: #ccc;
+    --highlight: #ffffffcc;
+    --shading: #00000012;
 
-  /* Accent */
-  --accent: #166ecd;
-  --accent-dark: #228cff;
-  --accent-hover: #9eafff;
-  --bubble: #00000011;
+    --text-main: #c22b67;
+    --text-muted: #ec508e;
+    --text-hgt: #ff599b;
 
-  --card-hover: #1e7fe911;
+    /* Borders */
+    --border-solid: #ffc1d9;
+    --border-weak: #ffdce9;
+
+    --accent: #ff6fb2;
+    --accent-dark: #b84a86;
+    --accent-hover: #7aa7ff;
+
+    --bubble: #ffffffaa;
+
+    --card-hover: #ff8ef111;
     --card-agender: linear-gradient(
         90deg,
         rgba(0, 0, 0, 0.25) 0%,
@@ -113,7 +125,7 @@
         rgba(61, 26, 120, 0.25) 80%,
         rgba(61, 26, 120, 0.4) 100%
     );
-  --trans: linear-gradient(0deg, #2299ff 30%, #d54abf 40%, #aaaaaa 50%, #d54abf 60%, #2299ff 70%);
+    --trans: linear-gradient(0deg, #9eafff 30%, #ff8ef1 40%, #ffffff 50%, #ff8ef1 60%, #9eafff 70%);
 
-  --petal-opacity: 100%;
+    --petal-opacity: 50%;
 }

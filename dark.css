@@ -2,20 +2,31 @@
 
 :root {
     /* Backgrounds */
-    --bg-main: linear-gradient(0deg, #7a4d4a 0%, #2c345a 35%, #010e21 100%);
-    --bg-dark: #5c1e0021;
+    --bg-main: #22161a;
+    --bg-dark: #1f1317;
 
-    /* Text */
-    --text-main: #e2d7e0;
-    --text-muted: #bb9ab5;
+    --surface-hgt: #d86a7a;
+    --surface-hgt-shadow: #a84a5b;
 
-    /* Borders */
-    --border-solid: #a87777;
+    --surface: #412227;
+    --surface-shadow: #331a1f;
+    --surface-dsb: #3a1d22;
 
-    --accent: #ff8ef1;
-    --accent-dark: #924d8a;
-    --accent-hover: #9eafff;
-    --bubble: #ffffff22;
+    --highlight: #d86a7a44;
+    --shading: #00000060;
+
+    --text-main: #f0c7cf;
+    --text-muted: #c79aa3;
+    --text-hgt: #e38a96;
+
+    --border-solid: #c77a7a55;
+    --border-weak: #c77a7a22;
+
+    --accent: #d86a7a;
+    --accent-dark: #8b3f49;
+    --accent-hover: #9bb7ff;
+
+    --bubble: #ffffff10;
 
     --card-hover: #ff8ef111;
     --card-agender: linear-gradient(

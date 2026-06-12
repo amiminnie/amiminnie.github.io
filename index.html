@@ -22,7 +22,7 @@
     <link rel="icon" href="images/favicon.ico" />
     <link rel="apple-touch-icon" href="images/heart.png" />
 
-    <script src="common.js" type="module"></script>
+    <!--<script src="common.js" type="module"></script>-->
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -66,6 +66,9 @@
       </header>
 
       <main>
+        <div class="tabs">
+          <p class="tab-btn active">Major Overhaul in Progress...</p>
+        </div>
         <section class="intro">
           <p class="prefix">am i</p>
           <h1>Minnie?</h1>
@@ -125,13 +128,11 @@
         </section>
 
         <section class="guestbook" id="guestbook">
-          <h2>
-            <span class="material-symbols-outlined" style="vertical-align: -5px"> comment </span> leave a comment!
-          </h2>
+          <h2>leave a comment!</h2>
           <form id="guestbook-form">
             <input type="text" id="name" placeholder="nickname (optional)" />
             <textarea id="message" placeholder="what do you think?" required></textarea>
-            <button type="submit">Send</button>
+            <button type="submit">Send!</button>
           </form>
           <div id="guestbook-entries">
             <p>loading what others have to say…</p>
@@ -194,7 +195,7 @@
               <div class="friends-text">
                 <h2>Shizu</h2>
                 <p style="font-family: &quot;CustomSecretFont&quot;, sans-serif">
-                  <i>‮""          "</i>
+                  <i>‮"          "</i>
                 </p>
               </div>
             </div>
@@ -246,8 +247,8 @@
                   alt="Dihan" />
               </div>
               <div class="friends-text">
-                <h2 style="font-size: 1rem;">Dihan</h2>
-                <p >behold our lord whiskers :3</p>
+                <h2 style="font-size: 1rem">Dihan</h2>
+                <p>behold our lord whiskers :3</p>
               </div>
             </a>
             <a
@@ -266,7 +267,7 @@
               </div>
               <div class="friends-text">
                 <h2>Emily</h2>
-                <p>it's <span id="budapest-time">...</span> in some parts of europe</p>
+                <p>it's <span id="budapest-time">some time</span> in some parts of europe</p>
               </div>
             </a>
             <div class="friends-item">
@@ -419,7 +420,9 @@
     <script type="module">
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
       const isLocalhost =
-        location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "";
+        location.hostname === "somethingelse localhost" ||
+        location.hostname === "127.0.0.1" ||
+        location.hostname === "";
       const SUPABASE_URL = "https://miwcmqwhudshgetmrmhf.supabase.co";
       const SUPABASE_KEY = "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ";
       const supabase = !isLocalhost ? createClient(SUPABASE_URL, SUPABASE_KEY) : null;
@@ -449,11 +452,9 @@
             if (msg.reply) {
               const replyDiv = document.createElement("div");
               replyDiv.className = "guestbook-reply";
-              replyDiv.style.marginLeft = "1.5rem";
-              replyDiv.style.borderLeft = "2px solid var(--border-solid)";
-              replyDiv.style.paddingLeft = "0.5rem";
-              replyDiv.style.marginTop = "0.25rem";
-              replyDiv.innerHTML = `<strong>Minnie</strong> <span>${msg.reply}</span>`;
+              replyDiv.innerHTML = `<span class="material-symbols-outlined">
+subdirectory_arrow_right
+</span><span>${msg.reply}</span>`;
               div.appendChild(replyDiv);
             }
             guestbookEntries.appendChild(div);
@@ -618,7 +619,7 @@
           const formatter = new Intl.DateTimeFormat("en-US", options);
           timeEl.textContent = formatter.format(new Date());
         } catch (err) {
-          timeEl.textContent = "unknown time";
+          timeEl.textContent = "some time";
         }
       }
 
