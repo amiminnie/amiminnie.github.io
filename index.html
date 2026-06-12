@@ -16,13 +16,13 @@
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:image" content="https://amiminnie.github.io/images/heart.png" />
 
-    <link id="theme-style" rel="stylesheet" href="light.css" />
+    <link id="theme-style" rel="stylesheet" href="dark.css" />
     <link id="style" rel="stylesheet" href="style.css" />
 
     <link rel="icon" href="images/favicon.ico" />
     <link rel="apple-touch-icon" href="images/heart.png" />
 
-    <!--<script src="common.js" type="module"></script>-->
+    <script src="common.js" type="module"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -66,16 +66,13 @@
       </header>
 
       <main>
-        <div class="tabs">
-          <p class="tab-btn active">Major Overhaul in Progress...</p>
-        </div>
         <section class="intro">
           <p class="prefix">am i</p>
           <h1>Minnie?</h1>
           <p class="subtitle">she/they ⁘ artist ⁘ developer</p>
 
           <div class="bio">
-            <p>i draw comics about my feelings</p>
+            <p>i like to draw!</p>
           </div>
           <section class="comic-strip">
             <div id="comic-strip-container" class="comic-strip-row">
@@ -88,21 +85,21 @@
           <h1>what to do</h1>
           <p class="subtitle">in case you're bored</p>
           <a class="social-item" href="gallery.html">
-            <img src="images/gallery.png" alt="gallery" />
+            <!--<img src="images/gallery.png" alt="gallery" />-->
             <div class="social-text">
               <h2>visit my gallery!</h2>
               <p>mostly comics, but also some other stuff</p>
             </div>
           </a>
-          <a class="social-item" href="thoughts.html">
-            <img src="images/thoughts.png" alt="thoughts" />
+          <a class="social-item" href="articles.html">
+            <!--<img src="images/thoughts.png" alt="thoughts" />-->
             <div class="social-text">
-              <h2>read some thoughts</h2>
+              <h2>read some articles</h2>
               <p>gets a little deep sometimes</p>
             </div>
           </a>
           <a class="social-item" href="changelog.html">
-            <img src="images/github.png" alt="changelog" />
+            <!--<img src="images/github.png" alt="changelog" />-->
             <div class="social-text">
               <h2>changelog</h2>
               <p>if you're that bored</p>
@@ -169,7 +166,7 @@
               </div>
             </a>
             <!--<a class="friends-item" href="https://s4qc.github.io" target="_blank" rel="noopener noreferrer">-->
-            <div class="friends-item saad" style="filter: saturate(0) blur(1px)">
+            <a class="friends-item saad" href="https://s4qc.github.io" target="_blank" rel="noopener noreferrer" style="filter: saturate(0) blur(1px)">
               <div class="avatar-wrapper">
                 <img
                   src="https://cdn.discordapp.com/media/v1/collectibles-shop/1287835633615765524/animated"
@@ -183,7 +180,7 @@
                 <h2>S4qC</h2>
                 <p>...</p>
               </div>
-            </div>
+            </a>
             <div class="friends-item bilexicon" id="shizu-card" style="cursor: pointer">
               <div class="avatar-wrapper">
                 <img
@@ -420,7 +417,7 @@
     <script type="module">
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
       const isLocalhost =
-        location.hostname === "somethingelse localhost" ||
+        location.hostname === "localhost" ||
         location.hostname === "127.0.0.1" ||
         location.hostname === "";
       const SUPABASE_URL = "https://miwcmqwhudshgetmrmhf.supabase.co";

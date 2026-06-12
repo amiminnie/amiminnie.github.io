@@ -25,23 +25,26 @@
 
   <body>
     <aside class="desktop-sidebar">
-      <ul id="sidebar-thoughts-list" class="sidebar-list">
-      </ul>
+      <ul id="sidebar-thoughts-list" class="sidebar-list"></ul>
     </aside>
 
     <div class="container">
       <header>
         <nav id="main-nav">
-          <button class="nav-back-btn" onclick="window.location.hash = ''" >
+          <button class="nav-back-btn" onclick="window.location.hash = ''">
             <span class="material-symbols-outlined">arrow_back</span>
             <span>back</span>
           </button>
-          
+
           <a href="index.html">about</a>
           <a href="gallery.html">gallery</a>
           <a href="articles.html" class="active">articles</a>
 
-          <button id="admin-login-btn" class="theme-btn" onclick="toggleAdminAuth()" style="padding: 0 10px; width: auto; font-family: inherit;">
+          <button
+            id="admin-login-btn"
+            class="theme-btn"
+            onclick="toggleAdminAuth()"
+            style="padding: 0 10px; width: auto; font-family: inherit">
             login
           </button>
 
@@ -53,7 +56,6 @@
 
       <main class="view-slider-window">
         <div id="view-track" class="view-slider-track">
-          
           <div id="list-view">
             <section class="intro">
               <p class="prefix">some</p>
@@ -64,20 +66,23 @@
             </section>
 
             <section class="thoughts">
-              <div class="admin-toolbar" id="admin-toolbar" style="display:none;">
+              <div class="admin-toolbar" id="admin-toolbar" style="display: none">
                 <button class="btn-add" onclick="window.location.href='builder.html'">+ write</button>
-                <button class="btn-add" onclick="logoutAdmin()" style="background:#cc241d; margin-left: 10px;">logout</button>
+                <button class="btn-add" onclick="logoutAdmin()" style="background: #cc241d; margin-left: 10px">
+                  logout
+                </button>
               </div>
 
               <ul id="thoughts-list" class="thoughts-list">
                 <li>loading...</li>
               </ul>
+
+              <p>&nbsp;</p>
             </section>
           </div>
 
           <div id="read-view">
-            <article id="thought-content" class="thought-content">
-            </article>
+            <article id="thought-content" class="thought-content"></article>
 
             <section class="social-list" style="border: none">
               <a class="social-item" href="index.html#guestbook">
@@ -88,8 +93,8 @@
                 </div>
               </a>
             </section>
+            <p>&nbsp;</p>
           </div>
-
         </div>
       </main>
 
@@ -151,7 +156,7 @@
       function updateAdminUI() {
         const toolbar = document.getElementById("admin-toolbar");
         const loginBtn = document.getElementById("admin-login-btn");
-        
+
         if (isAdmin) {
           toolbar.style.display = "flex";
           loginBtn.innerText = "admin";
@@ -178,19 +183,19 @@
           alert("You are already authenticated with a saved password!");
           return;
         }
-        
+
         const password = prompt("Enter Editor/Database Key password:");
         if (!password) return;
 
         try {
           const testClient = createAuthClient(password);
-          
+
           const { data: sample, error: sampleError } = await supabaseClient
             .from("blogs")
             .select("tag, public")
             .limit(1)
             .maybeSingle();
-          
+
           if (sampleError || !sample) {
             alert("No available entries found to test write configurations against.");
             return;
@@ -198,9 +203,9 @@
 
           const { data, error } = await testClient
             .from("blogs")
-            .update({ public: sample.public }) 
+            .update({ public: sample.public })
             .eq("tag", sample.tag)
-            .select("tag"); 
+            .select("tag");
 
           if (error || !data || data.length === 0) {
             throw new Error("Write clearance missing or invalid key.");
@@ -209,10 +214,9 @@
           localStorage.setItem("admin_password", password);
           isAdmin = true;
           updateAdminUI();
-          fetchedArticlesCache = []; 
+          fetchedArticlesCache = [];
           loadThoughts();
           alert("Authenticated successfully!");
-
         } catch (err) {
           alert("Authentication failed! Write clearance missing or invalid key.");
           console.error("Authorization check caught error:", err);
@@ -235,7 +239,7 @@
         try {
           if (fetchedArticlesCache.length === 0) {
             let query = supabaseClient.from("blogs").select("tag, title, description, date, public");
-            
+
             if (!isAdmin) {
               query = query.eq("public", true);
             }
@@ -254,8 +258,8 @@
             const adminButtons = isAdmin
               ? `
               <div class="item-actions" style="display: flex; gap: 8px; align-items: center;">
-                <button class="action-link" style="color: ${item.public ? '#b8bb26' : '#fb4934'}" onclick="togglePublicVisibility('${item.tag}', ${item.public})" title="Toggle Visibility Status">
-                  <span class="material-symbols-outlined">${item.public ? 'visibility' : 'visibility_off'}</span>
+                <button class="action-link" style="color: ${item.public ? "#b8bb26" : "#fb4934"}" onclick="togglePublicVisibility('${item.tag}', ${item.public})" title="Toggle Visibility Status">
+                  <span class="material-symbols-outlined">${item.public ? "visibility" : "visibility_off"}</span>
                 </button>
                 <button class="action-link edit-color" onclick="editArticle('${item.tag}')"><span class="material-symbols-outlined"> edit </span></button>
                 <button class="action-link delete-color" onclick="deleteArticle('${item.tag}')"><span class="material-symbols-outlined"> delete </span></button>
@@ -264,7 +268,7 @@
 
             div.innerHTML = `
               <a class="thought-link" href="#${item.tag}">
-                  <h3 class="gallery-title">${item.title} ${!item.public && isAdmin ? '<span style="font-size:11px; background:#fb4934; color:#fff; padding:2px 6px; border-radius:4px; vertical-align:middle;margin-left:5px;">Draft</span>' : ''}</h3>
+                  <h3 class="gallery-title">${item.title} ${!item.public && isAdmin ? '<span style="font-size:11px; background:#fb4934; color:#fff; padding:2px 6px; border-radius:4px; vertical-align:middle;margin-left:5px;">Draft</span>' : ""}</h3>
                   <p class="gallery-description"><i>${item.description}</i></p>
                   <p class="gallery-date"><em>${item.date}</em></p>
               </a>
@@ -280,14 +284,18 @@
             li.setAttribute("data-tag", item.tag);
             li.innerHTML = `
               <a href="#${item.tag}" title="${item.title}">
-                ${item.title} ${!item.public && isAdmin ? 'admin' : ''}
+                ${item.title} ${!item.public && isAdmin ? "admin" : ""}
               </a>
             `;
             sidebarList.appendChild(li);
           });
+          const hiddenLi = document.createElement("li");
+          hiddenLi.className = "sidebar-item sidebar-fake-end";
+          hiddenLi.setAttribute("aria-hidden", "true");
+          hiddenLi.innerHTML = "&nbsp;";
+          sidebarList.appendChild(hiddenLi);
 
           highlightActiveSidebar();
-
         } catch (err) {
           list.innerHTML = `<li>Could not load articles.</li>`;
           sidebarList.innerHTML = `<li>Could not load layout.</li>`;
@@ -298,7 +306,7 @@
       function highlightActiveSidebar() {
         const currentTag = window.location.hash.substring(1);
         const sidebarItems = document.querySelectorAll(".sidebar-item");
-        
+
         sidebarItems.forEach((item) => {
           if (item.getAttribute("data-tag") === currentTag) {
             item.classList.add("active-article");
@@ -311,9 +319,9 @@
       async function loadThought(tag) {
         const container = document.getElementById("thought-content");
         const track = document.getElementById("view-track");
-        
+
         try {
-          let query = supabaseClient.from('blogs').select('title, content, public').eq('tag', tag);
+          let query = supabaseClient.from("blogs").select("title, content, public").eq("tag", tag);
           const { data: post, error } = await query.single();
 
           if (error || !post) {
@@ -339,12 +347,11 @@
             newScript.appendChild(document.createTextNode(oldScript.innerHTML));
             oldScript.parentNode.replaceChild(newScript, oldScript);
           });
-          
-          document.title = `amiminnie - ${post.title}`;
-          
-          track.classList.add("show-article");
-          window.scrollTo({ top: 0, behavior: 'smooth' });
 
+          document.title = `amiminnie - ${post.title}`;
+
+          track.classList.add("show-article");
+          window.scrollTo({ top: 0, behavior: "smooth" });
         } catch (err) {
           container.innerHTML = "<p>i think i got distracted</p>";
           track.classList.add("show-article");
@@ -378,15 +385,12 @@
         const sbAuth = getAuthClient();
         const nextStatus = !currentStatus;
 
-        const { error } = await sbAuth
-          .from("blogs")
-          .update({ public: nextStatus })
-          .eq("tag", tag);
+        const { error } = await sbAuth.from("blogs").update({ public: nextStatus }).eq("tag", tag);
 
         if (error) {
           alert("Visibility alteration failed: " + error.message);
         } else {
-          fetchedArticlesCache = []; 
+          fetchedArticlesCache = [];
           loadThoughts().then(() => handleRouting());
         }
       }
@@ -406,7 +410,7 @@
             alert("Delete failed: " + error.message);
           } else {
             alert("Article removed.");
-            fetchedArticlesCache = []; 
+            fetchedArticlesCache = [];
             loadThoughts().then(() => handleRouting());
           }
         }

@@ -332,6 +332,7 @@ nav.article-active .nav-back-btn {
   border-top: 1px dashed var(--border-solid);
   z-index: 5;
   box-shadow: 5px 5px 0 var(--shading);
+  transition: all 0.1s ease;
 }
 
 .friends-item:hover,
@@ -492,7 +493,7 @@ nav.article-active .nav-back-btn {
   padding: 1rem;
   border-bottom: 5px solid var(--surface-shadow);
   border-top: 1px solid var(--highlight);
-    box-shadow: 5px 5px 0 var(--shading);
+  box-shadow: 5px 5px 0 var(--shading);
 }
 .guestbook h2 {
   color: var(--text-main);
@@ -532,6 +533,7 @@ nav.article-active .nav-back-btn {
   cursor: pointer;
   font-weight: bold;
   box-shadow: 5px 5px 0 var(--shading);
+  transition: all 0.2s ease;
 }
 
 #guestbook-form button:hover {
@@ -541,7 +543,7 @@ nav.article-active .nav-back-btn {
 }
 #guestbook-form button:active {
   border-bottom: 3px solid var(--surface-hgt-shadow);
-    box-shadow: 3px 2px 0 var(--shading);
+  box-shadow: 3px 2px 0 var(--shading);
   margin-top: 2px;
 }
 
@@ -653,19 +655,39 @@ nav.article-active .nav-back-btn {
   text-decoration: none;
   color: inherit;
   padding: 0 1rem;
+  margin-right: 5px;
   padding-top: 0.5rem;
+  background-color: var(--surface);
+  border-top: 1px dashed var(--border-solid);
+  z-index: 5;
+  box-shadow: 5px 5px 0 var(--shading);
+  transition: all 0.1s ease;
 }
 
 .thought-link:hover {
-  background-color: var(--bg-dark);
-  border-left: solid 2px var(--accent);
+  background: var(--surface-dsb);
+  border-top: 5px solid var(--surface-shadow);
+  transform: translateY(5px);
+  margin-top: -4px;
+  z-index: 1;
+  box-shadow: none;
 }
-
+.thought-item:last-child .thought-link {
+  border-bottom: 5px solid var(--surface-shadow);
+}
+.thought-item:last-child .thought-link:hover {
+  border-bottom: 5px solid var(--bg-main);
+}
+.thought-item:first-child .thought-link {
+  border-top: 1px solid var(--highlight);
+}
+.thought-item:first-child .thought-link:hover {
+  margin-top: 0;
+}
 .thought-content {
   max-width: 900px;
   margin: 3rem auto;
 }
-
 .thought-content h1,
 .thought-content h3 {
   color: var(--accent);
@@ -752,26 +774,24 @@ nav.article-active .nav-back-btn {
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.35rem;
+    margin-right: 5px;
   }
 
   .sidebar-item a {
     display: block;
     padding: 0.4rem 0.75rem;
     text-decoration: none;
-    color: inherit;
     font-size: 0.9rem;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    opacity: 0.65;
-    transition: all 0.2s ease;
-    border-left: 2px solid transparent;
-  }
-
-  .sidebar-item a:hover {
-    opacity: 1;
-    background: rgba(128, 128, 128, 0.1);
+    transition: all 0.1s ease;
+    background-color: var(--surface);
+    border-top: 1px dashed var(--border-solid);
+    position:relative;
+    z-index: 5;
+    box-shadow: 5px 5px 0 var(--shading);
+    color: var(--text-main);
   }
 
   .sidebar-item.active-article a {
@@ -779,6 +799,42 @@ nav.article-active .nav-back-btn {
     font-weight: 700;
     background: var(--bg-dark);
     border-left-color: var(--accent);
+    background-color: var(--surface-hgt);
+    border-top: 1px dashed var(--border-solid);
+    z-index: 5;
+    box-shadow: 5px 5px 0 var(--shading);
+  }
+  .sidebar-item:hover a {
+    background: var(--surface-dsb);
+    border-top: 5px solid var(--surface-shadow);
+    transform: translateY(5px);
+    margin-top: -4px;
+    z-index: 1;
+    box-shadow: none;
+  }
+
+  .sidebar-item:last-child a {
+    border-bottom: 5px solid var(--surface-shadow);
+  }
+
+  .sidebar-item:last-child:hover a {
+    border-bottom: 5px solid var(--bg-main);
+  }
+
+  .sidebar-item.active-article:last-child a {
+    border-bottom: 5px solid var(--surface-hgt-shadow);
+  }
+
+  .sidebar-item.active-article:last-child:hover a {
+    border-bottom: 5px solid var(--bg-main);
+  }
+
+  .sidebar-item:first-child a {
+    border-top: 1px solid var(--highlight);
+  }
+
+  .sidebar-item:first-child:hover a {
+    margin-top: 0;
   }
 }
 
@@ -790,16 +846,17 @@ nav.article-active .nav-back-btn {
   display: flex;
   gap: 1rem;
   overflow-x: auto;
-  padding: 1rem 0;
+  margin-top: 15px;
   scroll-snap-type: x mandatory;
+  border-top: 5px solid var(--shading);
 }
 
 .comic-strip-row::-webkit-scrollbar {
-  height: 6px;
+  height: 15px;
 }
 .comic-strip-row::-webkit-scrollbar-thumb {
-  background: var(--border-solid);
-  border-radius: 5px;
+  background: var(--surface);
+  border-bottom: 5px solid var(--surface-shadow);
 }
 
 .comic-item {
@@ -809,7 +866,13 @@ nav.article-active .nav-back-btn {
 
 .comic-item img {
   width: 100%;
-  border-radius: 5px;
+  border-bottom: 5px solid var(--surface);
+  border-top: 1px solid var(--highlight);
+  transition: all 0.2s ease;
+}
+.comic-item img:hover {
+  border-bottom: 2px solid var(--surface);
+  transform: translateY(3px);
 }
 
 .conversation {
