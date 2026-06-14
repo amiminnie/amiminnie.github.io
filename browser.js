@@ -44,11 +44,23 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function handleHashChange() {
-        const hash = window.location.hash.substring(1);
-        if (hash && (hash.startsWith("http://") || hash.startsWith("https://"))) {
-            currentUrl = hash;
+        const hash = decodeURIComponent(window.location.hash.substring(1));
+        if (!hash) {
+            closeWindow();
+            return;
+        }
+        let url = null;
+        if (hash.startsWith("http://") || hash.startsWith("https://")) {
+            url = hash;
+        }
+        else if (hash.startsWith("self://")) {
+            const file = hash.slice(7);
+            url = "/" + file.replace(/^\/+/, "");
+        }
+        if (url) {
+            currentUrl = url;
             title.textContent = hash;
-            iframe.src = hash;
+            iframe.src = url;
             overlay.classList.add("active");
             canDrag = false;
             dragging = false;

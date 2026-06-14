@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>The Coffee Quest</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="color-scheme" content="light dark" />
+        <meta name="theme-color" content="#111111" />
+
+        <link id="theme-style" rel="stylesheet" href="../light.css" />
+        <link id="style" rel="stylesheet" href="../style.css" />
+
+        <link rel="icon" href="../images/favicon.ico" />
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Overlock:wght@400;700;900&display=swap" rel="stylesheet" />
+    </head>
+
+    <body>
+        <div class="container">
+            <main>
+                <div class="tabs">
+                    <p class="tab-btn active">
+                        The coffee is still being brewed, please check back in later when I am finished...
+                    </p>
+                </div>
+                <section class="intro">
+                    <h1 style="color: var(--text-main); font-size: 3rem">The Coffee Quest!</h1>
+                    <p>
+                        Collect all the ingredients and make the best coffee in the world. Become the champion of coffee
+                        making!
+                    </p>
+                </section>
+            </main>
+
+            <footer>
+                <p>amiminnie</p>
+            </footer>
+        </div>
+
+        <script>
+            const themeLink = document.getElementById("theme-style");
+
+            const savedTheme = localStorage.getItem("theme") || "dark";
+            setTheme(savedTheme);
+
+            function setTheme(theme) {
+                localStorage.setItem("theme", theme);
+
+                // CSS files are in root, so use ../
+                themeLink.href = theme === "dark" ? "../dark.css" : "../light.css";
+            }
+        </script>
+    </body>
+</html>

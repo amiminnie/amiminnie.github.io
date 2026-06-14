@@ -1236,6 +1236,7 @@ html[style*="color-scheme: dark"] {
 
 .web-window-overlay {
   position: fixed;
+  background-color: #ffffff11;
   top: 0;
   left: 0;
   width: 100vw;
@@ -1255,8 +1256,7 @@ html[style*="color-scheme: dark"] {
 }
 
 .web-window {
-  resize: both;
-    user-select: none;
+  user-select: none;
   min-width: 400px;
   min-height: 300px;
   position: absolute;
@@ -1265,15 +1265,17 @@ html[style*="color-scheme: dark"] {
   width: 85vw;
   height: 80vh;
   max-width: 1200px;
-  background: var(--bg-main);
+  background: var(--surface);
   border-bottom: 5px solid var(--surface-shadow);
   border-top: 1px solid var(--highlight);
   box-shadow: 5px 5px 0 var(--shading);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  transform:  translateY(50vh) skew(10deg) scale(0.5);
-  transition: transform 0.6s cubic-bezier(0.2, 1.2, 0.3, 1), opacity 0.3s ease;
+  transform: scale(0.5);
+  transition:
+    transform 0.6s cubic-bezier(0.2, 1.2, 0.3, 1),
+    opacity 0.1s ease;
 }
 
 .web-window-overlay.active .web-window {
@@ -1342,7 +1344,7 @@ html[style*="color-scheme: dark"] {
   flex: 1;
   width: 100%;
   height: 100%;
-  background: var(--bg-main); 
+  background: var(--bg-main);
 }
 
 .web-window-body iframe {
