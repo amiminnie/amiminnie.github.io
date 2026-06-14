@@ -8,9 +8,11 @@
     <meta name="theme-color" content="#111111" />
     <link id="theme-style" rel="stylesheet" href="light.css" />
     <link id="style" rel="stylesheet" href="style.css" />
-    <link rel="icon" href="images/favicon.ico" />
+    <link id="icon" rel="icon" href="images/favicon.ico" />
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script src="browser.js" type="module"></script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -31,7 +33,7 @@
     <div class="container">
       <header>
         <nav id="main-nav">
-          <button class="nav-back-btn" onclick="window.location.hash = ''">
+          <button class="nav-back-btn" onclick="navigateToArticle('')">
             <span class="material-symbols-outlined">arrow_back</span>
             <span>back</span>
           </button>
@@ -153,6 +155,17 @@
 
       let fetchedArticlesCache = [];
 
+      function navigateToArticle(tag) {
+        const url = new URL(window.location.href);
+        if (tag) {
+          url.searchParams.set("id", tag);
+        } else {
+          url.searchParams.delete("id");
+        }
+        window.history.pushState({}, "", url);
+        handleRouting();
+      }
+
       function updateAdminUI() {
         const toolbar = document.getElementById("admin-toolbar");
         const loginBtn = document.getElementById("admin-login-btn");
@@ -267,7 +280,7 @@
               : "";
 
             div.innerHTML = `
-              <a class="thought-link" href="#${item.tag}">
+              <a class="thought-link" href="?id=${item.tag}" onclick="event.preventDefault(); navigateToArticle('${item.tag}')">
                   <h3 class="gallery-title">${item.title} ${!item.public && isAdmin ? '<span style="font-size:11px; background:#fb4934; color:#fff; padding:2px 6px; border-radius:4px; vertical-align:middle;margin-left:5px;">Draft</span>' : ""}</h3>
                   <p class="gallery-description"><i>${item.description}</i></p>
                   <p class="gallery-date"><em>${item.date}</em></p>
@@ -283,7 +296,7 @@
             li.className = "sidebar-item";
             li.setAttribute("data-tag", item.tag);
             li.innerHTML = `
-              <a href="#${item.tag}" title="${item.title}">
+              <a href="?id=${item.tag}" title="${item.title}" onclick="event.preventDefault(); navigateToArticle('${item.tag}')">
                 ${item.title} ${!item.public && isAdmin ? "admin" : ""}
               </a>
             `;
@@ -304,7 +317,8 @@
       }
 
       function highlightActiveSidebar() {
-        const currentTag = window.location.hash.substring(1);
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentTag = urlParams.get("id");
         const sidebarItems = document.querySelectorAll(".sidebar-item");
 
         sidebarItems.forEach((item) => {
@@ -363,7 +377,9 @@
         const track = document.getElementById("view-track");
         const container = document.getElementById("thought-content");
         const mainNav = document.getElementById("main-nav");
-        const tag = window.location.hash.substring(1);
+        
+        const urlParams = new URLSearchParams(window.location.search);
+        const tag = urlParams.get("id");
 
         highlightActiveSidebar();
 
@@ -420,7 +436,7 @@
         window.location.href = `builder.html?edit=${tag}`;
       }
 
-      window.addEventListener("hashchange", handleRouting);
+      window.addEventListener("popstate", handleRouting);
 
       loadThoughts().then(() => handleRouting());
     </script>
