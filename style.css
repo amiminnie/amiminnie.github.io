@@ -324,6 +324,7 @@ nav.article-active .nav-back-btn {
 .social-item {
   display: flex;
   align-items: center;
+  height: 50px;
   gap: 1rem;
   background: transparent;
   text-decoration: none;
@@ -332,11 +333,12 @@ nav.article-active .nav-back-btn {
   border-top: 1px dashed var(--border-solid);
   z-index: 5;
   box-shadow: 5px 5px 0 var(--shading);
-  transition: transform 0.1s ease;
+  transition: transform 0.1s ease, height 0.1s ease;
 }
 
 .friends-item:hover {
   background: var(--surface-dsb);
+  height: 100px;
 }
 .social-item:hover {
   background: var(--surface-dsb);
@@ -446,6 +448,14 @@ nav.article-active .nav-back-btn {
   background: var(--card-starbucks);
   text-shadow: 3px 3px 10px #000000;
 }
+
+.friends-item.saad:hover {
+  background-image: url("https://miwcmqwhudshgetmrmhf.supabase.co/storage/v1/object/public/blog-assets/1781678057769-banner-blur.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .friends-item.america {
   font-family: "JetBrains Mono", monospace;
 
