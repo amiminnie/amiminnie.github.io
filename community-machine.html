@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AMIBIOS comunity machine</title>
+    <title>AMIBIOS community machine</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Sixtyfour&display=swap" rel="stylesheet">
@@ -12,17 +12,16 @@
       :root {
         --glow: #33ff33;
         --bg: #050505;
+        --phosphor-dim: rgba(51, 255, 51, 0.4);
       }
 
       * {
         -webkit-font-smoothing: none;
         -moz-osx-font-smoothing: grayscale;
-        font-smoothing: none;
         box-sizing: border-box;
       }
 
-      body,
-      html {
+      body, html {
         background-color: #000;
         color: var(--glow);
         font-family: 'Sixtyfour', sans-serif;
@@ -35,30 +34,50 @@
         overflow: hidden;
       }
 
+      /* CRT Monitor Container */
+      .monitor {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2vw;
+        background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+      }
+
+      /* The actual screen with slight curvature */
       .terminal-container {
-        font-size: clamp(6px, 2vw, 15px);
-        width: 85ch;
-        height: 85vh;
-        max-width: 95vw;
+        font-size: clamp(8px, 1.5vw, 16px);
+        width: 100%;
+        max-width: 1200px;
+        height: 100%;
+        max-height: 90vh;
         position: relative;
-        padding: 3ch;
+        padding: 4ch;
         background: var(--bg);
-        border: 1px solid #111;
-        box-shadow: 0 0 50px rgba(0, 0, 0, 1);
+        border: 2px solid #111;
+        border-radius: 16px;
+        box-shadow: inset 0 0 100px rgba(0,0,0,0.9), 0 0 50px rgba(51,255,51,0.1);
         white-space: nowrap;
+        overflow: hidden;
+        /* CRT Screen Curve effect */
+        perspective: 1000px;
+        transform-style: preserve-3d;
       }
 
       .output {
-        line-height: 1.5;
+        line-height: 1.6;
         text-transform: uppercase;
-        text-shadow: 0 0 5px rgba(51, 255, 51, 0.8);
-        filter: blur(0.2px);
+        text-shadow: 0 0 4px var(--glow), 0 0 8px var(--phosphor-dim);
+        /* Slight blur to mimic bleeding phosphor */
+        filter: blur(0.4px); 
       }
 
       .line {
         display: block;
         min-height: 1.5em;
-        white-space: pre; /* Added for ASCII support */
+        white-space: pre-wrap; 
+        word-wrap: break-word;
       }
 
       .cursor {
@@ -69,6 +88,7 @@
         animation: blink 1s step-end infinite;
         vertical-align: middle;
         margin-left: 2px;
+        box-shadow: 0 0 5px var(--glow);
       }
 
       @keyframes blink {
@@ -76,26 +96,59 @@
         50% { opacity: 1; }
       }
 
-      .vignette {
-        position: fixed;
+      /* Screen Flicker Animation */
+      @keyframes flicker {
+        0% { opacity: 0.98; }
+        5% { opacity: 0.95; }
+        10% { opacity: 0.99; }
+        15% { opacity: 0.96; }
+        50% { opacity: 0.99; }
+        80% { opacity: 0.98; }
+        100% { opacity: 1; }
+      }
+
+      /* Scanlines */
+      .scanlines {
+        position: absolute;
         top: 0; left: 0; width: 100%; height: 100%;
-        box-shadow: inset 0 0 300px rgba(0, 0, 0, 1);
+        background: linear-gradient(
+          to bottom,
+          rgba(255,255,255,0),
+          rgba(255,255,255,0) 50%,
+          rgba(0,0,0,0.2) 50%,
+          rgba(0,0,0,0.2)
+        );
+        background-size: 100% 4px;
         pointer-events: none;
-        z-index: 5;
+        z-index: 10;
+        animation: flicker 0.15s infinite;
+      }
+
+      /* Screen Glare */
+      .vignette {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 100%;
+        box-shadow: inset 0 0 150px rgba(0, 0, 0, 0.9);
+        background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.03) 0%, transparent 60%);
+        pointer-events: none;
+        z-index: 11;
+        border-radius: 16px;
       }
 
       .hidden { visibility: hidden; }
-
       ::selection { background: var(--glow); color: #000; }
     </style>
   </head>
   <body>
-    <div class="vignette"></div>
-
-    <div class="terminal-container">
-      <div id="screen" class="output"></div>
-      <div id="input-line" class="output hidden">
-        <span>&gt; </span><span id="cmd-input"></span><span class="cursor"></span>
+    <div class="monitor">
+      <div class="terminal-container">
+        <div class="scanlines"></div>
+        <div class="vignette"></div>
+        
+        <div id="screen" class="output"></div>
+        <div id="input-line" class="output hidden">
+          <span>A:\&gt; </span><span id="cmd-input"></span><span class="cursor"></span>
+        </div>
       </div>
     </div>
 
@@ -110,6 +163,8 @@
       const inputSpan = document.getElementById("cmd-input");
       let currentInput = "";
       let isBooting = true;
+      const commandHistory = [];
+      let historyIndex = -1;
 
       const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -118,7 +173,10 @@
         line.className = "line";
         line.innerText = text;
         screen.appendChild(line);
-        if (screen.childNodes.length > 50) screen.removeChild(screen.firstChild);
+        // Autoscroll to bottom
+        screen.parentElement.scrollTop = screen.parentElement.scrollHeight;
+        // Keep DOM clean
+        if (screen.childNodes.length > 100) screen.removeChild(screen.firstChild);
       }
 
       async function getRepoSize() {
@@ -128,7 +186,7 @@
         } catch (e) { return "0"; }
       }
 
-      // --- NEW ASCII CONVERTER ---
+      // ASCII CONVERTER (Intact)
       async function drawAscii(url) {
         return new Promise((resolve) => {
           const img = new Image();
@@ -137,7 +195,7 @@
           img.onload = () => {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
-            const width = 60; 
+            const width = 80; // slightly wider for better res
             const height = (img.height / img.width) * width * 0.5;
             canvas.width = width;
             canvas.height = height;
@@ -162,54 +220,68 @@
         screen.innerHTML = "";
 
         printLine("AMI(MINNIE)BIOS (C) 2026 CHIPFLARE INC.");
+        printLine("BIOS Date 06/14/26 10:08:33 Ver 1.00");
+        printLine("CPU : Intel(R) 80386 CPU at 33 MHz");
         printLine("------------------------------------------------");
+        await wait(600);
+
+        printLine("Performing POST checks...");
+        await wait(300);
+        
+        let mem = 0;
+        const memLine = document.createElement("span");
+        memLine.className = "line";
+        screen.appendChild(memLine);
+        
+        for (let i = 0; i <= 1024; i += 64) {
+          memLine.innerText = `Base Memory Size : ${i} KB OK`;
+          await wait(25);
+        }
+        await wait(200);
+
+        printLine("CMOS Battery State : OK");
+        printLine("Keyboard......... : Detected");
+        printLine("Mouse............ : Not Present");
         await wait(500);
 
-        printLine("MEMORY CHECK...");
-        for (let i = 0; i <= 640; i += 64) {
-          screen.lastChild.innerText = `MEMORY CHECK: ${i}KB OK`;
-          await wait(20);
-        }
+        printLine("Initializing IO_BUS: ACTIVE");
         await wait(400);
 
-        printLine("IO_BUS: ACTIVE");
-        await wait(600);
-
-        printLine("RETRIEVING DRIVE_C METADATA...");
-        const repoSize = await getRepoSize();
+        printLine("Waiting for Network interface...");
         await wait(800);
-        printLine(`ALLOCATED: ${repoSize}KB [SUPABASE_V8]`);
+        printLine("DHCP... OK (IP Assigned)");
+
+        printLine("Mounting DRIVE_C Metadata...");
+        const repoSize = await getRepoSize();
         await wait(400);
+        printLine(`ALLOCATED: ${repoSize}KB [SUPABASE_V8_FS]`);
+        await wait(300);
 
         printLine("------------------------------------------------");
-        printLine("LOADING CORE_FRAGMENTS...");
-
-        const fragments = ["0426", "AE_542", "UNKNOWN"];
-        for (const f of fragments) {
-          await wait(400);
-          printLine(`LINKING ${f}...`);
-        }
-
-        await wait(600);
-        printLine(" ");
-        printLine("READY.");
+        printLine("System Boot Complete.");
+        printLine("");
+        printLine("Type 'HELP' for a list of available commands.");
 
         inputLine.style.visibility = "visible";
         inputLine.classList.remove("hidden");
         isBooting = false;
       }
 
+      // Supabase logic (Intact)
       async function listFiles() {
-        printLine("SCANNING DIRECTORY...");
-        const { data, error } = await _supabase.from('user_uploads').select('file_name, is_approved');
+        printLine(" Volume in drive C has no label.");
+        printLine(" Directory of C:\\UPLOADS\n");
+        const { data, error } = await _supabase.from('user_uploads').select('file_name, is_approved, created_at');
         if (error || !data.length) {
-          printLine("NO RECORDS FOUND.");
+          printLine("File not found.");
           return;
         }
         data.forEach(f => {
-          const status = f.is_approved ? "[PUB]" : "[REV]";
-          printLine(`${status} ${f.file_name}`);
+          const status = f.is_approved ? "<PUB>" : "<REV>";
+          const date = new Date(f.created_at || Date.now()).toLocaleDateString();
+          printLine(`${date}  ${status}  ${f.file_name}`);
         });
+        printLine(`\n       ${data.length} File(s)`);
       }
 
       async function uploadFile() {
@@ -221,11 +293,10 @@
           const file = e.target.files[0];
           if (!file) return;
 
-          // ASK FOR FILENAME
-          const customName = prompt("SET REMOTE FILENAME:", file.name);
+          const customName = prompt("SET REMOTE FILENAME (NO SPACES):", file.name.replace(/\s+/g, '_'));
           if(!customName) return printLine("ABORTED.");
 
-          printLine(`WRITING: ${customName}...`);
+          printLine(`UPLOADING SECTORS: ${customName}...`);
           
           try {
             const ipRes = await fetch('https://api.ipify.org?format=json');
@@ -244,94 +315,137 @@
               is_approved: false
             });
 
-            printLine("SUCCESS: DATA COMMITTED.");
+            printLine("1 file(s) copied.");
           } catch (err) {
-            printLine(`ERR: WRITE_FAILED`);
+            printLine(`Write fault error writing device C:`);
           }
         };
         fileInput.click();
       }
 
       async function readFile(name, isView) {
-        if (!name) return printLine("ERR: NAME_REQ");
-        printLine(`READING ${name}...`);
+        if (!name) return printLine("Required parameter missing");
+        printLine(`Loading ${name}...`);
 
         const { data: urlData } = _supabase.storage.from('gallery').getPublicUrl(name);
         
         if (isView) {
-          printLine("RENDER_MODE: ASCII");
+          printLine("Initializing graphics mode...");
           const art = await drawAscii(urlData.publicUrl);
           art.split('\n').forEach(l => printLine(l));
         } else {
            try {
             const res = await fetch(urlData.publicUrl);
             const txt = await res.text();
-            printLine(">> CONTENT:");
-            printLine(txt.substring(0, 100));
-          } catch (e) { printLine("ERR: STREAM_FAIL"); }
+            printLine("\n" + txt.substring(0, 500) + (txt.length > 500 ? "\n...[TRUNCATED]" : ""));
+          } catch (e) { printLine("Read fault error"); }
         }
       }
 
       async function processCommand(cmd) {
-        const parts = cmd.trim().split(" ");
+        const parts = cmd.trim().split(/\s+/);
         const action = parts[0].toLowerCase();
         const args = parts.slice(1).join(" ");
 
-        printLine(`> ${cmd}`);
+        printLine(`A:\\> ${cmd}`);
 
         switch (action) {
           case "help":
-            printLine("HELP--------------COMMAND LIST");
-            printLine("DIR---------------DIRECTORY VIEW");
-            printLine("COPY--------------UPLOAD FILE");
-            printLine("VIEW [FILE]-------ASCII RENDER");
-            printLine("PRINT [FILE]------TEXT CONTENT");
-            printLine("CLEAR-------------CLEAR SCREEN");
-            printLine("STATUS------------SYSTEM STATUS");
-            printLine("REBOOT------------REBOOT SYSTEM");
+            printLine("Available commands:");
+            printLine("  DIR        Displays a list of files and subdirectories.");
+            printLine("  COPY       Copies a file to the remote server.");
+            printLine("  VIEW       [filename] Renders image data as ASCII.");
+            printLine("  TYPE       [filename] Displays the contents of a text file.");
+            printLine("  CLS        Clears the screen.");
+            printLine("  DATE       Displays the current system date.");
+            printLine("  TIME       Displays the current system time.");
+            printLine("  VER        Displays the AMIBIOS version.");
+            printLine("  REBOOT     Restarts the system.");
             break;
           case "dir":
+          case "ls":
             await listFiles();
             break;
           case "copy":
+          case "upload":
             await uploadFile();
             break;
           case "view":
             await readFile(args, true);
             break;
+          case "type":
           case "print":
+          case "cat":
             await readFile(args, false);
             break;
           case "status":
-            printLine("NET: CONNECTED");
-            printLine("LOC: SRI LANKA // WESTERN");
+            printLine("Network Adapter : Connected");
+            printLine("Protocol        : TCP/IP");
+            printLine("Subsystem       : Active");
             break;
+          case "cls":
           case "clear":
             screen.innerHTML = "";
             break;
           case "reboot":
             runBootSequence();
             break;
+          case "date":
+            printLine(`Current date is ${new Date().toLocaleDateString()}`);
+            break;
+          case "time":
+            printLine(`Current time is ${new Date().toLocaleTimeString()}`);
+            break;
+          case "ver":
+            printLine("AMIBIOS Community Edition Version 1.0.0");
+            break;
+          case "":
+            break;
           default:
-            printLine("ERR: INVALID_COMMAND");
+            printLine(`Bad command or file name`);
         }
       }
 
       window.addEventListener("keydown", (e) => {
         if (isBooting) return;
+        
+        // Prevent default scrolling when hitting space
+        if (e.key === " ") e.preventDefault();
+
         if (e.key === "Backspace") {
           currentInput = currentInput.slice(0, -1);
         } else if (e.key === "Enter") {
           if (currentInput.length > 0) {
+            commandHistory.push(currentInput);
+            historyIndex = commandHistory.length;
             processCommand(currentInput);
+            currentInput = "";
+          } else {
+            printLine("A:\\>");
+          }
+        } else if (e.key === "ArrowUp") {
+          if (historyIndex > 0) {
+            historyIndex--;
+            currentInput = commandHistory[historyIndex];
+          }
+        } else if (e.key === "ArrowDown") {
+          if (historyIndex < commandHistory.length - 1) {
+            historyIndex++;
+            currentInput = commandHistory[historyIndex];
+          } else {
+            historyIndex = commandHistory.length;
             currentInput = "";
           }
         } else if (e.key.length === 1) {
           currentInput += e.key;
         }
+        
         inputSpan.innerText = currentInput;
+        // Keep view anchored to bottom while typing
+        screen.parentElement.scrollTop = screen.parentElement.scrollHeight;
       });
 
+      // Start
       runBootSequence();
     </script>
   </body>
