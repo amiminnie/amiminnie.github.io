@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>credits!</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="color-scheme" content="light dark" />
+        <meta name="theme-color" content="#111111" />
+        <link id="theme-style" rel="stylesheet" href="dark.css" />
+        <link id="style" rel="stylesheet" href="style.css" />
+        <link rel="icon" href="images/favicon.ico" />
+        <script src="browser.js" type="module"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Overlock:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+            rel="stylesheet" />
+    </head>
+
+    <body>
+        <div class="container">
+            <main>
+                <div class="credits-header">
+                    <h1>Thanks to</h1>
+                    <p class="subtitle" style="font-size: 1.2rem">all that made the development of this possible</p>
+                </div>
+
+                <section class="credit-segment">
+                    <h2 class="credit-title">Inspiration</h2>
+                    <p class="credit-body">
+                        I have to give a huge shoutout to
+                        <a href="https://lisadikaprio.github.io/">LisadiKaprio</a> for inspiring me with her awesome
+                        website. While I have taken my own design path since, you can still see some heavy inspiration
+                        that I have taken. (navbar and guestbook)
+                    </p>
+                </section>
+
+                <div class="credit-separator"></div>
+
+                <section class="credit-segment">
+                    <h2 class="credit-title">Design</h2>
+                    <div class="credit-subsegment">
+                        <h3 class="sub-title"><a href="https://phcode.dev/">Google Fonts & Icons</a></h3>
+                        <p class="sub-body">
+                            A multilingual library of fonts, anything you can think of, for completely free... That's
+                            the best thing a designer can dream for. Thankfully, Google has come forward with Google
+                            fonts. Not only that, but I have used their icon library for some of the icons used here!
+                        </p>
+                    </div>
+                </section>
+
+                <div class="credit-separator"></div>
+
+                <section class="credit-segment">
+                    <h2 class="credit-title">Development</h2>
+                    <div class="credit-subsegment">
+                        <h3 class="sub-title">
+                            <a href="https://pages.github.com/" target="_blank" rel="noopener noreferrer"
+                                >Github Pages</a
+                            >
+                        </h3>
+                        <p class="sub-body">
+                            This whole project wouldn't have been possible without the awesome hosting service that is
+                            Github Pages. Finally being able to host my thoughts into the world without having to deal
+                            with hosting expenses or the hassle of registering a top level domain was a huge relief.
+                        </p>
+                    </div>
+                    <div class="credit-subsegment">
+                        <h3 class="sub-title"><a href="https://supabase.com/">Supabase</a></h3>
+                        <p class="sub-body">
+                            When I was researching on how I can make a guestbook system, without having my own server, I
+                            came across Supabase. Its free tier is perfect for personal projects like mine, thus it now
+                            powers the whole article system.
+                        </p>
+                    </div>
+                    <div class="credit-subsegment">
+                        <h3 class="sub-title"><a href="https://phcode.dev/">Phoenix Code</a></h3>
+                        <p class="sub-body">
+                            While there were many options for a code editor when I first started web development, I went
+                            with Phoenix Code due to its simplicity, being both lightweight and open-source.
+                        </p>
+                    </div>
+                </section>
+
+                <div class="credit-separator" style="border-top: solid 5px var(--border-solid)"></div>
+
+                <section class="credit-segment">
+                    <h2 class="credit-title">My creative workspace</h2>
+                    <div class="credit-subsegment">
+                        <p class="sub-body"><strong>Krita</strong> - for drawing :3 things</p>
+                        <p class="sub-body"><strong>GIMP</strong> - for photo editing</p>
+                        <p class="sub-body"><strong>Blender</strong> - for 3D stuff</p>
+                        <p class="sub-body"><strong>Inkscape</strong> - for vector design</p>
+                        <p class="sub-body"><strong>Godot</strong> - for game development</p>
+                        <p class="sub-body"><strong>DaVinci Resolve</strong> - for video editing</p>
+                        <p class="sub-body"><strong>LibreSprite</strong> - for pixel art</p>
+                        <p class="sub-body"><strong>FontForge</strong> - for forging fonts</p>
+                        <p class="sub-body"><strong>LMMS</strong> - for creating <i>not so great</i> audio</p>
+                    </div>
+                </section>
+            </main>
+        </div>
+        <script>
+            const themeLink = document.getElementById("theme-style");
+            const toggleBtn = document.getElementById("theme-toggle");
+            const themeIcon = document.getElementById("theme-icon");
+
+            const savedTheme = localStorage.getItem("theme");
+
+            function setTheme(mode) {
+                if (mode === "dark") {
+                    themeLink.href = "dark.css";
+                    document.documentElement.style.colorScheme = "dark";
+                    themeIcon.src = "images/sun-icon.png";
+                    themeIcon.alt = "light mode";
+                    localStorage.setItem("theme", "dark");
+                } else {
+                    themeLink.href = "light.css";
+                    document.documentElement.style.colorScheme = "light";
+                    themeIcon.src = "images/moon-icon.png";
+                    themeIcon.alt = "dark mode";
+                    localStorage.setItem("theme", "light");
+                }
+            }
+
+            if (savedTheme) {
+                setTheme(savedTheme);
+            } else {
+                setTheme("dark");
+            }
+
+            toggleBtn.addEventListener("click", () => {
+                themeIcon.style.transform = "scale(0)";
+                setTimeout(() => {
+                    const current = localStorage.getItem("theme");
+                    setTheme(current === "dark" ? "light" : "dark");
+                    void themeIcon.offsetWidth;
+                    themeIcon.style.transform = "scale(1)";
+                }, 120);
+            });
+        </script>
+    </body>
+</html>

@@ -39,7 +39,7 @@
             {
                 "icon": "language_pinyin",
                 "id": "shizu-card",
-                "label":"中国"
+                "label": "中国"
             }
         ]
     },
@@ -95,6 +95,12 @@
         "avatar": "https://cdn.discordapp.com/avatars/1255062122145120370/08f01bf7deda97beab8ecadd5e970202.webp?size=1024",
         "description": "Justice, The High Priestes",
         "hoverColor": "var(--card-agender)",
-        "links": []
+        "links": [
+            {
+                "icon": "military_tech",
+                "url": "https://guns.lol/eggsarebad",
+                "label": "guns.lol"
+            }
+        ]
     }
 ]

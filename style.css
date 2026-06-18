@@ -1359,3 +1359,48 @@ html[style*="color-scheme: dark"] {
 .web-window.dragging {
   transition: none !important;
 }
+/* ==========================================================================
+   13. CREDITS PAGE LAYOUT
+   ========================================================================== */
+
+.credits-header h1 {
+  font-size: 3rem;
+}
+
+.credit-segment {
+  padding: 1rem 1rem;
+}
+
+.credit-title {
+  font-size: 1.5rem;
+  color: var(--accent);
+}
+
+
+.credit-body a {
+  color: var(--surface-text);
+}
+
+.credit-separator {
+  border-top: 2px dashed var(--border-weak);
+}
+
+.credit-subsegment {
+  margin-top: 0.5rem;
+}
+
+.sub-title a{
+  font-size: 1.15rem;
+  color: var(--text-main); 
+}
+
+.sub-body {
+  font-size: 0.95rem;
+  color: var(--text-muted);
+}
+
+
+.sub-body a:hover {
+  text-decoration: underline;
+  color: var(--accent-hover);
+}
