@@ -34,6 +34,7 @@ body {
   margin: 0 auto;
   padding: 2rem;
   border-radius: 10px;
+  position: relative;
 }
 
 .social-wrapper {
@@ -163,15 +164,15 @@ nav.article-active .nav-back-btn {
   padding: 0;
 }
 
-.theme-btn img {
-  width: 20px;
-  height: 20px;
-  display: block;
-  transition: transform 0.25s ease;
+.theme-btn .material-symbols-outlined {
+  color: var(--text-main);
+  font-size: 1.2rem;
+  vertical-align: -5px;
+  transition: font-size 0.1s ease;
 }
 
-.theme-btn img:active {
-  transform: scale(0.8);
+.theme-btn .material-symbols-outlined:hover {
+  color: var(--text-hgt);
 }
 
 /* ==========================================================================
@@ -457,7 +458,9 @@ nav.article-active .nav-back-btn {
 .name-links {
   display: flex;
   gap: 0.25rem;
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
   z-index: 5;
 }
 
@@ -1376,7 +1379,6 @@ html[style*="color-scheme: dark"] {
   color: var(--accent);
 }
 
-
 .credit-body a {
   color: var(--surface-text);
 }
@@ -1389,9 +1391,9 @@ html[style*="color-scheme: dark"] {
   margin-top: 0.5rem;
 }
 
-.sub-title a{
+.sub-title a {
   font-size: 1.15rem;
-  color: var(--text-main); 
+  color: var(--text-main);
 }
 
 .sub-body {
@@ -1399,8 +1401,98 @@ html[style*="color-scheme: dark"] {
   color: var(--text-muted);
 }
 
-
 .sub-body a:hover {
   text-decoration: underline;
   color: var(--accent-hover);
+}
+
+.settings-popup {
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  width: 240px;
+  padding: 1rem;
+  padding-top: 0.4rem;
+  background: var(--surface);
+  border-bottom: 5px solid var(--surface-shadow);
+  border-top: 1px solid var(--highlight);
+  box-shadow: 5px 5px 0 var(--shading);
+  z-index: 99999;
+  color: var(--text-main);
+  transition:
+    transform 0.2s ease,
+    opacity 0.2s ease;
+}
+
+.settings-popup.hidden {
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+}
+
+.settings-popup h3 {
+  padding-bottom: 0.6rem;
+  font-size: 1.5rem;
+  border-bottom: 2px dashed var(--border-weak);
+  color: var(--surface-text);
+}
+
+.settings-popup label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.4rem 0;
+}
+
+.settings-popup label:has(input:disabled) {
+  color: var(--text-muted);
+}
+
+.settings-popup label p {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-top: -5px;
+}
+
+.settings-popup input[type="checkbox"] {
+  appearance: none;
+  width: 41px;
+  height: 25px;
+  border-top: 3px solid var(--surface-shadow);
+  border-bottom: 1px solid var(--highlight);
+  background: var(--surface-dsb);
+  position: relative;
+  cursor: pointer;
+}
+
+.settings-popup input[type="checkbox"]::before {
+  content: "";
+  position: absolute;
+  top: -5px;
+  width: 25px;
+  height: 19px;
+  background: var(--surface-hgt);
+  border-bottom: 5px solid var(--surface-hgt-shadow);
+  border-top: 1px solid var(--highlight);
+  transition: transform 0.1s ease;
+}
+
+.settings-popup input[type="checkbox"]:disabled:before {
+  background: var(--surface);
+  border-bottom: 5px solid var(--surface-shadow);
+  border-top: 1px solid var(--highlight);
+}
+
+.settings-popup input[type="checkbox"]:checked::before {
+  transform: translateX(15px);
+}
+
+#petals-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(0.5px);
 }

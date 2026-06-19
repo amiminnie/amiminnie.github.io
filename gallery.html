@@ -9,7 +9,8 @@
     <link id="theme-style" rel="stylesheet" href="light.css" />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="images/favicon.ico" />
-
+    
+    <script>window.PETAL_SETTINGS = {enable3D: true};</script>
     <script src="common.js" type="module"></script>
     <script src="browser.js" type="module"></script>
     
@@ -25,14 +26,14 @@
   </head>
 
   <body>
-    <div class="container">
+    <div class="container" id="container">
       <header>
         <nav>
           <a href="index.html">about</a>
           <a href="" class="active">gallery</a>
           <a href="articles.html">articles</a>
           <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere!">
-            <img id="theme-icon" src="images/moon-icon.png" alt="Toggle theme" />
+            <span class="material-symbols-outlined"> routine </span>
           </button>
         </nav>
       </header>
@@ -77,45 +78,6 @@
         <p>amiminnie</p>
       </footer>
     </div>
-
-    <script>
-      const themeLink = document.getElementById("theme-style");
-      const toggleBtn = document.getElementById("theme-toggle");
-      const themeIcon = document.getElementById("theme-icon");
-      const savedTheme = localStorage.getItem("theme");
-
-      function setTheme(mode) {
-        if (mode === "dark") {
-          themeLink.href = "dark.css";
-          document.documentElement.style.colorScheme = "dark";
-          themeIcon.src = "images/sun-icon.png";
-          themeIcon.alt = "light mode";
-          localStorage.setItem("theme", "dark");
-        } else {
-          themeLink.href = "light.css";
-          document.documentElement.style.colorScheme = "light";
-          themeIcon.src = "images/moon-icon.png";
-          themeIcon.alt = "dark mode";
-          localStorage.setItem("theme", "light");
-        }
-      }
-
-      if (savedTheme) {
-        setTheme(savedTheme);
-      } else {
-        setTheme("dark");
-      }
-
-      toggleBtn.addEventListener("click", () => {
-        themeIcon.style.transform = "scale(0)";
-        setTimeout(() => {
-          const current = localStorage.getItem("theme");
-          setTheme(current === "dark" ? "light" : "dark");
-          void themeIcon.offsetWidth;
-          themeIcon.style.transform = "scale(1)";
-        }, 120);
-      });
-    </script>
 
     <!-- Gallery loading and tabs -->
     <script>
