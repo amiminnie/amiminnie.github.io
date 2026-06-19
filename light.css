@@ -7,14 +7,14 @@
 
     --surface-hgt: #ffa2c5;
     --surface-hgt-shadow: #ff86b6;
-    --surface-text: #ffffff;
+    --surface-text: #ff5f9e;
     
-    --surface: #ffedf3;
-    --surface-shadow: #ffdfe9;
-    --surface-dsb: #fffbfd;
+    --surface: #ffdce8;
+    --surface-shadow: #ffb4cc;
+    --surface-dsb: #ffeef4;
 
     --highlight: #ffffffcc;
-    --shading: #00000012;
+    --shading: #80164012;
 
     --text-main: #c22b67;
     --text-muted: #ec508e;

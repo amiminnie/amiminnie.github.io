@@ -6,14 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#111111" />
+
     <link id="theme-style" rel="stylesheet" href="light.css" />
     <link rel="stylesheet" href="style.css" />
     <link rel="icon" href="images/favicon.ico" />
-    
-    <script>window.PETAL_SETTINGS = {enable3D: true};</script>
+
+    <script>
+      window.PETAL_SETTINGS = { enable3D: true };
+    </script>
     <script src="common.js" type="module"></script>
     <script src="browser.js" type="module"></script>
-    
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -41,8 +44,8 @@
       <main>
         <div class="tabs">
           <p class="tab-btn active">
-            <span class="material-symbols-outlined" style="vertical-align: -7px"> cloud_done </span> Updates Paused , Cloud Integration
-            Soon!
+            <span class="material-symbols-outlined" style="vertical-align: -7px"> cloud_done </span> Updates Paused ,
+            Cloud Integration Soon!
           </p>
         </div>
         <section class="intro">
@@ -121,7 +124,7 @@
             const realImg = new Image();
             realImg.src = item.file;
             realImg.onload = () => {
-              img.src = realImg.src; 
+              img.src = realImg.src;
             };
 
             container.appendChild(div);
