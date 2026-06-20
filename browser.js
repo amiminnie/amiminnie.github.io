@@ -52,25 +52,23 @@ document.addEventListener("DOMContentLoaded", () => {
         let url = null;
         if (hash.startsWith("http://") || hash.startsWith("https://")) {
             url = hash;
-        }
-        else if (hash.startsWith("self://")) {
+        } else if (hash.startsWith("self://")) {
             const file = hash.slice(7);
             url = "/" + file.replace(/^\/+/, "");
         }
-        if (url) {
-            currentUrl = url;
-            title.textContent = hash;
-            iframe.src = url;
-            overlay.classList.add("active");
-            canDrag = false;
-            dragging = false;
-            win.classList.remove("dragging");
-            win.style.left = "";
-            win.style.top = "";
-            win.style.transform = "";
-        } else {
-            closeWindow();
+        if (!url) {
+            return; 
         }
+        currentUrl = url;
+        title.textContent = hash;
+        iframe.src = url;
+        overlay.classList.add("active");
+        canDrag = false;
+        dragging = false;
+        win.classList.remove("dragging");
+        win.style.left = "";
+        win.style.top = "";
+        win.style.transform = "";
     }
 
     function closeWindow() {

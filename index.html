@@ -227,6 +227,7 @@
     </div>
 
     <div id="google_translate_element" style="display: none"></div>
+
     <script type="text/javascript">
       function googleTranslateElementInit() {
         new google.translate.TranslateElement(
@@ -244,13 +245,80 @@
       src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
     <script>
-      document.getElementById("shizu-card").addEventListener("click", function () {
-        const selectField = document.querySelector(".goog-te-combo");
-        if (selectField) {
-          selectField.value = "zh-CN";
-          selectField.dispatchEvent(new Event("change"));
+      function checkChineseHash() {
+        if (window.location.hash === "#chinese") {
+          const selectField = document.querySelector(".goog-te-combo");
+
+          if (selectField) {
+            selectField.value = "zh-CN";
+            selectField.dispatchEvent(new Event("change"));
+          }
         }
-      });
+      }
+
+      window.addEventListener("hashchange", checkChineseHash);
+      checkChineseHash();
+    </script>
+
+    <script>
+      function startSlugRain() {
+        if (location.hash !== "#slug") return;
+
+        // Remove the hash immediately so it only triggers once
+        history.replaceState(null, "", location.pathname + location.search);
+
+        const duration = 6000;
+        const endTime = Date.now() + duration;
+
+        function spawnSlug() {
+          const img = document.createElement("img");
+          const size = 30 + Math.random() * 70;
+          const startX = Math.random() * window.innerWidth;
+          const drift = (Math.random() - 0.5) * 400;
+          const rotation = (Math.random() - 0.5) * 1080;
+          const fallTime = 3000 + Math.random() * 3000;
+
+          img.src = "images/slug.png";
+          img.style.position = "fixed";
+          img.style.left = startX + "px";
+          img.style.top = -size + "px";
+          img.style.width = size + "px";
+          img.style.height = "auto";
+          img.style.pointerEvents = "none";
+          img.style.zIndex = "99999";
+          img.style.willChange = "transform";
+          img.style.transition = `transform ${fallTime}ms linear`;
+
+          document.body.appendChild(img);
+
+          requestAnimationFrame(() => {
+            img.style.transform = `
+                translate(${drift}px, ${window.innerHeight + size + 100}px)
+                rotate(${rotation}deg)
+            `;
+          });
+
+          setTimeout(() => img.remove(), fallTime);
+        }
+
+        const interval = setInterval(
+          () => {
+            // Spawn 1–3 slugs at random intervals
+            const count = 1 + Math.floor(Math.random() * 3);
+            for (let i = 0; i < count; i++) {
+              spawnSlug();
+            }
+
+            if (Date.now() > endTime) {
+              clearInterval(interval);
+            }
+          },
+          100 + Math.random() * 150
+        );
+      }
+
+      window.addEventListener("hashchange", startSlugRain);
+      startSlugRain();
     </script>
 
     <script>

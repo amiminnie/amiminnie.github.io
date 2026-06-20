@@ -38,7 +38,7 @@
         "links": [
             {
                 "icon": "language_pinyin",
-                "id": "shizu-card",
+                "url": "#chinese",
                 "label": "中国"
             }
         ]
@@ -73,6 +73,10 @@
                 "icon": "language",
                 "url": "#https://soverthe.github.io/",
                 "label": "Website"
+            },
+            {
+                "icon": "egg",
+                "url": "#slug"
             }
         ]
     },
