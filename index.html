@@ -64,7 +64,7 @@
       <header>
         <nav>
           <a href="" class="active">about</a>
-          <a href="gallery.html">gallery</a>
+          <a href="archive.html">archive</a>
           <a href="articles.html">articles</a>
           <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere with this!">
             <span class="material-symbols-outlined"> routine </span>
@@ -91,10 +91,10 @@
         <section class="social-list">
           <h1>what to do</h1>
           <p class="subtitle">in case you're bored</p>
-          <a class="social-item" href="gallery.html">
-            <!--<img src="images/gallery.png" alt="gallery" />-->
+          <a class="social-item" href="archive.html">
+            <!--<img src="images/archive.png" alt="archive" />-->
             <div class="social-text">
-              <h2>visit my gallery!</h2>
+              <h2>visit my archive!</h2>
               <p>mostly comics, but also some other stuff</p>
             </div>
           </a>
@@ -594,7 +594,7 @@ subdirectory_arrow_right
             container.appendChild(div);
           });
         } catch (err) {
-          container.innerHTML = `<p>couldn't load comics: ${err.message}</p>`;
+          container.innerHTML = `<p>changing some stuff, so ${err.message}</p>`;
         }
       }
       loadComicStrip();

