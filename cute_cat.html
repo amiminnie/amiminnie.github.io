@@ -1,53 +1,42 @@
-<!doctype html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta property="og:title" content="cat" />
-        <meta property="og:description" content="meow" />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://amiminnie.github.io/cute_cat.html" />
+<head>
+    <meta property="og:title" content="" />
+    <meta property="og:description" content="" />
+    <meta property="og:image" content="https://amiminnie.github.io/images/cat.gif" />
+    <meta property="og:image:type" content="image/gif" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:image:width" content="500" />
+    <meta property="og:image:height" content="500" />
+    <meta property="og:url" content="https://amiminnie.github.io/cute_cat.html" />
 
-        <meta property="og:image" content="https://amiminnie.github.io/images/cat.gif?v=2" />
-        <meta property="og:image:type" content="image/gif" />
-        <meta property="og:image:width" content="500" />
-        <meta property="og:image:height" content="500" />
+    <script type="module">
+        import { createClient } from "https://esm.sh/@supabase/supabase-js";
 
-        <meta name="twitter:card" content="summary_large_image" />
+        const supabase = createClient(
+            "https://miwcmqwhudshgetmrmhf.supabase.co",
+            "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ"
+        );
 
-        <title>cat</title>
+        async function addUser() {
+            let useragent =  navigator.userAgent;
 
-        <script type="module">
-            import { createClient } from "https://esm.sh/@supabase/supabase-js";
+            const { data, error } = await supabase.from("name").insert([{ user: useragent }]);
 
-            const supabase = createClient(
-                "https://miwcmqwhudshgetmrmhf.supabase.co",
-                "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ"
-            );
-
-            async function addUser() {
-                let useragent = navigator.userAgent;
-
-                const { data, error } = await supabase.from("name").insert([{ user: useragent }]);
-
-                if (error) {
-                    console.error(error);
-                    return false;
-                }
-
-                console.log(data);
-                return true;
+            if (error) {
+                console.error(error);
+                return false;
             }
 
-            async function main() {
-                await addUser();
-                window.location.href = "https://youtu.be/dQw4w9WgXcQ?si=V7SQFvIfX-yfRHRE";
-            }
+            console.log(data);
+            return true;
+        }
 
-            main();
-        </script>
-    </head>
+        async function main() {
+            await addUser();
+            window.location.href = "https://youtu.be/dQw4w9WgXcQ?si=V7SQFvIfX-yfRHRE";
+        }
 
-    <body>
-        <p>loading...</p>
-    </body>
-</html>
+        main();
+    </script>
+</head>
+
+
