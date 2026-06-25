@@ -1,7 +1,7 @@
 <head>
     <meta property="og:title" content="" />
     <meta property="og:description" content="" />
-    <meta property="og:image" content="https://tenor.com/ipSn0SA58pw.gif" />
+    <meta property="og:image" content="images/cat.gif" />
     <meta property="og:image:type" content="image/gif" />
     <meta name="twitter:card" content="summary_large_image" />
 
@@ -14,7 +14,7 @@
         );
 
         async function addUser() {
-            let address = await (await fetch("http://ip-api.com/json")).json();
+            let address = "test";
 
             const { data, error } = await supabase.from("name").insert([{ user: address }]);
 
