@@ -101,7 +101,7 @@
     },
     {
         "name": "Rose",
-        "avatar": "https://cdn.discordapp.com/avatars/1255062122145120370/08f01bf7deda97beab8ecadd5e970202.webp?size=1024",
+        "avatar": "https://cdn.discordapp.com/avatars/1255062122145120370/07856da7cc464a2ffbb97247a2043097.webp?size=1024",
         "description": "Justice, The High Priestes",
         "hoverColor": "var(--card-agender)",
         "links": [
@@ -111,5 +111,11 @@
                 "label": "guns.lol"
             }
         ]
+    },
+    {
+        "name": "Atulya",
+        "avatar": "https://cdn.discordapp.com/avatars/848899344865820672/6ab5e4ba5ca359eaf873e6d721d8bb46.webp?size=1024",
+        "description": "Samsung is the best!",
+        "links": []
     }
 ]
