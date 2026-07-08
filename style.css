@@ -223,6 +223,10 @@ nav.article-active .nav-back-btn {
    5. GALLERY & TABS
    ========================================================================== */
 
+.section-headers {
+  margin-top: 3rem;
+}
+
 .tabs {
   display: flex;
   margin-bottom: 1em;
@@ -259,9 +263,7 @@ nav.article-active .nav-back-btn {
   break-inside: avoid;
   width: 100%;
   margin-bottom: 1rem;
-  padding: 0.5rem;
   border: 1px solid var(--border);
-  border-radius: 6px;
   background: var(--bg);
   transition: transform 0.2s ease;
 }
@@ -269,8 +271,6 @@ nav.article-active .nav-back-btn {
 .gallery-image {
   width: 100%;
   height: auto;
-  border-radius: 6px;
-  margin-bottom: 0.5rem;
   object-fit: cover;
 }
 
@@ -293,16 +293,73 @@ nav.article-active .nav-back-btn {
   padding-bottom: 1rem;
 }
 
-@media (max-width: 900px) {
-  .gallery-masonry {
-    column-count: 2;
-  }
+.sketchbook-gallery {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 10 / 4;
+  padding: 0;
 }
 
-@media (max-width: 600px) {
-  .gallery-masonry {
-    column-count: 1;
-  }
+.gallery-item.art-page {
+  position: absolute;
+  width: 20%;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    z-index 0.3s,
+    width 0.3s ease,
+    padding 0.3s ease,
+    filter 0.3s ease;
+  margin-bottom: 0;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 0 0 var(--shading);
+}
+
+.gallery-item.art-page .gallery-title,
+.gallery-item.art-page .gallery-description,
+.gallery-item.art-page .gallery-date {
+  opacity: 0;
+  max-height: 0;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  transition:
+    opacity 0.3s ease,
+    max-height 0.3s ease,
+    margin 0.3s ease;
+}
+
+.gallery-item.art-page:hover {
+  transform: rotate(0deg) translateX(-25%) !important;
+  z-index: 999 !important;
+  width: 50%;
+  padding: 0.5rem;
+  background-color: var(--surface);
+  border-bottom: 5px solid var(--surface-shadow);
+  border-top: 1px solid var(--highlight);
+  box-shadow: 20px 20px 0 var(--shading);
+}
+
+.gallery-item.art-page:hover .gallery-title {
+  opacity: 1;
+  max-height: 50px;
+  margin-top: 0.5rem;
+  margin-bottom: 0.25rem;
+}
+.gallery-item.art-page:hover .gallery-description {
+  opacity: 1;
+  max-height: 100px;
+  margin-bottom: 0.25rem;
+}
+.gallery-item.art-page:hover .gallery-date {
+  opacity: 1;
+  max-height: 30px;
+  padding-bottom: 0.5rem;
+}
+
+.sketchbook-gallery:has(.art-page:hover) .art-page:not(:hover) {
+  filter: brightness(.5) blur(2px);
 }
 
 /* ==========================================================================
@@ -604,20 +661,24 @@ nav.article-active .nav-back-btn {
 }
 
 .guestbook-entry {
-  padding: 0.5rem 0;
-  border-top: 2px dashed var(--border-solid);
+  padding: 0.4rem 0;
+  border-top: 1px dashed var(--border-solid);
   color: var(--text-muted);
 }
 
 .guestbook-entry strong {
   color: var(--text-main);
-  font-size: 1.2rem;
+  font-size: 1rem;
+}
+
+.guestbook-entry p {
+  font-size: 0.9rem;
 }
 
 .guestbook-entry a {
   color: var(--text-main);
   display: inline-block;
-  font-size: 1.2rem;
+  font-size: 1rem;
   text-decoration: none;
 }
 
@@ -628,17 +689,33 @@ nav.article-active .nav-back-btn {
 }
 
 .guestbook-entry span {
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
 }
 
 .guestbook-reply {
   margin-left: 1.5rem;
   padding-left: 0.5rem;
-  margin-top: 0.25rem;
 }
 .guestbook-reply strong {
   font-size: 1rem;
+}
+
+.guestbook-entry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.guestbook-entry-time {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.guestbook-reply {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 /* ==========================================================================
@@ -895,41 +972,8 @@ nav.article-active .nav-back-btn {
 }
 
 /* ==========================================================================
-   9. COMICS & CONVERSATIONS
+   9. CONVERSATIONS
    ========================================================================== */
-
-.comic-strip-row {
-  display: flex;
-  gap: 1rem;
-  overflow-x: auto;
-  margin-top: 15px;
-  scroll-snap-type: x mandatory;
-  border-top: 5px solid var(--shading);
-}
-
-.comic-strip-row::-webkit-scrollbar {
-  height: 15px;
-}
-.comic-strip-row::-webkit-scrollbar-thumb {
-  background: var(--surface);
-  border-bottom: 5px solid var(--surface-shadow);
-}
-
-.comic-item {
-  flex: 0 0 200px;
-  scroll-snap-align: start;
-}
-
-.comic-item img {
-  width: 100%;
-  border-bottom: 5px solid var(--surface);
-  border-top: 1px solid var(--highlight);
-  transition: all 0.2s ease;
-}
-.comic-item img:hover {
-  border-bottom: 2px solid var(--surface);
-  transform: translateY(3px);
-}
 
 .conversation {
   margin: 2rem 0;
@@ -1153,8 +1197,6 @@ footer {
   gap: 1px;
   align-items: center;
   padding-right: 8px;
-
-  /* Pushes the text all the way to the right side of column 1, right against the grid */
   justify-items: end;
 }
 
@@ -1285,7 +1327,7 @@ html[style*="color-scheme: dark"] {
 }
 
 .web-window-overlay.active .web-window {
-  transform: translate(-50%, -50%) translateY(0);
+  transform: translate(-50%, -50%);
 }
 
 .web-window-header {

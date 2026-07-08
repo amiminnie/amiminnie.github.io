@@ -2,17 +2,27 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>amiminnie - gallery</title>
+    <title>amiminnie - archive</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#111111" />
 
+    <meta property="og:title" content="Minnie's Archive" />
+    <meta property="og:description" content="Interesting things I have made!" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="https://amiminnie.github.io/images/gallery.png" />
+    <meta property="og:url" content="https://amiminnie.github.io" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:image" content="https://amiminnie.github.io/images/gallery.png" />
+
     <link id="theme-style" rel="stylesheet" href="light.css" />
-    <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="images/favicon.ico" />
+    <link id="style" rel="stylesheet" href="style.css" />
+    <link id="icon" rel="icon" href="images/favicon.ico" />
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <script>
-      window.PETAL_SETTINGS = { enable3D: true };
+      window.PETAL_SETTINGS = { enable3D: false };
     </script>
     <script src="common.js" type="module"></script>
     <script src="browser.js" type="module"></script>
@@ -29,114 +39,59 @@
   </head>
 
   <body>
+    <aside class="desktop-sidebar">
+      <ul id="sidebar-thoughts-list" class="sidebar-list"></ul>
+    </aside>
+
     <div class="container" id="container">
       <header>
-        <nav>
+        <nav id="main-nav">
+          <button class="nav-back-btn" onclick="navigateToArticle('')">
+            <span class="material-symbols-outlined">arrow_back</span>
+            <span>back</span>
+          </button>
+
           <a href="index.html">about</a>
-          <a href="" class="active">archive</a>
+          <a href="archive.html" class="active">archive</a>
           <a href="articles.html">articles</a>
-          <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere!">
+
+          <button
+            id="admin-login-btn"
+            class="theme-btn"
+            onclick="toggleAdminAuth()"
+            style="padding: 0 10px; width: auto; font-family: inherit">
+            login
+          </button>
+
+          <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere with this!">
             <span class="material-symbols-outlined"> routine </span>
           </button>
         </nav>
       </header>
 
-      <main>
-        <section class="intro">
-          <p class="prefix">my stuff</p>
-          <h1>archive</h1>
-          <p class="subtitle">place to post the things i make; silly, useful <span style="font-size: 0.5rem;">(maybe)</span> and creative <span  style="font-size: 0.5rem;">(hopefully)</span></p>
-        </section>
+      <main class="view-slider-window">
+        <div id="view-track" class="view-slider-track">
+          <div id="list-view">
+            <section class="intro">
+              <p class="prefix">my stuff</p>
+              <h1>archive</h1>
+              <p class="subtitle">pretty much all the things that i have made and proud of</p>
+            </section>
+            
+            
+            
+            <section class="thought">
+              <p>something awesome is under construction!</p>
+            </section>
 
-        <section class="gallery">
-          <div class="tabs">
-            <button class="tab-btn active" data-tab="comics">comics</button>
-            <button class="tab-btn" data-tab="">?</button>
-            <button class="tab-btn" data-tab="">?</button>
           </div>
-          <div id="gallery-container" class="gallery-masonry">
-            <p>Loading gallery...</p>
-          </div>
-        </section>
+        </div>
       </main>
 
-      <section class="social-list" style="border: none">
-        <p>you've reached the end</p>
-        <a class="social-item" href="index.html#guestbook">
-          <img src="images/comment.png" alt="gallery" />
-          <div class="social-text">
-            <h2>leave a comment &gt;&gt;</h2>
-            <p>i'd appreciate to read what you have to say about this!</p>
-          </div>
-        </a>
-      </section>
-
       <footer>
+        <p>hosted by <a href="https://supabase.com" target="_blank" rel="noopener noreferrer">Supabase</a></p>
         <p>amiminnie</p>
       </footer>
     </div>
-
-    <!-- Gallery loading and tabs -->
-    <script>
-      async function loadGallery() {
-        const container = document.getElementById("gallery-container");
-        const tabs = document.querySelectorAll(".tab-btn");
-        let items = [];
-
-        try {
-          const res = await fetch("gallery.json");
-          if (!res.ok) throw new Error("Gallery JSON not found!");
-          items = await res.json();
-        } catch (err) {
-          container.innerHTML = `<p>Could not load gallery: ${err.message}</p>`;
-          console.error(err);
-          return;
-        }
-
-        function renderGallery(type) {
-          container.innerHTML = "";
-          const filtered = items.filter((item) => item.type === type);
-          if (!filtered.length) {
-            container.innerHTML = "<p>No items to display.</p>";
-            return;
-          }
-
-          filtered.forEach((item) => {
-            const div = document.createElement("div");
-            div.className = "gallery-item";
-
-            div.innerHTML = `
-                        <a class="gallery-link" href="${item.file}" target="_blank" rel="noopener noreferrer">
-                            <img class="gallery-image" src="images/loading.png" alt="${item.name}" loading="lazy">
-                        </a>
-                        <h3 class="gallery-title">${item.name}</h3>
-                        <p class="gallery-description">${item.description}</p>
-                        <p class="gallery-date"><em>${item.date}</em></p>
-    `;
-
-            const img = div.querySelector(".gallery-image");
-            const realImg = new Image();
-            realImg.src = item.file;
-            realImg.onload = () => {
-              img.src = realImg.src;
-            };
-
-            container.appendChild(div);
-          });
-        }
-
-        //tabs.forEach((btn) => {
-        //  btn.addEventListener("click", () => {
-        //    tabs.forEach((b) => b.classList.remove("active"));
-        //    btn.classList.add("active");
-        //    renderGallery(btn.dataset.tab);
-        //  });
-        //});
-
-        renderGallery("comics");
-      }
-
-      loadGallery();
-    </script>
   </body>
 </html>

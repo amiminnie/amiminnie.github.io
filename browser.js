@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
             url = "/" + file.replace(/^\/+/, "");
         }
         if (!url) {
-            return; 
+            return;
         }
         currentUrl = url;
         title.textContent = hash;
