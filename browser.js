@@ -9,10 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="web-window-title" id="iframe-window-title">Loading...</div>
         <div class="web-window-controls">
           <button class="web-window-btn" id="iframe-open-tab" title="Open in new tab">
-            <span class="material-symbols-outlined">open_in_new</span>
+                        <i class='bi bi-square'></i>
           </button>
           <button class="web-window-btn close-btn" id="iframe-close" title="Close window">
-            <span class="material-symbols-outlined">close</span>
+                        <i class='bi bi-x-lg'></i>
           </button>
         </div>
       </div>

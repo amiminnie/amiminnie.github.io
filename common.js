@@ -261,3 +261,50 @@
         }
     });
 })();
+
+const langConfig = {
+    jp: "lang/jp.json",
+    toki: "lang/toki.json"
+};
+const translationCache = {};
+
+async function switchLanguage(lang) {
+    if (lang === "en") {
+        window.location.reload();
+        return;
+    }
+
+    if (!translationCache[lang] && langConfig[lang]) {
+        try {
+            const response = await fetch(langConfig[lang]);
+            if (!response.ok) throw new Error(`Failed to load ${langConfig[lang]}`);
+            translationCache[lang] = await response.json();
+        } catch (err) {
+            console.error("i18n error:", err);
+            return;
+        }
+    }
+
+    const dict = translationCache[lang];
+    if (!dict) return;
+    document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.getAttribute("data-i18n");
+        if (dict[key]) {
+            if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+                el.placeholder = dict[key];
+            } else {
+                el.textContent = dict[key];
+            }
+        }
+    });
+}
+
+function handleHashChange() {
+    const hash = window.location.hash.replace("#", "");
+    if (langConfig[hash]) {
+        switchLanguage(hash);
+    }
+}
+
+window.addEventListener("hashchange", handleHashChange);
+document.addEventListener("DOMContentLoaded", handleHashChange);

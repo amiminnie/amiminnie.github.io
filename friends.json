@@ -1,18 +1,11 @@
 [
     {
         "name": "Isuru",
-        "avatar": "https://cdn.discordapp.com/avatars/1360805395609813002/209386929724a04483f63e86010dd4e6.webp?size=1024",
-        "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1493391761085567066/animated",
+        "avatar": "https://cdn.discordapp.com/avatars/1360805395609813002/81ba5728345dc36aab8e29a222b2a5ec.webp?size=1024",
+        "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1404558257174876300/animated",
         "description": "coffee- hide the coffee",
         "hoverColor": "var(--card-starbucks)",
-        "links": [
-            {
-                "icon": "local_cafe",
-                "url": "#self://coffee-quest/coffee.html",
-                "accent": true,
-                "label": "Coffee Quest"
-            }
-        ]
+        "links": []
     },
     {
         "name": "S4qC",
@@ -22,12 +15,17 @@
         "hoverBackground": "https://miwcmqwhudshgetmrmhf.supabase.co/storage/v1/object/public/blog-assets/1781678057769-banner-blur.png",
         "links": [
             {
-                "icon": "language",
+                "icon": "<i class='bi bi-globe2'></i>",
                 "url": "#https://s4qc.github.io",
                 "label": "Website"
             },
             {
-                "icon": "function",
+                "icon": "<i class='bi bi-twitter'></i>",
+                "url": "https://x.com/devs4qc",
+                "label": "Twitter"
+            },
+            {
+                "icon": "<i class='bi bi-mortarboard'></i>",
                 "url": "#https://ioqm.in/",
                 "label": "MATHS"
             }
@@ -35,35 +33,44 @@
     },
     {
         "name": "Shizu",
-        "avatar": "images/logos/shizu.png",
+        "avatar": "https://cdn.discordapp.com/avatars/1100263587756384316/4ca8a07bab89274c7b8528a5a99d831a.webp?size=1024",
         "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1306330662990643252/animated",
         "description": "‮\"          \"",
         "secretFont": true,
         "hoverColor": "var(--card-bilexicon)",
         "links": [
             {
-                "icon": "language_pinyin",
-                "url": "#chinese",
-                "label": "中国"
+                "icon": "<i class='bi bi-twitter'></i>",
+                "url": "https://x.com/shizutsu1",
+                "label": "Twitter"
+            },
+            {
+                "icon": "<i class='bi bi-translate'></i>",
+                "url": "#chinese"
             }
         ]
     },
     {
         "name": "Dihan",
         "avatar": "https://cdn.discordapp.com/avatars/1068541705596448788/fb0f0d2f336a853bc2b962d0d13a9080.webp?size=1024",
-        "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1498445907169902712/animated",
+        "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1385050947855716503/animated",
         "description": "behold our lord whiskers :3",
         "hoverBackground": "https://i.pinimg.com/1200x/b8/b4/b3/b8b4b35bbaa9e4f3d6f02e0e5001bb7e.jpg",
         "links": [
             {
-                "icon": "language",
+                "icon": "<i class='bi bi-globe2'></i>",
                 "url": "#https://dihanramanayaka.github.io/hello/",
                 "label": "Website"
             },
             {
-                "icon": "newsmode",
+                "icon": "<i class='bi bi-newspaper'></i>",
                 "url": "#https://randomcatuser.github.io/RandomThoughts-/",
                 "label": "Blog"
+            },
+            {
+                "icon": "<i class='bi bi-github'></i>",
+                "url": "https://github.com/RandomCatUser",
+                "label": "GitHub"
             }
         ]
     },
@@ -75,12 +82,12 @@
         "hoverColor": "var(--card-transgender)",
         "links": [
             {
-                "icon": "language",
+                "icon": "<i class='bi bi-globe2'></i>",
                 "url": "#https://soverthe.github.io/",
                 "label": "Website"
             },
             {
-                "icon": "egg",
+                "icon": "<i class='bi bi-egg'></i>",
                 "url": "#slug"
             }
         ]
@@ -101,15 +108,9 @@
     },
     {
         "name": "Rose",
-        "avatar": "https://cdn.discordapp.com/avatars/1255062122145120370/07856da7cc464a2ffbb97247a2043097.webp?size=1024",
+        "avatar": "https://cdn.discordapp.com/avatars/1255062122145120370/892233c4fc37f4ac9b68d6e750a6e884.webp?size=1024",
         "description": "Justice, The High Priestes",
         "hoverColor": "var(--card-agender)",
-        "links": [
-            {
-                "icon": "military_tech",
-                "url": "https://guns.lol/eggsarebad",
-                "label": "guns.lol"
-            }
-        ]
+        "links": []
     }
 ]
