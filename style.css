@@ -3,9 +3,9 @@
    ========================================================================== */
 
 @font-face {
-    font-family: 'nasin nanpa';
-    src: url('lang/toki.otf') format('opentype');
-    font-display: swap;
+  font-family: "nasin nanpa";
+  src: url("lang/toki.otf") format("opentype");
+  font-display: swap;
 }
 
 * {
@@ -156,7 +156,6 @@ nav .active-temp {
     display 0.4s allow-discrete;
 }
 
-
 nav.article-active .nav-back-btn {
   display: inline-flex;
   opacity: 1;
@@ -185,7 +184,6 @@ nav.article-active .nav-back-btn {
   margin-bottom: -0.5rem;
   margin-top: 1rem;
 }
-
 
 .intro {
   position: relative;
@@ -217,7 +215,6 @@ nav.article-active .nav-back-btn {
   color: var(--text-muted);
   margin-bottom: 1rem;
 }
-
 
 .bio a {
   text-decoration: none;
@@ -494,20 +491,21 @@ nav.article-active .nav-back-btn {
   border-bottom: 3px solid var(--surface-shadow);
   border-top: 1px solid var(--highlight);
   cursor: pointer;
-  margin-top: 6px;
   font-size: 0.9rem;
   text-decoration: none;
   color: var(--text-hgt);
   text-shadow: none;
   transition: all 0.2s ease;
-  border-left: 1px dotted var(--highlight);
+  border-left: 1px dashed var(--highlight);
+}
+
+.friend-btn:first-child {
+  border-left: 1px solid var(--highlight);
 }
 
 .friend-btn:hover {
   background: var(--surface-hgt);
-  border-bottom: 4px solid var(--surface-hgt-shadow);
-  margin-top: 5px;
-  box-shadow: 6px 6px 0 var(--shading);
+  border-bottom: 3px solid var(--surface-hgt-shadow);
   color: var(--text-main);
   text-shadow: none;
 }
@@ -518,27 +516,32 @@ nav.article-active .nav-back-btn {
   margin-top: 9px;
 }
 
-
 .name-links {
   display: flex;
+  margin-top: 6px;
   transition:
     opacity 0.3s ease,
     transform 0.3s ease;
   z-index: 5;
+  outline: 1px solid var(--outline);
+}
+.name-links:empty {
+  outline: none;
 }
 
 .bottom-links {
   display: flex;
-  margin-top: -0.5rem;
+  width: fit-content;
   opacity: 0;
   transform: translate(50px, -10px);
   pointer-events: none;
   transition:
     opacity 0.2s ease,
     transform 0.2s ease;
+  outline: 1px solid var(--outline);
 }
 
-.bottom-links .friend-btn{
+.bottom-links .friend-btn {
   padding-right: 0.5rem;
 }
 
@@ -656,6 +659,7 @@ nav.article-active .nav-back-btn {
   font-weight: bold;
   box-shadow: 5px 5px 0 var(--shading);
   transition: all 0.2s ease;
+  outline: 1px solid var(--outline);
 }
 
 #guestbook-form button:hover {
@@ -731,7 +735,6 @@ nav.article-active .nav-back-btn {
    8. THOUGHTS & ARTICLES
    ========================================================================== */
 
-
 .admin-toolbar,
 .item-actions {
   display: none;
@@ -740,7 +743,7 @@ nav.article-active .nav-back-btn {
 }
 .item-actions .bi {
   font-size: 1.25rem;
-  vertical-align: middle; 
+  vertical-align: middle;
 }
 
 .admin-toolbar {
@@ -1340,11 +1343,12 @@ html[style*="color-scheme: dark"] {
   transition:
     transform 0.6s cubic-bezier(0.2, 1.2, 0.3, 1),
     opacity 0.1s ease;
+  outline: 1px solid var(--outline);
 }
 
 .web-window .bi {
   font-size: 0.6rem;
-  vertical-align: middle; 
+  vertical-align: middle;
 }
 
 .web-window-overlay.active .web-window {
@@ -1369,6 +1373,7 @@ html[style*="color-scheme: dark"] {
 
 .web-window-controls {
   display: flex;
+  outline: 1px solid var(--outline);
 }
 
 .web-window-btn {
@@ -1404,7 +1409,6 @@ html[style*="color-scheme: dark"] {
   box-shadow: none;
   margin-top: 2px;
 }
-
 
 .web-window-body {
   flex: 1;
