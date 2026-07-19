@@ -147,12 +147,12 @@
         </section>
         -->
         <h1 style="margin-top: 25px; margin-bottom: -25px" data-i18n="guestbook">Guestbook</h1>
-        <section class="guestbook" id="guestbook">
+        <section class="guestbook surface" id="guestbook">
           <h2 data-i18n="leave-comment">leave a comment!</h2>
           <form id="guestbook-form">
-            <input type="text" id="name" placeholder="nickname (optional)" />
-            <textarea id="message" placeholder="what do you think?" required></textarea>
-            <button type="submit" data-i18n="send-comment">Send!</button>
+            <input type="text" id="name" placeholder="nickname (optional)" class="txtarea"/>
+            <textarea id="message" placeholder="what do you think?" required class="txtarea"></textarea>
+            <button type="submit" data-i18n="send-comment" class="btnsoft">Send!</button>
           </form>
           <div id="guestbook-entries">
             <p data-i18n="comments-loading">loading what others have to say…</p>
@@ -371,7 +371,7 @@
             bottomLinks.className = "bottom-links";
             friend.links.forEach((link) => {
               const iconBtn = document.createElement("a");
-              iconBtn.className = "friend-btn";
+              iconBtn.className = "friend-btn btn";
               if (link.url) iconBtn.href = link.url;
               if (link.id) iconBtn.id = link.id;
               if (link.accent) {
@@ -382,7 +382,7 @@
         `;
               nameLinks.appendChild(iconBtn);
               const fullBtn = document.createElement("a");
-              fullBtn.className = "friend-btn";
+              fullBtn.className = "friend-btn btn";
               if (link.url) fullBtn.href = link.url;
               if (link.id) fullBtn.id = link.id;
               fullBtn.innerHTML = `

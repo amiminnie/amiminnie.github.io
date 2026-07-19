@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
-        <title>amiminnie - visual editor</title>
+        <title>amiminnie - article editor</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <link rel="stylesheet" href="dark.css" id="theme-style" />
@@ -10,466 +10,68 @@
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-        <link href="https://fonts.googleapis.com/css2?family=Alata&family=Overlock:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap" rel="stylesheet" />
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-
-        <style>
-            /* ==========================================================
-               I. PRODUCTION CONTENT & ARTICLE STYLES
-               (Extracted for general article presentation layouts)
-               ========================================================== */
-            .thought-content {
-                font-family: "Overlock", sans-serif;
-            }
-            .thought-row {
-                display: flex;
-                gap: 20px;
-                align-items: center;
-                margin: 20px 0;
-                flex-wrap: wrap;
-            }
-            .thought-text { flex: 1; min-width: 280px; }
-            .thought-media { width: 200px; position: relative; }
-            .thought-media img { width: 100%; border-radius: 8px; display: block; object-fit: cover; }
-
-
-            /* ==========================================================
-               II. EDITOR-SPECIFIC INTERFACE STYLES
-               (Only running inside the builder UI workspace environment)
-               ========================================================== */
-            body {
-                display: flex;
-                height: 100vh;
-                margin: 0;
-                overflow: hidden;
-                background: #111;
-                font-family: "Alata", sans-serif;
-                color: #eee;
-                position: relative;
-            }
-
-            /* Floating Top Settings Trigger Button */
-            .editor-floating-btn {
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                z-index: 1000;
-                background: #161616;
-                color: #eee;
-                border: 1px solid #333;
-                padding: 10px 16px;
-                border-radius: 8px;
-                cursor: pointer;
-                font-family: "Alata", sans-serif;
-                font-size: 0.85rem;
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-                transition: all 0.2s;
-            }
-            .editor-floating-btn:hover {
-                border-color: #52a3ff;
-                color: #fff;
-                background: #1c1c1c;
-            }
-
-            /* Settings Modal Pop-up Box Layout */
-            .settings-modal {
-                display: none;
-                position: fixed;
-                z-index: 2000;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.6);
-                backdrop-filter: blur(4px);
-                align-items: center;
-                justify-content: center;
-            }
-            .settings-modal.open {
-                display: flex;
-            }
-            .modal-content {
-                background: #161616;
-                border: 1px solid #333;
-                border-radius: 12px;
-                padding: 24px;
-                width: 90%;
-                max-width: 440px;
-                box-shadow: 0 8px 32px rgba(0,0,0,0.6);
-                display: flex;
-                flex-direction: column;
-                gap: 16px;
-                box-sizing: border-box;
-            }
-            .modal-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                border-bottom: 1px solid #222;
-                padding-bottom: 12px;
-                margin-bottom: 4px;
-            }
-            .modal-header h2 {
-                font-size: 1.1rem;
-                margin: 0;
-                color: #52a3ff;
-                letter-spacing: 1px;
-            }
-            .close-modal-btn {
-                background: none;
-                border: none;
-                color: #888;
-                font-size: 24px;
-                cursor: pointer;
-                line-height: 1;
-                transition: color 0.2s;
-            }
-            .close-modal-btn:hover { color: #fff; }
-
-            /* Modal Inputs & Formatting elements */
-            .admin-box {
-                border: 1px dashed #333;
-                background: #1a1a1a;
-                padding: 14px;
-                border-radius: 8px;
-                box-sizing: border-box;
-            }
-            .admin-box > label {
-                display: block;
-                font-size: 12px;
-                font-weight: bold;
-                margin-bottom: 10px;
-            }
-            .input-group { margin-bottom: 12px; }
-            .input-group:last-child { margin-bottom: 0; }
-            .modal-content label { display: block; font-size: 11px; color: #888; text-transform: uppercase; margin-bottom: 6px; letter-spacing: 1px; font-weight: bold;}
-            .modal-content input, .modal-content textarea {
-                width: 100%;
-                background: #222;
-                border: 1px solid #333;
-                color: white;
-                padding: 10px 12px;
-                border-radius: 6px;
-                font-family: "Alata", sans-serif;
-                outline: none;
-                font-size: 0.85rem;
-                box-sizing: border-box;
-                transition: border 0.2s;
-            }
-            .modal-content input:focus, .modal-content textarea:focus { border-color: #52a3ff; }
-            .input-with-btn { display: flex; gap: 8px; }
-            .input-with-btn input { flex-grow: 1; }
-            
-            .modal-content button.action-btn {
-                background: #222;
-                color: #ccc;
-                border: 1px solid #333;
-                padding: 8px 12px;
-                border-radius: 6px;
-                cursor: pointer;
-                font-family: "Alata", sans-serif;
-                font-size: 0.8rem;
-                transition: all 0.2s;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 6px;
-            }
-            .modal-content button.action-btn:hover { background: #2a2a2a; color: white; border-color: #52a3ff; }
-
-            .publish-btn {
-                background: #1a5cff !important;
-                width: 100%;
-                padding: 14px !important;
-                font-weight: bold;
-                font-size: 0.9rem !important;
-                color: white !important;
-                border: none !important;
-                border-radius: 6px;
-                cursor: pointer;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                gap: 8px;
-                margin-top: 8px;
-                transition: filter 0.2s;
-            }
-            .publish-btn:hover { filter: brightness(1.2); }
-
-            /* WYSIWYG Document Workspace */
-            .preview-pane {
-                flex-grow: 1;
-                overflow-y: auto;
-                background: var(--bg-main, #111);
-                padding: 3rem 2rem;
-                transition: background 0.2s;
-                display: flex;
-                justify-content: center;
-            }
-            .preview-pane .container {
-                width: 100%;
-                max-width: 800px;
-            }
-
-            /* Live Block Wrapper (On Canvas) */
-            .block-wrapper {
-                position: relative;
-                margin-bottom: 12px;
-                padding: 4px 8px;
-                border-radius: 6px;
-                transition: background-color 0.15s;
-                border: 1px solid transparent;
-            }
-            .block-wrapper:hover {
-                background-color: rgba(255, 255, 255, 0.02);
-                border-color: rgba(255, 255, 255, 0.04);
-            }
-            body.light-theme .block-wrapper:hover {
-                background-color: rgba(0, 0, 0, 0.02);
-                border-color: rgba(0, 0, 0, 0.04);
-            }
-
-            /* Floating formatting tools next to blocks on hover */
-            .block-controls {
-                position: absolute;
-                left: -48px;
-                top: 50%;
-                transform: translateY(-50%);
-                display: none;
-                flex-direction: row;
-                gap: 4px;
-                z-index: 10;
-                background: #222;
-                border: 1px solid #444;
-                border-radius: 6px;
-                padding: 2px;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-            }
-            .block-wrapper:hover .block-controls {
-                display: flex;
-            }
-            .block-controls button {
-                background: none;
-                border: none;
-                color: #aaa;
-                cursor: pointer;
-                padding: 4px;
-                display: flex;
-                align-items: center;
-                border-radius: 4px;
-            }
-            .block-controls button:hover {
-                background: #333;
-                color: #fff;
-            }
-            .block-controls .drag-handle {
-                cursor: grab;
-            }
-            .block-controls .drag-handle:active {
-                cursor: grabbing;
-            }
-
-            /* WYSIWYG Editors */
-            .wysiwyg-editor {
-                outline: none;
-                min-height: 1.5em;
-                word-break: break-word;
-            }
-            .wysiwyg-editor:empty::before {
-                content: attr(placeholder);
-                color: #555;
-                font-style: italic;
-            }
-
-            /* Selection Text Toolbar (Floating Formatting Menu) */
-            .formatting-toolbar {
-                position: absolute;
-                background: #1e1e1e;
-                border: 1px solid #444;
-                border-radius: 8px;
-                box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-                display: none;
-                gap: 2px;
-                padding: 4px;
-                z-index: 500;
-            }
-            .formatting-toolbar button {
-                background: transparent;
-                border: none;
-                color: #ccc;
-                cursor: pointer;
-                padding: 6px 8px;
-                border-radius: 4px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                transition: all 0.15s;
-            }
-            .formatting-toolbar button:hover {
-                background: #333;
-                color: #52a3ff;
-            }
-
-            /* Inline HTML Block Layout */
-            .html-block-container {
-                border: 1px dashed #444;
-                border-radius: 6px;
-                padding: 10px;
-                position: relative;
-                background: rgba(0, 0, 0, 0.1);
-            }
-            .html-badge {
-                position: absolute;
-                top: -10px;
-                right: 10px;
-                background: #52a3ff;
-                color: #111;
-                font-size: 10px;
-                font-weight: bold;
-                padding: 2px 6px;
-                border-radius: 4px;
-                text-transform: uppercase;
-                pointer-events: none;
-            }
-            .html-editor-textarea {
-                width: 100%;
-                font-family: monospace;
-                background: #000;
-                color: #0f0;
-                border: 1px solid #333;
-                padding: 10px;
-                border-radius: 4px;
-                box-sizing: border-box;
-                font-size: 13px;
-                resize: vertical;
-            }
-
-            .media-overlay-btn {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: rgba(0,0,0,0.8);
-                border: 1px solid #52a3ff;
-                color: #fff;
-                padding: 6px 10px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 11px;
-                display: none;
-                font-family: "Alata", sans-serif;
-            }
-            .thought-media:hover .media-overlay-btn {
-                display: block;
-            }
-
-            /* Tool Box for Adding Elements In-line */
-            .quick-insert-container {
-                display: flex;
-                gap: 6px;
-                margin: 20px 0;
-                border-top: 1px dashed #333;
-                padding-top: 20px;
-                flex-wrap: wrap;
-            }
-            .quick-insert-container button {
-                flex: 1 1 100px;
-                background: #181818;
-                border: 1px solid #282828;
-                color: #aaa;
-                padding: 8px;
-                border-radius: 6px;
-                cursor: pointer;
-                font-size: 0.75rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 4px;
-            }
-            .quick-insert-container button:hover {
-                background: #252525;
-                color: #52a3ff;
-                border-color: #52a3ff;
-            }
-
-            /* Responsive adjustments */
-            @media (max-width: 992px) {
-                .block-controls {
-                    left: 2px;
-                    top: -24px;
-                    transform: none;
-                    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-                }
-            }
-            @media (max-width: 768px) {
-                .preview-pane { padding: 1.5rem; }
-            }
-        </style>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Alata&family=Overlock:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+            rel="stylesheet" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     </head>
     <body>
-
-        <button class="editor-floating-btn" onclick="toggleSettingsModal()">
-            <span class="material-symbols-outlined">settings</span> Settings
+        <button class="editor-floating-btn btn" onclick="toggleSettingsModal()">
+            <i class="bi bi-gear"></i>
         </button>
 
         <div class="settings-modal" id="settings-modal">
-            <div class="modal-content">
+            <div class="modal-content surface">
                 <div class="modal-header">
-                    <h2>ARTICLE SETTINGS</h2>
-                    <button class="close-modal-btn" onclick="toggleSettingsModal()">&times;</button>
+                    <h2>Settings Panel</h2>
+                    <button class="close-modal-btn btn" onclick="toggleSettingsModal()"><i class="bi bi-x"></i></button>
                 </div>
 
-                <div class="admin-box">
-                    <label style="color: #52a3ff">Write Access Auth</label>
-                    <div class="input-group">
-                        <label>editor database key</label>
-                        <input type="password" id="editor-key" placeholder="••••••••" />
-                    </div>
-                    <div class="input-group">
-                        <label>unique article slug/tag</label>
-                        <input type="text" id="article-tag" placeholder="my-awesome-post" />
-                    </div>
-                </div>
-
-                <div class="admin-box">
-                    <label style="color: #52a3ff">Discovery Metadata</label>
-                    <div class="input-group" style="margin-top: 8px;">
-                        <label>Listing Thumbnail URL</label>
-                        <div class="input-with-btn">
-                            <input type="text" id="thumb-url" placeholder="images/thumbnail.png" />
-                            <button class="action-btn" onclick="uploadImageDirect('thumb-url')">
-                                <span class="material-symbols-outlined" style="font-size: 16px">upload</span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="input-group">
-                        <label>Archive Short Snippet</label>
-                        <textarea id="short-desc" rows="3" placeholder="A brief teaser describing this article on the listing index..."></textarea>
-                    </div>
-                </div>
-
-                <div class="input-group" style="padding: 0 4px;">
-                    <label>Preview Theme Mode</label>
-                    <button class="action-btn" onclick="togglePreviewTheme()" id="theme-toggle-btn" style="width:100%;">
-                        <span class="material-symbols-outlined">routine</span> Toggle: Dark Mode
+                <label style="color: var(--accent); margin-bottom: -5px">AUTHENTICATION</label>
+                <label>Password</label>
+                <input type="password" id="editor-key" placeholder="••••••••" class="txtarea" />
+                <label>Article ID</label>
+                <input type="text" id="article-tag" placeholder="my-post" class="txtarea" />
+                <label style="color: var(--accent); margin-bottom: -5px">Metadata</label>
+                <label>Thumbnail</label>
+                <div class="input-with-btn">
+                    <input type="text" id="thumb-url" placeholder="images/thumbnail.png" class="txtarea" />
+                    <button class="action-btn btn" onclick="uploadImageDirect('thumb-url')">
+                        <i class="bi bi-upload"></i>
                     </button>
                 </div>
-
-                <button class="publish-btn" id="publish-btn" onclick="publishToSupabase()">
-                    <span class="material-symbols-outlined">cloud_upload</span> SAVE TO DATABASE
+                <label>Description</label>
+                <textarea
+                    id="short-desc"
+                    rows="3"
+                    placeholder="what it is all about!"
+                    class="txtarea"
+                    style="margin-bottom: 10px;"
+                          ></textarea>
+                <button class="publish-btn btnsoft" id="publish-btn" onclick="publishToSupabase()">
+                    <i class="bi bi-floppy-fill"></i> Save
                 </button>
             </div>
         </div>
 
         <div id="formatting-toolbar" class="formatting-toolbar">
-            <button onclick="formatText('bold')" title="Bold"><span class="material-symbols-outlined" style="font-size:18px;">format_bold</span></button>
-            <button onclick="formatText('italic')" title="Italic"><span class="material-symbols-outlined" style="font-size:18px;">format_italic</span></button>
-            <button onclick="formatText('underline')" title="Underline"><span class="material-symbols-outlined" style="font-size:18px;">format_underlined</span></button>
-            <button onclick="formatText('strikeThrough')" title="Strikethrough"><span class="material-symbols-outlined" style="font-size:18px;">format_strikethrough</span></button>
-            <button onclick="formatText('removeFormat')" title="Clear Formatting"><span class="material-symbols-outlined" style="font-size:18px;">format_clear</span></button>
+            <button onclick="formatText('bold')" title="Bold" class="btn">
+                <i class="bi bi-type-bold"></i>
+            </button>
+            <button onclick="formatText('italic')" title="Italic" class="btn">
+                <i class="bi bi-type-italic"></i>
+            </button>
+            <button onclick="formatText('underline')" title="Underline" class="btn">
+                <i class="bi bi-type-underline"></i>
+            </button>
+            <button onclick="formatText('strikeThrough')" title="Strikethrough" class="btn">
+                <i class="bi bi-type-strikethrough"></i>
+            </button>
+            <button onclick="formatText('removeFormat')" title="Clear Formatting" class="btn">
+                <i class="bi bi-x"></i>
+            </button>
         </div>
 
         <div class="preview-pane">
@@ -484,24 +86,38 @@
 
                 <main>
                     <article class="thought-content">
-                        <h1 contenteditable="true" id="canvas-title" class="wysiwyg-editor" placeholder="Enter Title Here..."></h1>
-                        <p><em contenteditable="true" id="canvas-date" class="wysiwyg-editor" placeholder="Enter Publication Date (e.g. 24 June 2026)..."></em></p>
-                        
+                        <h1
+                            contenteditable="true"
+                            id="canvas-title"
+                            class="wysiwyg-editor"
+                            placeholder="Title here"></h1>
+                        <p>
+                            <em
+                                contenteditable="true"
+                                id="canvas-date"
+                                class="wysiwyg-editor"
+                                placeholder="go on a date..."></em>
+                        </p>
+
                         <div id="blocks-container"></div>
 
                         <div class="quick-insert-container">
-                            <button onclick="addBlock('p')"><span class="material-symbols-outlined">notes</span> Paragraph</button>
-                            <button onclick="addBlock('h2')"><span class="material-symbols-outlined">title</span> H2</button>
-                            <button onclick="addBlock('h3')"><span class="material-symbols-outlined">title</span> H3</button>
-                            <button onclick="addBlock('ul')"><span class="material-symbols-outlined">format_list_bulleted</span> List</button>
-                            <button onclick="addBlock('thought')"><span class="material-symbols-outlined">image</span> Img + Text</button>
-                            <button onclick="addBlock('html')"><span class="material-symbols-outlined">code</span> Code Block</button>
+                            <button onclick="addBlock('p')" class="btn"><i class="bi bi-text-left"></i></button>
+                            <button onclick="addBlock('h2')" class="btn"><i class="bi bi-type-h2"></i></button>
+                            <button onclick="addBlock('h3')" class="btn"><i class="bi bi-type-h3"></i></button>
+                            <button onclick="addBlock('conversation')" class="btn"><i class="bi bi-quote"></i></button>
+                            <button onclick="addBlock('ul')" class="btn"><i class="bi bi-list-ul"></i></button>
+                            <button onclick="addBlock('thought')" class="btn"><i class="bi bi-image"></i></button>
+                            <button onclick="addBlock('hr')" class="btn"><i class="bi bi-reception-0"></i></button>
+                            <button onclick="addBlock('html')" class="btn"><i class="bi bi-filetype-html"></i></button>
                         </div>
                     </article>
                 </main>
 
                 <footer>
-                    <p>hosted by <a href="https://supabase.com" target="_blank" rel="noopener noreferrer">Supabase</a></p>
+                    <p>
+                        hosted by <a href="https://supabase.com" target="_blank" rel="noopener noreferrer">Supabase</a>
+                    </p>
                     <p>amiminnie</p>
                 </footer>
             </div>
@@ -517,21 +133,18 @@
             let blocks = [];
             let currentPreviewTheme = "dark";
 
-            // Modal Management Functions
             function toggleSettingsModal() {
                 const modal = document.getElementById("settings-modal");
                 modal.classList.toggle("open");
             }
 
-            // Close modal instantly if user clicks overlay background
-            window.onclick = function(event) {
+            window.onclick = function (event) {
                 const modal = document.getElementById("settings-modal");
                 if (event.target === modal) {
                     modal.classList.remove("open");
                 }
-            }
+            };
 
-            // Selection tool detection
             document.addEventListener("selectionchange", handleSelection);
 
             function handleSelection() {
@@ -562,7 +175,7 @@
                 const rect = range.getBoundingClientRect();
 
                 toolbar.style.display = "flex";
-                toolbar.style.left = `${rect.left + window.scrollX + (rect.width / 2) - (toolbar.offsetWidth / 2)}px`;
+                toolbar.style.left = `${rect.left + window.scrollX + rect.width / 2 - toolbar.offsetWidth / 2}px`;
                 toolbar.style.top = `${rect.top + window.scrollY - toolbar.offsetHeight - 8}px`;
             }
 
@@ -570,7 +183,7 @@
                 document.execCommand(command, false, null);
                 const activeEl = document.activeElement;
                 if (activeEl && activeEl.hasAttribute("contenteditable")) {
-                    const event = new Event('input', { bubbles: true });
+                    const event = new Event("input", { bubbles: true });
                     activeEl.dispatchEvent(event);
                 }
             }
@@ -582,18 +195,41 @@
                     themeLink.href = "light.css";
                     currentPreviewTheme = "light";
                     document.body.classList.add("light-theme");
-                    btn.innerHTML = `<span class="material-symbols-outlined">routine</span> Toggle: Light Mode`;
+                    btn.innerHTML = `<i class="bi bi-palette-fill"></i> Toggle: Light Mode`;
                 } else {
                     themeLink.href = "dark.css";
                     currentPreviewTheme = "dark";
                     document.body.classList.remove("light-theme");
-                    btn.innerHTML = `<span class="material-symbols-outlined">routine</span> Toggle: Dark Mode`;
+                    btn.innerHTML = `<i class="bi bi-palette-fill"></i> Toggle: Dark Mode`;
                 }
             }
 
-            function addBlock(type, content = "", media = "", alt = "") {
+            function addBlock(type, content = "", media = "", alt = "", styles = null) {
                 const id = Date.now() + Math.random();
-                blocks.push({ id, type, v1: content, v2: media, v3: alt, isEditingHtml: false });
+                const defaultStyles = styles || {
+                    fontSize: "",
+                    color: "",
+                    bgColor: "",
+                    textAlign: "left",
+                    customCss: ""
+                };
+
+                // Set native sample standard default copy for new dialogue quote containers
+                if (type === "conversation" && !content) {
+                    content =
+                        "<p><i>The dozen may be one of the earliest primitive integer groupings... <strong>Twelve is convenient because it has a maximal number of divisors...</strong></i></p>";
+                }
+
+                blocks.push({
+                    id,
+                    type,
+                    v1: content,
+                    v2: media,
+                    v3: alt,
+                    isEditingHtml: false,
+                    styles: defaultStyles,
+                    showStyles: false
+                });
                 renderEditor();
             }
 
@@ -611,14 +247,62 @@
 
             function updateBlockValue(id, field, value) {
                 const b = blocks.find((x) => x.id === id);
+                if (b) b[field] = value;
+            }
+
+            function toggleBlockStyles(id) {
+                const b = blocks.find((x) => x.id === id);
                 if (b) {
-                    b[field] = value;
+                    b.showStyles = !b.showStyles;
+                    renderEditor();
                 }
+            }
+
+            function updateBlockStyleLive(id, prop, value) {
+                const b = blocks.find((x) => x.id === id);
+                if (!b) return;
+                if (!b.styles) b.styles = {};
+                b.styles[prop] = value;
+
+                const el = document.getElementById(`block-content-${id}`);
+                if (el) applyStylesToElement(el, b.styles);
+
+                if (prop === "fontSize") {
+                    const label = document.getElementById(`lbl-size-${id}`);
+                    if (label) label.innerText = `${value}rem`;
+                }
+            }
+
+            function applyStylesToElement(el, styles) {
+                if (!styles || !el) return;
+                el.style.fontSize = styles.fontSize ? `${styles.fontSize}rem` : "";
+                el.style.color = styles.color || "";
+                el.style.backgroundColor = styles.bgColor || "";
+                el.style.textAlign = styles.textAlign || "";
+
+                let inlineStyle = el.getAttribute("style") || "";
+                if (styles.customCss) {
+                    el.style.cssText = inlineStyle + "; " + styles.customCss;
+                }
+            }
+
+            function getBlockStyleString(b) {
+                if (!b.styles) return "";
+                let style = "";
+                if (b.styles.fontSize) style += `font-size: ${b.styles.fontSize}rem; `;
+                if (b.styles.color) style += `color: ${b.styles.color}; `;
+                if (b.styles.bgColor) style += `background-color: ${b.styles.bgColor}; `;
+                if (b.styles.textAlign && b.styles.textAlign !== "left") style += `text-align: ${b.styles.textAlign}; `;
+                if (b.styles.customCss) style += `${b.styles.customCss}; `;
+                return style.trim() ? ` style="${style.trim()}"` : "";
             }
 
             async function uploadImageDirect(inputFieldId) {
                 const password = document.getElementById("editor-key").value;
-                if (!password) { alert("Enter Database Key Password first!"); return; }
+                if (!password) {
+                    alert("Enter Database Key Password first!");
+                    return;
+                }
 
                 const fileInput = document.createElement("input");
                 fileInput.type = "file";
@@ -647,7 +331,10 @@
 
             async function uploadBlockImage(id) {
                 const password = document.getElementById("editor-key").value;
-                if (!password) { alert("Enter Database Key Password in the settings popup first!"); return; }
+                if (!password) {
+                    alert("Enter Database Key Password in the settings popup first!");
+                    return;
+                }
 
                 const fileInput = document.createElement("input");
                 fileInput.type = "file";
@@ -668,7 +355,7 @@
                         alert("Upload failed: " + error.message);
                     } else {
                         const publicUrl = `${SUB_URL}/storage/v1/object/public/blog-assets/${fileName}`;
-                        updateBlockValue(id, 'v2', publicUrl);
+                        updateBlockValue(id, "v2", publicUrl);
                         renderEditor();
                     }
                 };
@@ -692,7 +379,6 @@
                     wrapper.className = "block-wrapper";
                     wrapper.dataset.index = index;
 
-                    // Drag Drop Bindings
                     wrapper.addEventListener("dragstart", (e) => {
                         wrapper.classList.add("dragging");
                         e.dataTransfer.setData("text/plain", index);
@@ -705,32 +391,59 @@
                     wrapper.addEventListener("drop", (e) => {
                         e.preventDefault();
                         const draggedIndex = parseInt(e.dataTransfer.getData("text/plain"));
-                        const targetIndex = index;
-                        if (draggedIndex !== targetIndex) {
-                            moveBlock(draggedIndex, targetIndex);
-                        }
+                        if (draggedIndex !== index) moveBlock(draggedIndex, index);
                     });
 
-                    // Dynamic Block Control UI
                     const controls = document.createElement("div");
                     controls.className = "block-controls";
                     controls.innerHTML = `
-                        <button class="drag-handle" title="Drag to Reorder"><span class="material-symbols-outlined" style="font-size:16px;">drag_indicator</span></button>
-                        <button onclick="removeBlock(${b.id})" title="Delete Block"><span class="material-symbols-outlined" style="font-size:16px; color:#ff5252;">delete</span></button>
+                        <button class="drag-handle btn" title="Drag to Reorder"><i class="bi bi-grip-vertical"></i></button>
+                        <button onclick="toggleBlockStyles(${b.id})" title="Toggle Styles" class="btn"><i class="bi bi-palette"></i></button>
+                        <button onclick="removeBlock(${b.id})" title="Delete Block" class="btn"><i class="bi bi-trash3"></i></button>
                     `;
                     wrapper.appendChild(controls);
 
-                    // Dynamic Handle Constraint: Activate draggable functionality ONLY on mousedown over handle
                     const handle = controls.querySelector(".drag-handle");
-                    handle.addEventListener("mousedown", () => {
-                        wrapper.setAttribute("draggable", "true");
-                    });
-                    handle.addEventListener("mouseup", () => {
-                        wrapper.removeAttribute("draggable");
-                    });
-                    handle.addEventListener("mouseleave", () => {
-                        wrapper.removeAttribute("draggable");
-                    });
+                    handle.addEventListener("mousedown", () => wrapper.setAttribute("draggable", "true"));
+                    handle.addEventListener("mouseup", () => wrapper.removeAttribute("draggable"));
+                    handle.addEventListener("mouseleave", () => wrapper.removeAttribute("draggable"));
+
+                    if (b.showStyles) {
+                        const stylesPanel = document.createElement("div");
+                        stylesPanel.className = "block-styles-panel surface";
+                        const currentSize = b.styles?.fontSize || "1.0";
+                        const currentColor = b.styles?.color || "#ffffff";
+                        const currentBg = b.styles?.bgColor || "#000000";
+                        const currentAlign = b.styles?.textAlign || "left";
+                        const currentCss = b.styles?.customCss || "";
+
+                        stylesPanel.innerHTML = `
+                            <div class="style-group" >
+                                <label>Size (<span id="lbl-size-${b.id}">${currentSize}rem</span>)</label>
+                                <input type="range" min="0.5" max="3.5" step="0.1" value="${currentSize}" oninput="updateBlockStyleLive(${b.id}, 'fontSize', this.value)" />
+                            </div>
+                            <div class="style-group">
+                                <label>Text</label>
+                                <input type="color" value="${currentColor}" oninput="updateBlockStyleLive(${b.id}, 'color', this.value)" title="Text Color" />
+                            </div>
+                            <div class="style-group">
+                                <label>BG</label>
+                                <input type="color" value="${currentBg}" oninput="updateBlockStyleLive(${b.id}, 'bgColor', this.value)" title="Background Color" />
+                            </div>
+                            <div class="style-group">
+                                <div class="align-btn-group">
+                                    <button class="align-btn ${currentAlign === "left" ? "active" : ""} btn" onclick="updateBlockStyleLive(${b.id}, 'textAlign', 'left'); renderEditor();" title="Align Left"><i class="bi bi-text-left"></i></button>
+                                    <button class="align-btn ${currentAlign === "center" ? "active" : ""} btn" onclick="updateBlockStyleLive(${b.id}, 'textAlign', 'center'); renderEditor();" title="Align Center"><i class="bi bi-text-center"></i></button>
+                                    <button class="align-btn ${currentAlign === "right" ? "active" : ""} btn" onclick="updateBlockStyleLive(${b.id}, 'textAlign', 'right'); renderEditor();" title="Align Right"><i class="bi bi-text-right"></i></button>
+                                </div>
+                            </div>
+                            <div class="style-group" style="flex-grow:1;">
+                                <label>Custom</label>
+                                <input type="text" class="txtarea"  value="${currentCss}" oninput="updateBlockStyleLive(${b.id}, 'customCss', this.value)" style="width:100%;" />
+                            </div>
+                        `;
+                        wrapper.appendChild(stylesPanel);
+                    }
 
                     let contentNode;
 
@@ -740,74 +453,81 @@
                         contentNode.contentEditable = "true";
                         contentNode.setAttribute("placeholder", "Click to type paragraph content...");
                         contentNode.innerHTML = b.v1 || "";
-                        contentNode.addEventListener("input", (e) => updateBlockValue(b.id, 'v1', e.target.innerHTML));
-                        
+                        contentNode.addEventListener("input", (e) => updateBlockValue(b.id, "v1", e.target.innerHTML));
                     } else if (b.type === "h2") {
                         contentNode = document.createElement("h2");
                         contentNode.className = "wysiwyg-editor";
                         contentNode.contentEditable = "true";
                         contentNode.setAttribute("placeholder", "Header 2");
                         contentNode.innerHTML = b.v1 || "";
-                        contentNode.addEventListener("input", (e) => updateBlockValue(b.id, 'v1', e.target.innerHTML));
-
+                        contentNode.addEventListener("input", (e) => updateBlockValue(b.id, "v1", e.target.innerHTML));
                     } else if (b.type === "h3") {
                         contentNode = document.createElement("h3");
                         contentNode.className = "wysiwyg-editor";
                         contentNode.contentEditable = "true";
                         contentNode.setAttribute("placeholder", "Header 3");
                         contentNode.innerHTML = b.v1 || "";
-                        contentNode.addEventListener("input", (e) => updateBlockValue(b.id, 'v1', e.target.innerHTML));
-
+                        contentNode.addEventListener("input", (e) => updateBlockValue(b.id, "v1", e.target.innerHTML));
+                    } else if (b.type === "conversation") {
+                        contentNode = document.createElement("div");
+                        contentNode.className = "conversation wysiwyg-editor";
+                        contentNode.contentEditable = "true";
+                        contentNode.setAttribute("placeholder", "Enter dialogue or quote box text content...");
+                        contentNode.innerHTML = b.v1 || "";
+                        contentNode.addEventListener("input", (e) => updateBlockValue(b.id, "v1", e.target.innerHTML));
+                    } else if (b.type === "hr") {
+                        contentNode = document.createElement("hr");
+                        contentNode.style.margin = "2rem 0";
                     } else if (b.type === "ul") {
                         contentNode = document.createElement("ul");
                         contentNode.className = "wysiwyg-editor";
                         contentNode.contentEditable = "true";
                         contentNode.setAttribute("placeholder", "• Item 1 (Press shift+enter for new lines)");
                         contentNode.innerHTML = b.v1 || "<li></li>";
-                        contentNode.addEventListener("input", (e) => updateBlockValue(b.id, 'v1', e.target.innerHTML));
-
+                        contentNode.addEventListener("input", (e) => updateBlockValue(b.id, "v1", e.target.innerHTML));
                     } else if (b.type === "html") {
                         contentNode = document.createElement("div");
                         contentNode.className = "html-block-container";
-                        
                         if (b.isEditingHtml) {
                             contentNode.innerHTML = `
                                 <span class="html-badge">Editing Code</span>
                                 <textarea class="html-editor-textarea" rows="8">${b.v1 || ""}</textarea>
-                                <button onclick="toggleHtmlEdit(${b.id})" style="margin-top:8px; width:100%; font-size:11px; background:#222; color:#fff; border:1px solid #444; padding:6px; border-radius:4px; cursor:pointer;">Render Output</button>
+                                <button onclick="toggleHtmlEdit(${b.id})" style="margin-top:8px; width:100%; font-size:11px; background:#222; color:#fff; border:1px solid #444; padding:6px; cursor:pointer;">Render Output</button>
                             `;
                             const txt = contentNode.querySelector("textarea");
-                            txt.addEventListener("input", (e) => updateBlockValue(b.id, 'v1', e.target.value));
+                            txt.addEventListener("input", (e) => updateBlockValue(b.id, "v1", e.target.value));
                         } else {
                             contentNode.innerHTML = `
                                 <span class="html-badge">HTML Output</span>
                                 <div>${b.v1 || "<p style='color:#666; font-style:italic;'>[Empty HTML Block - Click to Edit Code]</p>"}</div>
-                                <button class="media-overlay-btn" onclick="toggleHtmlEdit(${b.id})" style="display:block; bottom: 8px; top:auto; transform:translateX(-50%);">Edit HTML Code</button>
+                                <button class="media-overlay-btn btn" onclick="toggleHtmlEdit(${b.id})" style="display:block; bottom: 8px; top:auto; transform:translateX(-50%);">Edit HTML Code</button>
                             `;
                         }
-
                     } else if (b.type === "thought") {
                         contentNode = document.createElement("div");
                         contentNode.className = "thought-row";
-                        
+
                         const textDiv = document.createElement("div");
                         textDiv.className = "thought-text wysiwyg-editor";
                         textDiv.contentEditable = "true";
                         textDiv.setAttribute("placeholder", "Write block text descriptive content here...");
                         textDiv.innerHTML = b.v1 || "";
-                        textDiv.addEventListener("input", (e) => updateBlockValue(b.id, 'v1', e.target.innerHTML));
+                        textDiv.addEventListener("input", (e) => updateBlockValue(b.id, "v1", e.target.innerHTML));
 
                         const mediaDiv = document.createElement("div");
                         mediaDiv.className = "thought-media";
                         const defaultImg = b.v2 || "images/gallery.png";
                         mediaDiv.innerHTML = `
                             <img src="${defaultImg}" alt="${b.v3 || "Article Graphic"}" />
-                            <button class="media-overlay-btn" onclick="uploadBlockImage(${b.id})">Upload Image</button>
+                            <button class="media-overlay-btn btn" onclick="uploadBlockImage(${b.id})">Upload Image</button>
                         `;
 
                         contentNode.appendChild(textDiv);
                         contentNode.appendChild(mediaDiv);
                     }
+
+                    contentNode.id = `block-content-${b.id}`;
+                    applyStylesToElement(contentNode, b.styles);
 
                     wrapper.appendChild(contentNode);
                     container.appendChild(wrapper);
@@ -821,19 +541,24 @@
                 let html = `<h1>${title}</h1>\n<p><em>${date}</em></p>\n`;
 
                 blocks.forEach((b) => {
+                    const styleStr = getBlockStyleString(b);
                     if (b.type === "p" && b.v1) {
-                        html += `<p>${b.v1}</p>\n`;
+                        html += `<p${styleStr}>${b.v1}</p>\n`;
                     } else if (b.type === "h2" && b.v1) {
-                        html += `<h2>${b.v1}</h2>\n`;
+                        html += `<h2${styleStr}>${b.v1}</h2>\n`;
                     } else if (b.type === "h3" && b.v1) {
-                        html += `<h3>${b.v1}</h3>\n`;
+                        html += `<h3${styleStr}>${b.v1}</h3>\n`;
+                    } else if (b.type === "conversation" && b.v1) {
+                        html += `<div class="conversation"${styleStr}>\n${b.v1}\n</div>\n`;
+                    } else if (b.type === "hr") {
+                        html += `<hr${styleStr}>\n`;
                     } else if (b.type === "html" && b.v1) {
                         html += `${b.v1}\n`;
                     } else if (b.type === "ul" && b.v1) {
-                        html += `<ul>\n${b.v1}\n</ul>\n`;
+                        html += `<ul${styleStr}>\n${b.v1}\n</ul>\n`;
                     } else if (b.type === "thought") {
                         html += `
-                            <div class="thought-row">
+                            <div class="thought-row"${styleStr}>
                                 <div class="thought-text"><p>${b.v1}</p></div>
                                 <div class="thought-media"><img src="${b.v2}" alt="${b.v3}" /></div>
                             </div>\n`;
@@ -847,7 +572,10 @@
                 const tag = document.getElementById("article-tag").value;
                 const btn = document.getElementById("publish-btn");
 
-                if (!password || !tag) { alert("Key and Unique Article Tag are required."); return; }
+                if (!password || !tag) {
+                    alert("Key and Unique Article Tag are required.");
+                    return;
+                }
 
                 const sbAdmin = supabase.createClient(SUB_URL, ANON_KEY, {
                     global: { headers: { "x-editor-key": password } }
@@ -866,7 +594,7 @@
                         date: document.getElementById("canvas-date").innerText,
                         thumbnail_url: document.getElementById("thumb-url").value,
                         content: compiledOutput,
-                        raw_json: blocks 
+                        raw_json: blocks
                     },
                     { onConflict: "tag" }
                 );
@@ -874,7 +602,7 @@
                 if (error) alert("Error: " + error.message);
                 else {
                     alert("Article successfully synced onto DB instance!");
-                    toggleSettingsModal(); // Hide popup on success
+                    toggleSettingsModal();
                 }
 
                 btn.innerText = "SAVE TO DATABASE";
@@ -893,7 +621,7 @@
                         document.getElementById("canvas-date").innerText = data.date || "";
                         document.getElementById("thumb-url").value = data.thumbnail_url || "";
                         document.getElementById("short-desc").value = data.description || "";
-                        
+
                         if (data.raw_json && Array.isArray(data.raw_json)) {
                             blocks = data.raw_json;
                             renderEditor();
