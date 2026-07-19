@@ -1,0 +1,167 @@
+[
+    {
+        "url": "https://amiminnie-o3paphkth-chip-flare-studios.vercel.app/builder.html",
+        "title": "v1.13 - New article editor",
+        "date": "19 Jul 2026",
+        "description": "Ever since moving to the cloud, I have been usign a half put together system to write the articles, not anymore!",
+        "additions": [
+            "New article editor"
+        ]
+    },
+    {
+        "url": "https://amiminnie-6su06159b-chip-flare-studios.vercel.app",
+        "title": "v1.12 - Comic strip but better",
+        "date": "08 Jul 2026",
+        "description": "Now the comics are layed out in a natural fasion than just a boring old strip.",
+        "additions": [
+            "Comics back",
+            "archive.html",
+            "More compact guestbook"
+        ],
+        "removals": [
+            "gallery.html"
+        ]
+    },
+    {
+        "url": "https://amiminnie-r33ms30pi-chip-flare-studios.vercel.app",
+        "title": "v1.11 - Better friend cards",
+        "date": "19 Jun 2026",
+        "description": "Friend cards now expand to show more of their content!",
+        "additions": [
+            "New friend cards",
+            "Friend link buttons",
+            "credits"
+        ]
+    },
+    {
+        "url": "https://amiminnie-fa7qkh9ng-chip-flare-studios.vercel.app#self://index.html",
+        "title": "v1.10 - iFrame Browser",
+        "date": "14 Jun 2026",
+        "description": "Nobody is getting redirected from my site, NOBODY'S LEAVING >:3",
+        "additions": [
+            "Reusable 'browser' module"
+        ]
+    },
+    {
+        "url": "https://amiminnie-z8s7e9b8t-chip-flare-studios.vercel.app",
+        "title": "v1.9 - UI Overhaul 2",
+        "date": "12 Jun 2026",
+        "description": "Old UI was good, but now it has more character, my own recognisable style!",
+        "additions": [
+            "Gamified design",
+            "Gallery paused"
+        ]
+    },
+    {
+        "url": "https://amiminnie-8hhe1ruhc-chip-flare-studios.vercel.app",
+        "title": "v1.8 - Pride update 🏳‍🌈",
+        "date": "06 Jun 2026",
+        "description": "Few rainbow features in theme of Pride month",
+        "additions": [
+            "Friends get their pride flag cards!"
+        ]
+    },
+    {
+        "url": "https://amiminnie-gqpku0683-chip-flare-studios.vercel.app/404.html",
+        "title": "v1.7 - Nonogram!!!",
+        "date": "02 Jun 2026",
+        "description": "Inspired by Sover the Games, added a Nonogram puzzle to the 404 screen.",
+        "additions": [
+            "New Article loading system",
+            "404 Page",
+            "Nonogram puzzle"
+        ]
+    },
+    {
+        "url": "https://amiminnie-blgdtvbhj-chip-flare-studios.vercel.app/articles.html",
+        "title": "v1.6 - Articles brought to the cloud!",
+        "date": "19 May 2026",
+        "description": "It's always a hassle to write articles in plain HTML. Well, not anymore!",
+        "additions": [
+            "Articles with Supabase integration",
+            "Commisions page"
+        ],
+        "removals": [
+            "thoughts.html"
+        ]
+    },
+    {
+        "url": "https://amiminnie-oue11kjma-chip-flare-studios.vercel.app",
+        "title": "v1.5 - Things got a lot more lively",
+        "date": "27 Mar 2026",
+        "description": "Things were still looking dull, so I went all in and made everything feel more alive!",
+        "additions": [
+            "Background gradient",
+            "3D Sunflower petals"
+        ]
+    },
+    {
+        "url": "https://amiminnie-l02nrcg0y-chip-flare-studios.vercel.app",
+        "title": "v1.4 - Comic strip straight to the home page",
+        "date": "26 Mar 2026",
+        "description": "Landing page was looking a little dull, so why not make it colorful with some comics?",
+        "additions": [
+            "Comics strip"
+        ]
+    },
+    {
+        "url": "https://amiminnie-oq93oxz2e-chip-flare-studios.vercel.app/gallery.html",
+        "title": "v1.3 - Gallery more organised with tabs",
+        "date": "12 Mar 2026",
+        "description": "It was kind of a mess with everything ranging from sketches to full illustrations just sitting in the same pile, so I added the tabs to seperate them.",
+        "additions": [
+            "Thoughts tab and dynamic loading system",
+            "Gallery loading improvements",
+            "Changelog"
+        ]
+    },
+    {
+        "url": "https://amiminnie-i7eif94hn-chip-flare-studios.vercel.app/thoughts.html",
+        "title": "v1.2 - Expressing some grief",
+        "date": "03 Mar 2026",
+        "description": "Added a little personal blog page to vent about some traumatic event",
+        "additions": [
+            "Thoughts tab and dynamic loading system"
+        ],
+        "removals": [
+            "hobbies.html"
+        ]
+    },
+    {
+        "url": "https://amiminnie-aihjso0iy-chip-flare-studios.vercel.app",
+        "title": "v1.1 - Made things more compact",
+        "date": "28 Feb 2026",
+        "description": "Handling white space better so things don't look quite so awkward.",
+        "additions": [
+            "What to do section",
+            "Socials moved to home screen",
+            "Sprinkled in some love",
+            "hobbies.html"
+        ],
+        "removals": [
+            "socials.html"
+        ]
+    },
+    {
+        "url": "https://amiminnie-1qz8pawj7-chip-flare-studios.vercel.app",
+        "title": "v1.0 - First Full Deployment",
+        "date": "27 Feb 2026",
+        "description": "No more placeholder links, the whole site works as intended.",
+        "additions": [
+            "Art gallery",
+            "Guestbook, with Supabase integration",
+            "Friends to home screen",
+            "Theme support",
+            "Socials page"
+        ]
+    },
+    {
+        "url": "https://amiminnie-d0mcsw92q-chip-flare-studios.vercel.app",
+        "title": "v0.1 - Front Page!",
+        "date": "26 Feb 2026",
+        "description": "First time one of my websites went live!",
+        "additions": [
+            "Front page"
+        ]
+    }
+]

@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>amiminnie - archive</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="color-scheme" content="light dark" />
+        <meta name="theme-color" content="#111111" />
+
+        <meta property="og:title" content="Minnie's Archive" />
+        <meta property="og:description" content="Interesting things I have made!" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="https://amiminnie.github.io/images/gallery.png" />
+        <meta property="og:url" content="https://amiminnie.github.io" />
+        <meta name="twitter:card" content="summary" />
+        <meta name="twitter:image" content="https://amiminnie.github.io/images/gallery.png" />
+
+        <link id="theme-style" rel="stylesheet" href="/dark.css" />
+        <link id="style" rel="stylesheet" href="/style.css" />
+        <link id="icon" rel="icon" href="/images/favicon.ico" />
+
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+        <script>
+            window.PETAL_SETTINGS = { enable3D: false };
+        </script>
+        <script src="../common.js" type="module"></script>
+        <script src="../browser.js" type="module"></script>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Overlock:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+            rel="stylesheet" />
+
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    </head>
+
+    <body>
+        <aside class="desktop-sidebar">
+            <ul id="sidebar-thoughts-list" class="sidebar-list"></ul>
+        </aside>
+
+        <div class="container" id="container">
+            <header>
+                <nav id="main-nav">
+                    <button class="nav-back-btn" onclick="navigateToArticle('')">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        <span>back</span>
+                    </button>
+
+                    <a href="/index.html">about</a>
+                    <a href="/archive.html">archive</a>
+                    <a href="/articles.html">articles</a>
+
+                    <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere with this!">
+                        <i class="bi bi-palette-fill"></i>
+                    </button>
+                </nav>
+            </header>
+
+            <main class="view-slider-window">
+                <div id="view-track" class="view-slider-track">
+                    <div id="list-view">
+                        <section class="intro">
+                            <p class="prefix">amiminnie</p>
+                            <h1>history</h1>
+                            <p class="subtitle">
+                                travel to past snapshots of this little site to see how it has evolved into what it is
+                                today...
+                            </p>
+                            <div class="tabs">
+                                <a
+                                    class="tab-btn active"
+                                    style="text-decoration: none; color: currentcolor"
+                                    href="#info">
+                                    <i class="bi bi-info-circle"></i> Issues with dynamic fetches!
+                                </a>
+                            </div>
+                        </section>
+
+                        <div id="timeline-wrapper"></div>
+                    </div>
+                </div>
+            </main>
+            <i class="bi bi-info-circle" id="info"></i>
+            <p style="margin-left: 30px; transform: translateY(-20px)">
+                When you visit an older snapshot, it will still try to pull the latest content from the servers. Since
+                these have been archived, I cannot change the code so that they only fetch content before their capture
+                date. Because of that, all the latest content will still be present in the oldests snapshots where it
+                has been implemented.
+            </p>
+
+            <footer>
+                <p>amiminnie</p>
+            </footer>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const timelineWrapper = document.getElementById("timeline-wrapper");
+                const backdrop = document.createElement("div");
+                backdrop.className = "timeline-backdrop";
+                document.body.appendChild(backdrop);
+
+                let activeClone = null;
+                let originalCard = null;
+                let originalStyles = {};
+
+                fetch("history.json")
+                    .then((response) => {
+                        if (!response.ok) throw new Error("Could not retrieve history data");
+                        return response.json();
+                    })
+                    .then((data) => {
+                        timelineWrapper.innerHTML = data
+                            .map((item) => {
+                                const additionsHTML =
+                                    item.additions && item.additions.length > 0
+                                        ? `<ul class="changelog-list addition-list">${item.additions.map((add) => `<li><span class="diff-sign">+</span> ${add}</li>`).join("")}</ul>`
+                                        : "";
+                                const removalsHTML =
+                                    item.removals && item.removals.length > 0
+                                        ? `<ul class="changelog-list removal-list">${item.removals.map((rem) => `<li><span class="diff-sign">-</span> ${rem}</li>`).join("")}</ul>`
+                                        : "";
+
+                                return `
+                            <section class="timeline-container">
+                                <a href="#${item.url}" class="timeline-item-link">
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-text">
+                                        <div class="timeline-header">
+                                            <h2 class="timeline-title">${item.title}</h2>
+                                            <span class="timeline-date">${item.date}</span>
+                                        </div>
+                                        <p class="timeline-desc-main">${item.description}</p>
+                                        <div class="timeline-changelog">
+                                            ${additionsHTML}
+                                            ${removalsHTML}
+                                        </div>
+                                    </div>
+                                </a>
+                            </section>
+                        `;
+                            })
+                            .join("");
+                    })
+                    .catch((error) => {
+                        console.error("Error loading timeline history:", error);
+                        timelineWrapper.innerHTML = `<p class="error">Failed to load history items.</p>`;
+                    });
+
+                timelineWrapper.addEventListener("click", (e) => {
+                    const card = e.target.closest(".timeline-item-link");
+                    if (!card || activeClone || card.classList.contains("expanded-clone")) return;
+
+                    e.preventDefault();
+                    originalCard = card;
+                    const rect = card.getBoundingClientRect();
+                    originalStyles = {
+                        top: `${rect.top}px`,
+                        left: `${rect.left}px`,
+                        width: `${rect.width}px`,
+                        height: `${rect.height}px`
+                    };
+                    activeClone = card.cloneNode(true);
+                    activeClone.classList.add("expanded-clone");
+                    Object.assign(activeClone.style, originalStyles);
+                    document.body.appendChild(activeClone);
+                    originalCard.classList.add("is-hidden");
+                    backdrop.classList.add("active");
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            const targetWidth = Math.min(1300, window.innerWidth * 0.95);
+                            const targetHeight = Math.min(1000, window.innerHeight * 0.9);
+
+                            const targetLeft = (window.innerWidth - targetWidth) / 2;
+                            const targetTop = (window.innerHeight - targetHeight) / 2;
+
+                            Object.assign(activeClone.style, {
+                                top: `${targetTop}px`,
+                                left: `${targetLeft}px`,
+                                width: `${targetWidth}px`,
+                                height: `${targetHeight}px`,
+                                borderTop: "2px solid var(--highlight)",
+                                boxShadow: "0 20px 50px rgba(0,0,0,0.3)"
+                            });
+
+                            activeClone.addEventListener("transitionend", function handler(e) {
+                                if (e.propertyName !== "height") return;
+                                activeClone.removeEventListener("transitionend", handler);
+
+                                if (activeClone.querySelector("iframe")) return;
+
+                                const url = activeClone.getAttribute("href").replace(/^#/, "");
+
+                                const iframe = document.createElement("iframe");
+                                iframe.src = url;
+                                iframe.className = "timeline-preview";
+
+                                activeClone.appendChild(iframe);
+                            });
+                        });
+                    });
+                });
+
+                const collapseCard = () => {
+                    if (!activeClone || !originalCard) return;
+                    Object.assign(activeClone.style, originalStyles);
+                    activeClone.style.boxShadow = "0 0 0 var(--shading)";
+                    activeClone.style.borderTop = "2px dashed var(--border-weak)";
+
+                    backdrop.classList.remove("active");
+
+                    activeClone.addEventListener("transitionend", function handler(e) {
+                        if (e.propertyName === "top") {
+                            originalCard.classList.remove("is-hidden");
+                            activeClone.remove();
+                            activeClone = null;
+                            originalCard = null;
+                        }
+                    });
+                };
+
+                backdrop.addEventListener("click", collapseCard);
+                document.body.addEventListener("click", (e) => {
+                    if (e.target.closest(".expanded-clone")) collapseCard();
+                });
+                document.addEventListener("keydown", (e) => {
+                    if (e.key === "Escape") collapseCard();
+                });
+            });
+        </script>
+    </body>
+</html>

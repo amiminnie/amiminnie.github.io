@@ -71,7 +71,7 @@
         const compat = get("compatibility") === "true";
 
         if (themeLink) {
-            themeLink.href = compat ? "style-old.css" : mode === "dark" ? "dark.css" : "light.css";
+            themeLink.href = compat ? "style-old.css" : mode === "dark" ? "/dark.css" : "/light.css";
         }
 
         document.documentElement.style.colorScheme = mode;
@@ -91,7 +91,7 @@
         const theme = get("theme") || "dark";
 
         if (themeLink) {
-            themeLink.href = enabled ? "style-old.css" : theme === "dark" ? "dark.css" : "light.css";
+            themeLink.href = enabled ? "style-old.css" : theme === "dark" ? "/dark.css" : "/light.css";
         }
 
         set("compatibility", enabled);
