@@ -27,7 +27,7 @@ body {
 
 @font-face {
   font-family: "CustomSecretFont";
-  src: url("ShizuScript.ttf") format("truetype");
+  src: url("/assets/lang/ShizuScript.ttf") format("truetype");
   font-display: swap;
 }
 

@@ -71,13 +71,13 @@
         const compat = get("compatibility") === "true";
 
         if (themeLink) {
-            themeLink.href = compat ? "style-old.css" : mode === "dark" ? "/dark.css" : "/light.css";
+            themeLink.href = compat ? "/assets/styles/style-old.css" : mode === "dark" ? "/assets/styles/dark.css" : "/assets/styles/light.css";
         }
 
         document.documentElement.style.colorScheme = mode;
 
         if (icon) {
-            icon.src = mode === "dark" ? "images/sun-icon.png" : "images/moon-icon.png";
+            icon.src = mode === "dark" ? "/images/sun-icon.png" : "images/moon-icon.png";
         }
 
         set("theme", mode);
@@ -91,7 +91,7 @@
         const theme = get("theme") || "dark";
 
         if (themeLink) {
-            themeLink.href = enabled ? "style-old.css" : theme === "dark" ? "/dark.css" : "/light.css";
+            themeLink.href = enabled ? "/assets/styles/style-old.css" : theme === "dark" ? "/assets/styles/dark.css" : "/assets/styles/light.css";
         }
 
         set("compatibility", enabled);
@@ -263,8 +263,8 @@
 })();
 
 const langConfig = {
-    jp: "lang/jp.json",
-    toki: "lang/toki.json"
+    jp: "assets/lang/jp.json",
+    toki: "assets/lang/toki.json"
 };
 const translationCache = {};
 

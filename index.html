@@ -25,11 +25,11 @@
       window.PETAL_SETTINGS = { enable3D: true };
     </script>
 
-    <script src="common.js" type="module"></script>
-    <script src="browser.js" type="module"></script>
+    <script src="/assets/scripts/common.js" type="module"></script>
+    <script src="/assets/scripts/browser.js" type="module"></script>
 
-    <link id="theme-style" rel="stylesheet" href="dark.css" />
-    <link id="style" rel="stylesheet" href="style.css" />
+    <link id="theme-style" rel="stylesheet" href="/assets/styles/dark.css" />
+    <link id="style" rel="stylesheet" href="/assets/styles/style.css" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -62,10 +62,10 @@
       <header>
         <nav>
           <a href="" class="active" data-i18n="about-link">about</a>
-          <a href="archive.html" data-i18n="archive-link">archive</a>
-          <a href="articles.html" data-i18n="articles-link">articles</a>
+          <a href="archive" data-i18n="archive-link">archive</a>
+          <a href="articles" data-i18n="articles-link">articles</a>
           <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere with this!">
-            <i class='bi bi-palette-fill'></i>
+            <i class="bi bi-palette-fill"></i>
           </button>
         </nav>
       </header>
@@ -94,7 +94,7 @@
             <p data-i18n="comics-loading">flipping through the pages...</p>
           </div>
         </section>
-        
+
         <!--
         <section class="section-headers">
           <h1 data-i18n="projects">Projects</h1>
@@ -106,28 +106,28 @@
         <section class="social-list">
           <h1 data-i18n="what-to-do">what to do</h1>
           <p class="subtitle" data-i18n="whattodo-subtitle">in case you're bored</p>
-          <a class="social-item" href="archive.html">
+          <a class="social-item" href="archive">
             <img src="images/icons/archive.svg" alt="archive" />
             <div class="social-text">
               <h2 data-i18n="visit-archive">visit my archive!</h2>
               <p data-i18n="visit-archive-subtitle">a hoard of random stuff i've made</p>
             </div>
           </a>
-          <a class="social-item" href="articles.html">
+          <a class="social-item" href="articles">
             <img src="images/icons/articles.svg" alt="articles" />
             <div class="social-text">
               <h2 data-i18n="read-articles">read some articles</h2>
               <p data-i18n="read-articles-subtitle">it's so random, may cure your boredom</p>
             </div>
           </a>
-          <a class="social-item" href="history/index.html">
+          <a class="social-item" href="history">
             <!--<img src="images/icons/changelog.svg" alt="changelog" />-->
             <div class="social-text">
               <h2 data-i18n="timemachine">time machine</h2>
               <p data-i18n="visit-timemachine-subtitle">interact with past snapshots of this site!</p>
             </div>
           </a>
-          <a class="social-item" href="#self://credits.html">
+          <a class="social-item" href="#self://credits">
             <!--<img src="images/github.png" alt="changelog" />-->
             <div class="social-text">
               <h2 data-i18n="credits">credits</h2>
@@ -158,7 +158,7 @@
         <section class="guestbook surface" id="guestbook">
           <h2 data-i18n="leave-comment">leave a comment!</h2>
           <form id="guestbook-form">
-            <input type="text" id="name" placeholder="nickname (optional)" class="txtarea"/>
+            <input type="text" id="name" placeholder="nickname (optional)" class="txtarea" />
             <textarea id="message" placeholder="what do you think?" required class="txtarea"></textarea>
             <button type="submit" data-i18n="send-comment" class="btnsoft">Send!</button>
           </form>
@@ -177,12 +177,44 @@
 
           <section class="social-list">
             <p class="prefixa" data-i18n="socials-prefix">check out my</p>
-            <h1 data-i18n="socials">socials</h1>
-            <a id="discord-link" class="social-item" href="#" target="_blank" rel="noopener noreferrer">
+            <h1 data-i18n="socials">presense</h1>
+            <div id="discord-link" class="social-item">
               <img src="images/logos/discord.png" alt="Discord" />
               <div class="social-text">
                 <h2 id="discord-name" data-i18n="discord">Discord</h2>
-                <p id="discord-details" data-i18n="discord-loading">Server is down for now...</p>
+                <p id="discord-details" data-i18n="discord-loading">amiminnie - add me as a friend!</p>
+              </div>
+            </div>
+
+            <a class="social-item" href="https://www.github.com/amiminnie/" target="_blank" rel="noopener noreferrer">
+              <img src="images/logos/github.png" alt="Github" />
+              <div class="social-text">
+                <h2 data-i18n="github">Github</h2>
+                <p data-i18n="github-subtitle">amiminnie - interesting stuff there</p>
+              </div>
+            </a>
+
+            <a
+              class="social-item"
+              href="https://www.duolingo.com/profile/amiminnie/"
+              target="_blank"
+              rel="noopener noreferrer">
+              <img src="https://design.duolingo.com/28e4b3aebfae83e5ff2f.svg" alt="Duolingo" />
+              <div class="social-text">
+                <h2 data-i18n="reddit">Duolingo</h2>
+                <p data-i18n="reddit-subtitle">amiminnie - im active... extremely active</p>
+              </div>
+            </a>
+
+            <a
+              class="social-item"
+              href="https://geotastic.net/user-page/BqVenhUOwz/infos"
+              target="_blank"
+              rel="noopener noreferrer">
+              <img src="images/geotastic-logo.png" alt="Duolingo" />
+              <div class="social-text">
+                <h2 data-i18n="reddit">Geotastic</h2>
+                <p data-i18n="reddit-subtitle">Exploring new - feathered diety</p>
               </div>
             </a>
 
@@ -195,14 +227,6 @@
               <div class="social-text">
                 <h2 data-i18n="reddit">Reddit</h2>
                 <p data-i18n="reddit-subtitle">r/amiminnie - don't check my post history</p>
-              </div>
-            </a>
-
-            <a class="social-item" href="https://www.github.com/amiminnie/" target="_blank" rel="noopener noreferrer">
-              <img src="images/logos/github.png" alt="Github" />
-              <div class="social-text">
-                <h2 data-i18n="github">Github</h2>
-                <p data-i18n="github-subtitle">amiminnie - interesting stuff there</p>
               </div>
             </a>
 
@@ -333,7 +357,7 @@
 
     <script>
       async function loadFriends() {
-        const res = await fetch("friends.json");
+        const res = await fetch("/assets/friends.json");
         const friends = await res.json();
 
         const container = document.getElementById("friends-container");

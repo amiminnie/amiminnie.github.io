@@ -6,10 +6,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="color-scheme" content="light dark" />
         <meta name="theme-color" content="#111111" />
-        <link id="theme-style" rel="stylesheet" href="dark.css" />
-        <link id="style" rel="stylesheet" href="style.css" />
+        <link id="theme-style" rel="stylesheet" href="/assets/styles/dark.css" />
+        <link id="style" rel="stylesheet" href="/assets/styles/style.css" />
         <link rel="icon" href="images/favicon.ico" />
-        <script src="browser.js" type="module"></script>
+        <script src="/assets/scripts/common.js" type="module"></script>
+        <script src="/assets/scripts/browser.js" type="module"></script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
@@ -43,7 +44,9 @@
                 <section class="credit-segment">
                     <h2 class="credit-title">Design</h2>
                     <div class="credit-subsegment">
-                        <h3 class="sub-title"><a href="https://fonts.google.com/"><i class="bi bi-google"></i>Google Fonts</a></h3>
+                        <h3 class="sub-title">
+                            <a href="https://fonts.google.com/"><i class="bi bi-google"></i>Google Fonts</a>
+                        </h3>
                         <p class="sub-body">
                             A multilingual library of fonts, anything you can think of, for completely free... That's
                             the best thing a designer can dream for. Thankfully, Google has come forward with Google
@@ -52,7 +55,9 @@
                     </div>
                     <div class="credit-subsegment">
                         <h3 class="sub-title">
-                            <a href="https://icons.getbootstrap.com/"><i class="bi bi-bootstrap-fill"></i>Bootstrap Icons</a>
+                            <a href="https://icons.getbootstrap.com/"
+                                ><i class="bi bi-bootstrap-fill"></i>Bootstrap Icons</a
+                            >
                         </h3>
                         <p class="sub-body">
                             Similar to Google Icons, which I previously used, Bootstrap Icons offers a simpler method of
@@ -78,7 +83,9 @@
                         </p>
                     </div>
                     <div class="credit-subsegment">
-                        <h3 class="sub-title"><a href="https://supabase.com/"><i class="bi bi-database"></i>Supabase</a></h3>
+                        <h3 class="sub-title">
+                            <a href="https://supabase.com/"><i class="bi bi-database"></i>Supabase</a>
+                        </h3>
                         <p class="sub-body">
                             When I was researching on how I can make a guestbook system, without having my own server, I
                             came across Supabase. Its free tier is perfect for personal projects like mine, thus it now
@@ -86,7 +93,9 @@
                         </p>
                     </div>
                     <div class="credit-subsegment">
-                        <h3 class="sub-title"><a href="https://phcode.dev/"><i class="bi bi-code-slash"></i>Phoenix Code</a></h3>
+                        <h3 class="sub-title">
+                            <a href="https://phcode.dev/"><i class="bi bi-code-slash"></i>Phoenix Code</a>
+                        </h3>
                         <p class="sub-body">
                             While there were many options for a code editor when I first started web development, I went
                             with Phoenix Code due to its simplicity, being both lightweight and open-source.
@@ -112,44 +121,5 @@
                 </section>
             </main>
         </div>
-        <script>
-            const themeLink = document.getElementById("theme-style");
-            const toggleBtn = document.getElementById("theme-toggle");
-            const themeIcon = document.getElementById("theme-icon");
-
-            const savedTheme = localStorage.getItem("theme");
-
-            function setTheme(mode) {
-                if (mode === "dark") {
-                    themeLink.href = "dark.css";
-                    document.documentElement.style.colorScheme = "dark";
-                    themeIcon.src = "images/sun-icon.png";
-                    themeIcon.alt = "light mode";
-                    localStorage.setItem("theme", "dark");
-                } else {
-                    themeLink.href = "light.css";
-                    document.documentElement.style.colorScheme = "light";
-                    themeIcon.src = "images/moon-icon.png";
-                    themeIcon.alt = "dark mode";
-                    localStorage.setItem("theme", "light");
-                }
-            }
-
-            if (savedTheme) {
-                setTheme(savedTheme);
-            } else {
-                setTheme("dark");
-            }
-
-            toggleBtn.addEventListener("click", () => {
-                themeIcon.style.transform = "scale(0)";
-                setTimeout(() => {
-                    const current = localStorage.getItem("theme");
-                    setTheme(current === "dark" ? "light" : "dark");
-                    void themeIcon.offsetWidth;
-                    themeIcon.style.transform = "scale(1)";
-                }, 120);
-            });
-        </script>
     </body>
 </html>

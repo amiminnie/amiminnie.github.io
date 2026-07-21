@@ -1,5 +1,27 @@
 [
     {
+        "url": "/",
+        "title": "v1.15 - Cleaned things up a bit",
+        "date": "21 Jul 2026",
+        "description": "Addresses went from /thing.html to just /thing",
+        "additions": [
+            "Directory overhaul",
+            "Cleaned up 404.html"
+        ],
+        "removals":[
+            "changelog.html"
+        ]
+    },
+    {
+        "url": "https://amiminnie-o3paphkth-chip-flare-studios.vercel.app/builder.html",
+        "title": "v1.14 - Back to the- past...",
+        "date": "19 Jul 2026",
+        "description": "It is like the previous Changelog, but actually interactive!",
+        "additions": [
+            "Time machine"
+        ]
+    },
+    {
         "url": "https://amiminnie-o3paphkth-chip-flare-studios.vercel.app/builder.html",
         "title": "v1.13 - New article editor",
         "date": "19 Jul 2026",

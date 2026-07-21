@@ -16,11 +16,12 @@
         <meta name="twitter:card" content="summary" />
         <meta name="twitter:image" content="https://amiminnie.github.io/images/heart.png" />
 
-        <link id="theme-style" rel="stylesheet" href="light.css" />
-        <link id="style" rel="stylesheet" href="style.css" />
+        <link id="theme-style" rel="stylesheet" href="/assets/styles/dark.css" />
+        <link id="style" rel="stylesheet" href="/assets/styles/style.css" />
+        <link id="icon" rel="icon" href="/images/favicon.ico" />
 
-        <link rel="icon" href="images/favicon.ico" />
-        <link rel="apple-touch-icon" href="images/heart.png" />
+        <link rel="icon" href="/images/favicon.ico" />
+        <link rel="apple-touch-icon" href="/images/heart.png" />
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -35,12 +36,18 @@
     <body>
         <div class="container">
             <header>
-                <nav>
-                    <a href="index.html">about</a>
-                    <a href="archive.html">archive</a>
-                    <a href="articles.html">articles</a>
+                <nav id="main-nav">
+                    <button class="nav-back-btn" onclick="navigateToArticle('')">
+                        <span class="material-symbols-outlined">arrow_back</span>
+                        <span>back</span>
+                    </button>
+
+                    <a href="/">about</a>
+                    <a href="/archive">archive</a>
+                    <a href="/articles">articles</a>
+
                     <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere with this!">
-                        <img id="theme-icon" src="images/moon-icon.png" alt="Toggle theme" />
+                        <i class="bi bi-palette-fill"></i>
                     </button>
                 </nav>
             </header>
@@ -53,7 +60,12 @@
                     </h1>
 
                     <div class="bio">
-                        <a href="index.html"> <span class="material-symbols-outlined" style="vertical-align: -5px; font-size: 18px;"> home </span> go back home</a>
+                        <a href="/">
+                            <span class="material-symbols-outlined" style="vertical-align: -5px; font-size: 18px">
+                                home
+                            </span>
+                            go back home</a
+                        >
                     </div>
                     <p class="subtitle">or play this little game!</p>
                 </section>
@@ -79,46 +91,8 @@
         </div>
 
         <script>
-            /* --- Theme Switcher Logic --- */
-            const themeLink = document.getElementById("theme-style");
-            const toggleBtn = document.getElementById("theme-toggle");
-            const themeIcon = document.getElementById("theme-icon");
-            const savedTheme = localStorage.getItem("theme");
-
-            function setTheme(mode) {
-                if (mode === "dark") {
-                    themeLink.href = "dark.css";
-                    document.documentElement.style.colorScheme = "dark";
-                    themeIcon.src = "images/sun-icon.png";
-                    themeIcon.alt = "light mode";
-                    localStorage.setItem("theme", "dark");
-                } else {
-                    themeLink.href = "light.css";
-                    document.documentElement.style.colorScheme = "light";
-                    themeIcon.src = "images/moon-icon.png";
-                    themeIcon.alt = "dark mode";
-                    localStorage.setItem("theme", "light");
-                }
-            }
-
-            if (savedTheme) {
-                setTheme(savedTheme);
-            } else {
-                setTheme("dark");
-            }
-
-            toggleBtn.addEventListener("click", () => {
-                themeIcon.style.transform = "scale(0)";
-                setTimeout(() => {
-                    const current = localStorage.getItem("theme");
-                    setTheme(current === "dark" ? "light" : "dark");
-                    void themeIcon.offsetWidth;
-                    themeIcon.style.transform = "scale(1)";
-                }, 120);
-            });
-
-
-            let solution = []; 
+            
+            let solution = [];
             let currentMode = "fill";
             let isDrawing = false;
             let drawType = null;
@@ -127,7 +101,7 @@
                 .map(() => Array(10).fill(0));
 
             const atlasImage = new Image();
-            atlasImage.src = "games/nonograms.png";
+            atlasImage.src = "/assets/games/nonograms.png";
 
             atlasImage.onload = function () {
                 const canvas = document.createElement("canvas");
@@ -137,7 +111,7 @@
                 ctx.drawImage(atlasImage, 0, 0);
 
                 const puzzles = [];
-                const puzzleSize = 10; 
+                const puzzleSize = 10;
                 const colsInAtlas = atlasImage.width / puzzleSize;
                 const rowsInAtlas = atlasImage.height / puzzleSize;
 
