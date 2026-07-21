@@ -24,5 +24,5 @@ for course in user.get("courses", []):
         "level": course.get("level")
     })
 
-with open("duodata.json", "w") as f:
+with open("scripts/duodata.json", "w") as f:
     json.dump(output, f, indent=4)
