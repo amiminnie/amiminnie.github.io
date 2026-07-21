@@ -131,6 +131,12 @@ body {
   position: relative;
 }
 
+@media (max-width: 600px) {
+.container {
+    padding: 1rem;
+  }
+}
+
 .social-wrapper {
   display: flex;
   flex-direction: column;
@@ -814,6 +820,7 @@ nav.article-active .nav-back-btn {
   color: #ff5252;
 }
 
+
 .thought-link {
   display: block;
   text-decoration: none;
@@ -1354,8 +1361,17 @@ html[style*="color-scheme: dark"] {
   transform: scale(0.5);
   transition:
     transform 0.6s cubic-bezier(0.2, 1.2, 0.3, 1),
-    opacity 0.1s ease;
+    opacity 0.1s ease,
+    width 0.2s ease,
+    height 0.2s ease;
   outline: 1px solid var(--outline);
+}
+
+@media (max-width: 600px) {
+  .web-window {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 .web-window .bi {
@@ -1914,7 +1930,6 @@ html[style*="color-scheme: dark"] {
   pointer-events: all;
 }
 
-
 .timeline-backdrop {
   position: fixed;
   top: 0;
@@ -1963,7 +1978,7 @@ html[style*="color-scheme: dark"] {
   overflow: hidden;
   padding: 0.2rem 2.3rem;
 }
-.expanded-clone:hover{
+.expanded-clone:hover {
   transform: none;
 }
 
@@ -1972,7 +1987,7 @@ html[style*="color-scheme: dark"] {
 }
 
 .expanded-clone .timeline-marker {
- display: none;
+  display: none;
 }
 
 .timeline-preview {
@@ -1983,6 +1998,12 @@ html[style*="color-scheme: dark"] {
   border: 5px solid var(--border-solid);
   border-radius: 0;
   background: var(--bg-main);
+}
+
+@media (max-width: 600px) {
+.timeline-item-link.expanded-clone {
+    padding: 1rem 0;
+  }
 }
 
 .timeline-marker {

@@ -4,4 +4,4 @@
 /bower_components/
 /node_modules/
 /server.js  
-/phcode.json
+/.phcode.json

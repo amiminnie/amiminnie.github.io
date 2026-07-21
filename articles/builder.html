@@ -5,8 +5,8 @@
         <title>amiminnie - article editor</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-        <link rel="stylesheet" href="/dark.css" id="theme-style" />
-        <link rel="stylesheet" href="/style.css" id="production-style" />
+        <link rel="stylesheet" href="/assets/styles/dark.css" id="theme-style" />
+        <link rel="stylesheet" href="/assets/styles/style.css" id="production-style" />
 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -78,9 +78,10 @@
             <div class="container">
                 <header>
                     <nav>
-                        <a href="index.html" onclick="event.preventDefault();">about</a>
-                        <a href="archive.html" onclick="event.preventDefault();">archive</a>
-                        <a href="articles.html" onclick="event.preventDefault();" class="active">articles</a>
+                        <a href="/" onclick="event.preventDefault();">about</a>
+                        <a href="/archive" onclick="event.preventDefault();">archive</a>
+                        <a href="/articles" onclick="event.preventDefault();">articles</a>
+                        <a href="" onclick="event.preventDefault();" class="active">builder</a>
                     </nav>
                 </header>
 
@@ -601,7 +602,7 @@
 
                 if (error) alert("Error: " + error.message);
                 else {
-                    alert("Article successfully synced onto DB instance!");
+                    alert("Article successfully synced!");
                     toggleSettingsModal();
                 }
 

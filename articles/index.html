@@ -79,7 +79,7 @@
 
             <section class="thoughts">
               <div class="admin-toolbar" id="admin-toolbar" style="display: none">
-                <button class="btn-add" onclick="window.location.href='builder.html'">+ write</button>
+                <button class="btn-add" onclick="window.location.href='/articles/builder.html'">+ write</button>
                 <button class="btn-add" onclick="logoutAdmin()" style="background: #cc241d; margin-left: 10px">
                   logout
                 </button>
@@ -407,7 +407,7 @@
       }
 
       function editArticle(tag) {
-        window.location.href = `builder.html?edit=${tag}`;
+        window.location.href = `/articles/builder.html?edit=${tag}`;
       }
 
       window.addEventListener("popstate", handleRouting);
