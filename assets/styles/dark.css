@@ -11,6 +11,7 @@
     --surface: #412227;
     --surface-shadow: #331a1f;
     --surface-dsb: #3a1d22;
+    --surface-dsb-shadow: #2a1518;
     --surface-text: #efc5cd;
 
     --highlight: #d86a7a44;
@@ -29,8 +30,9 @@
     --accent-hover: #9bb7ff;
 
     --bubble: #ffffff10;
-
     --card-hover: #ff8ef111;
+    
+
     --card-agender: linear-gradient(
         90deg,
         rgba(0, 0, 0, 0.25) 0%,

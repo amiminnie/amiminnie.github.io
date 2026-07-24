@@ -132,7 +132,7 @@ body {
 }
 
 @media (max-width: 600px) {
-.container {
+  .container {
     padding: 1rem;
   }
 }
@@ -820,7 +820,6 @@ nav.article-active .nav-back-btn {
   color: #ff5252;
 }
 
-
 .thought-link {
   display: block;
   text-decoration: none;
@@ -1273,44 +1272,58 @@ footer {
   border: none;
 }
 .cell {
-  background-color: var(--card-hover);
+  background-color: var(--surface);
   cursor: pointer;
   position: relative;
   box-sizing: border-box;
-  border-bottom: solid 4px #0001;
+  border-bottom: solid 4px var(--shading);
+  border-top: solid 1px var(--highlight);
   transition:
     transform 0.1s ease,
-    background-color 0.2s ease;
+    background-color 0.2s ease,
+    border 0.1s ease,
+    box-shadow 0.1s ease,
+    margin 0.1s ease;
 }
-
-:root {
-  --cell-crossed: #ccc;
-}
-html[style*="color-scheme: dark"] {
-  --cell-crossed: #444;
+.cell:hover {
+  border-bottom: solid 3px var(--shading);
+  margin-top: 1px;
+  background-color: var(--surface-dsb);
 }
 
 .cell.filled {
-  background-color: var(--accent, #ff4a5a);
-  border-bottom: solid 2px #0002;
-  transform: translateY(1px);
+  background-color: var(--surface-hgt);
+  border-bottom: solid 2px var(--surface-hgt-shadow);
+  border-top: solid 1px #ffacb8aa;
+  margin-top: 2px;
+  box-shadow: 0 0 20px var(--accent), 0 0 50px var(--accent);
+  z-index: 999;
+  transition: box-shadow 0.5s ease-out;
 }
 
-.cell.crossed::before,
-.cell.crossed::after {
-  content: "";
-  position: absolute;
-  width: 60%;
-  height: 2px;
-  background-color: #999;
-  top: 50%;
-  left: 20%;
+.cell.adjacent:not(.filled) {
+  background-color: color-mix(in srgb, var(--surface) 95%, var(--surface-hgt));
 }
-.cell.crossed::before {
-  transform: rotate(45deg);
+
+.cell:not(.filled).above-is-filled {
+  border-top: solid 1px var(--accent);
 }
-.cell.crossed::after {
-  transform: rotate(-45deg);
+.cell.filled.above-is-filled {
+  margin-top: 0;
+}
+
+.cell:not(.filled).below-is-filled{
+    border-bottom: solid 4px color-mix(in srgb, var(--surface-shadow) 40%, var(--surface-hgt-shadow));
+}
+
+.cell.filled.below-is-filled{
+  border-bottom: solid 0 var(--surface-hgt-shadow);
+}
+
+.cell.crossed {
+  border-bottom: solid 2px var(--shading);
+  margin-top: 2px;
+  background-color: var(--surface-dsb);
 }
 
 #win-message {
@@ -2001,7 +2014,7 @@ html[style*="color-scheme: dark"] {
 }
 
 @media (max-width: 600px) {
-.timeline-item-link.expanded-clone {
+  .timeline-item-link.expanded-clone {
     padding: 1rem 0;
   }
 }
