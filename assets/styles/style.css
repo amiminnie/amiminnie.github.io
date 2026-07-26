@@ -1655,7 +1655,7 @@ footer {
 
 .block-wrapper {
   position: relative;
-  margin-bottom: 0px;
+  margin-bottom: 0;
   padding: 2px 1px;
   background-color: transparent;
   box-shadow: none;

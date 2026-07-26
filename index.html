@@ -1,9 +1,6 @@
 <!doctype html>
 <html lang="en">
   <head>
-    
-    
-    
     <meta charset="UTF-8" />
     <title>amiminnie</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,21 +8,21 @@
     <meta name="theme-color" content="#111111" />
 
     <meta property="og:title" content="amiminnie" />
-    <meta
-      property="og:description"
-      content="My personal website that I totally didn't spend hundreds of hours on!" />
+    <meta property="og:description" content="My personal website that I totally didn't spend hundreds of hours on!" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://miwcmqwhudshgetmrmhf.supabase.co/storage/v1/object/public/gallery/profile.webp" />
+    <meta
+      property="og:image"
+      content="https://miwcmqwhudshgetmrmhf.supabase.co/storage/v1/object/public/gallery/profile.webp" />
     <meta property="og:url" content="https://amiminnie.github.io" />
 
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:image" content="https://miwcmqwhudshgetmrmhf.supabase.co/storage/v1/object/public/gallery/profile.webp" />
+    <meta
+      name="twitter:image"
+      content="https://miwcmqwhudshgetmrmhf.supabase.co/storage/v1/object/public/gallery/profile.webp" />
 
     <link rel="icon" href="images/icons/timemachine.svg" />
     <link rel="apple-touch-icon" href="images/icons/timemachine.svg" />
 
-    
-    
     <script>
       window.PETAL_SETTINGS = { enable3D: true };
     </script>
@@ -87,8 +84,6 @@
               when i write some code, it takes a while to load...
             </p>
           </div>
-
-          <!--<img src="images/silly-trans.png">-->
         </section>
 
         <section class="section-headers">
@@ -99,14 +94,6 @@
             <p data-i18n="comics-loading">flipping through the pages...</p>
           </div>
         </section>
-
-        <!--
-        <section class="section-headers">
-          <h1 data-i18n="projects">Projects</h1>
-          <p class="subtitle" data-i18n="comics-subtitle">sometimes i rarely finish a project, here are some of them...</p>
-          
-        </section>
-        -->
 
         <section class="social-list">
           <h1 data-i18n="what-to-do">what to do</h1>
@@ -141,24 +128,6 @@
           </a>
         </section>
 
-        <!--
-        <section class="social-list">
-          <h1>i take commissions!</h1>
-          <p class="subtitle">
-            For quite a long time, I've been that art friend in the friend group, being the go-to for whenever they
-            needed something for their socials, or some project they've been working on. I always did these things free
-            of charge for friends, but I've noticed their friends also starting to reach out to me. Because of that, I
-            decided to open for commissions.
-          </p>
-          <a class="social-item" href="articles.html#commissions">
-            <img src="images/heart.png" alt="gallery" />
-            <div class="social-text">
-              <h2>how my commissions work</h2>
-              <p>in case you're interested!</p>
-            </div>
-          </a>
-        </section>
-        -->
         <h1 style="margin-top: 25px; margin-bottom: -25px" data-i18n="guestbook">Guestbook</h1>
         <section class="guestbook surface" id="guestbook">
           <h2 data-i18n="leave-comment">leave a comment!</h2>
@@ -176,7 +145,7 @@
           <section class="friends-list">
             <p class="prefixa" data-i18n="friends-prefix">these are my internet</p>
             <h1 data-i18n="friends">friends!</h1>
-            
+
             <div id="friends-container"></div>
           </section>
 
@@ -303,7 +272,6 @@
       function startSlugRain() {
         if (location.hash !== "#slug") return;
 
-        // Remove the hash immediately so it only triggers once
         history.replaceState(null, "", location.pathname + location.search);
 
         const duration = 6000;
@@ -342,7 +310,6 @@
 
         const interval = setInterval(
           () => {
-            // Spawn 1–3 slugs at random intervals
             const count = 1 + Math.floor(Math.random() * 3);
             for (let i = 0; i < count; i++) {
               spawnSlug();
@@ -371,7 +338,6 @@
           const card = document.createElement("div");
           card.className = "friends-item";
 
-          // hover visuals
           if (friend.hoverBackground) {
             card.style.setProperty(
               "--hover-bg",
@@ -414,9 +380,7 @@
               if (link.accent) {
                 iconBtn.style.boxShadow = "0 0 20px var(--accent)";
               }
-              iconBtn.innerHTML = `
-          ${link.icon}
-        `;
+              iconBtn.innerHTML = `${link.icon}`;
               nameLinks.appendChild(iconBtn);
               const fullBtn = document.createElement("a");
               fullBtn.className = "friend-btn btn";
@@ -455,16 +419,55 @@
 
     <script type="module">
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
+
       const isLocalhost =
-        location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "";
+        location.hostname === "localhostt" || location.hostname === "127.0.0.1" || location.hostname === "";
       const SUPABASE_URL = "https://miwcmqwhudshgetmrmhf.supabase.co";
       const SUPABASE_KEY = "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ";
-      const supabase = !isLocalhost ? createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+
+      // Attach client globally to window
+      window.supabase = !isLocalhost ? createClient(SUPABASE_URL, SUPABASE_KEY) : null;
+      const supabase = window.supabase;
+
       const guestbookForm = document.getElementById("guestbook-form");
       const guestbookEntries = document.getElementById("guestbook-entries");
 
+      let isAdmin = false;
+
+      // --- Admin Auth Verification ---
+      async function checkAdminStatus(session) {
+        if (!session?.user || !supabase) return false;
+
+        const { data, error } = await supabase
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", session.user.id)
+          .eq("role", "admin")
+          .maybeSingle();
+
+        return !error && !!data;
+      }
+
+      async function initAuth() {
+        if (isLocalhost || !supabase) return;
+
+        const {
+          data: { session }
+        } = await supabase.auth.getSession();
+        isAdmin = await checkAdminStatus(session);
+
+        supabase.auth.onAuthStateChange(async (_event, session) => {
+          const loggedInAdmin = await checkAdminStatus(session);
+          if (isAdmin !== loggedInAdmin) {
+            isAdmin = loggedInAdmin;
+            loadMessages();
+          }
+        });
+      }
+
+      // --- Load Guestbook Entries ---
       async function loadMessages() {
-        if (isLocalhost) {
+        if (isLocalhost || !supabase) {
           guestbookEntries.innerHTML = "<p>guestbook disabled in local development</p>";
           return;
         }
@@ -473,36 +476,71 @@
             .from("guestbook")
             .select("*")
             .order("created_at", { ascending: false });
+
           if (error) throw error;
+
           guestbookEntries.innerHTML = "";
-          if (!data.length) {
+          if (!data || !data.length) {
             guestbookEntries.innerHTML = "<p>aww nothing </p>";
             return;
           }
+
           data.forEach((msg) => {
             const div = document.createElement("div");
             div.className = "guestbook-entry";
 
-            // Cleaned up the header by removing inline styles and using a class instead
             div.innerHTML = `
-    <div class="guestbook-entry-header">
-      <strong>${msg.name}</strong>
-      <small class="guestbook-entry-time">
-        ${new Date(msg.created_at).toLocaleDateString({ day: "numeric", month: "short", year: "numeric" })} - 
-        ${new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-      </small>
-    </div>
-    <p>${msg.message}</p>
-  `;
+          <div class="guestbook-entry-header">
+            <strong>${msg.name}</strong>
+            <small class="guestbook-entry-time">
+              ${new Date(msg.created_at).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })} - 
+              ${new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+            </small>
+          </div>
+          <p>${msg.message}</p>
+        `;
 
-            if (msg.reply) {
+            if (isAdmin) {
+              const replyContainer = document.createElement("div");
+              replyContainer.className = "guestbook-reply admin-reply-box";
+              replyContainer.style.cssText = "display: flex; align-items: center; gap: 6px; margin-top: 6px;";
+
+              replyContainer.innerHTML = `
+            <i class='bi bi-arrow-return-right'></i>
+            <input 
+              type="text" 
+              class="inline-reply-input txtarea block-wrapper" 
+              value="${msg.reply ? msg.reply : ""}" 
+              placeholder="no reply"
+              style="width:100%"
+              onblur="handleInlineReplySave('${msg.id}', this.value, '${msg.reply || ""}')"
+              onkeydown="if(event.key === 'Enter') { event.preventDefault(); this.blur(); }"
+            />
+          `;
+              div.appendChild(replyContainer);
+            } else if (msg.reply) {
               const replyDiv = document.createElement("div");
               replyDiv.className = "guestbook-reply";
               replyDiv.innerHTML = `
-      <i class='bi bi-arrow-return-right'></i>
-      <span>${msg.reply}</span>
-    `;
+            <i class='bi bi-arrow-return-right'></i>
+            <span>${msg.reply}</span>
+          `;
               div.appendChild(replyDiv);
+            }
+
+            if (isAdmin) {
+              div.style.position = "relative";
+
+              const adminControls = document.createElement("div");
+              adminControls.className = "admin-actions";
+              adminControls.style.cssText = "position: absolute; top: 0; right: 0;";
+
+              adminControls.innerHTML = `
+    <button class="btn" style="scale: 0.7;"onclick="handleDeleteMessage('${msg.id}')" title="Delete entry">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  `;
+              div.appendChild(adminControls);
             }
 
             guestbookEntries.appendChild(div);
@@ -512,6 +550,42 @@
         }
       }
 
+      // --- Admin Actions (Global Handlers) ---
+      window.handleDeleteMessage = async function (id) {
+        if (!isAdmin) return;
+
+        if (confirm("Are you sure you want to delete this guestbook entry?")) {
+          const { error } = await supabase.from("guestbook").delete().eq("id", id);
+
+          if (error) {
+            alert("Failed to delete entry: " + error.message);
+          } else {
+            loadMessages();
+          }
+        }
+      };
+
+      // --- Inline Reply Save Handler ---
+      window.handleInlineReplySave = async function (id, newValue, previousValue) {
+        if (!isAdmin) return;
+
+        const trimmedValue = newValue.trim();
+        const escapedValue = trimmedValue ? escapeHTML(trimmedValue) : null;
+
+        // Skip DB call if there are no changes
+        if ((escapedValue === null && !previousValue) || escapedValue === previousValue) {
+          return;
+        }
+
+        const { error } = await supabase.from("guestbook").update({ reply: escapedValue }).eq("id", id);
+
+        if (error) {
+          alert("Failed to update reply: " + error.message);
+        }
+
+        loadMessages();
+      };
+
       const escapeHTML = (str) => {
         return str.replace(
           /[&<>"']/g,
@@ -519,21 +593,25 @@
         );
       };
 
+      // --- Guestbook Form Submission ---
       guestbookForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        if (isLocalhost) {
+        if (isLocalhost || !supabase) {
           alert("guestbook disabled in local development");
           return;
         }
         let rawName = document.getElementById("name").value.trim();
         const rawMessage = document.getElementById("message").value.trim();
         if (!rawMessage) return;
+
         if (rawName.includes("✿")) {
           alert("hehe cheeky fella, verification badge is for my close friends!");
           return;
         }
+
         const name = rawName ? escapeHTML(rawName) : "anonymous";
         const message = escapeHTML(rawMessage);
+
         try {
           const { error } = await supabase.from("guestbook").insert([{ name, message }]);
           if (error) throw error;
@@ -544,8 +622,7 @@
         }
       });
 
-      loadMessages();
-
+      // --- Heart Particle Visual Effects ---
       const flagColors = {
         transgender: ["#5bcef0", "#f5a9b8", "#ffffff"],
         nonbinary: ["#fcf434", "#ffffff", "#9c59d1", "#2c2c2c"],
@@ -587,10 +664,10 @@
           heart.className = "heart-particle";
           const randomColor = currentPalette[Math.floor(Math.random() * currentPalette.length)];
           heart.innerHTML = `
-      <svg viewBox="0 0 24 24" width="100%" height="100%">
-        <path fill="${randomColor}" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-      </svg>
-    `;
+        <svg viewBox="0 0 24 24" width="100%" height="100%">
+          <path fill="${randomColor}" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      `;
 
           heart.style.left = `${centerX}px`;
           heart.style.top = `${centerY}px`;
@@ -607,29 +684,12 @@
           }, 800);
         }
       }
-      //async function updateDiscordDetails() {
-      //  const nameEl = document.getElementById("discord-name");
-      //  const detailsEl = document.getElementById("discord-details");
-      //  const linkEl = document.getElementById("discord-link");
-      //  try {
-      //    const response = await fetch("https://discord.com/api/guilds/1476600817866768525/widget.json");
-      //    if (!response.ok) throw new Error();
-      //    const data = await response.json();
-      //    nameEl.textContent = data.name;
-      //    detailsEl.textContent = `${data.presence_count} members online, please join :3`;
-      //    if (data.instant_invite) {
-      //      linkEl.href = data.instant_invite;
-      //    }
-      //  } catch (err) {
-      //    detailsEl.textContent = "ahh Discord refused to answer";
-      //  }
-      //}
-      //updateDiscordDetails();
 
+      // --- Sketchbook Drawings ---
       async function loadLatestDrawings() {
         const container = document.getElementById("sketchbook-container");
 
-        if (isLocalhost) {
+        if (isLocalhost || !supabase) {
           container.innerHTML = "<p>sketchbook disabled in local development</p>";
           return;
         }
@@ -678,21 +738,21 @@
             pageCard.style.zIndex = index + 1;
 
             pageCard.innerHTML = `
-        <img 
-          class="gallery-image" 
-          src="${art.image || "images/unavailable.png"}" 
-          alt="${art.title || "Untitled"}" 
-          loading="lazy"
-        />
-        <div class="gallery-title">${art.title || "Untitled"}</div>
-        <div class="gallery-description">${art.description || "No description."}</div>
-        <div class="gallery-date">
-          ${new Date(art.created_at).toLocaleDateString(undefined, {
-            month: "short",
-            year: "numeric"
-          })}
-        </div>
-      `;
+          <img 
+            class="gallery-image" 
+            src="${art.image || "images/unavailable.png"}" 
+            alt="${art.title || "Untitled"}" 
+            loading="lazy"
+          />
+          <div class="gallery-title">${art.title || "Untitled"}</div>
+          <div class="gallery-description">${art.description || "No description."}</div>
+          <div class="gallery-date">
+            ${new Date(art.created_at).toLocaleDateString(undefined, {
+              month: "short",
+              year: "numeric"
+            })}
+          </div>
+        `;
 
             container.appendChild(pageCard);
           });
@@ -701,7 +761,11 @@
         }
       }
 
-      loadLatestDrawings();
+      // --- Initialize App ---
+      initAuth().then(() => {
+        loadMessages();
+        loadLatestDrawings();
+      });
     </script>
 
     <script>
