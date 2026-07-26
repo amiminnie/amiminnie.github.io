@@ -10,15 +10,11 @@
     <meta property="og:title" content="amiminnie - articles" />
     <meta property="og:description" content="Things that come to my mind and is worth writing down here..." />
     <meta property="og:type" content="website" />
-    <meta
-      property="og:image"
-      content="https://amiminnie.github.io/images/icons/articles.svg" />
+    <meta property="og:image" content="https://amiminnie.github.io/images/icons/articles.svg" />
     <meta property="og:url" content="https://amiminnie.github.io" />
 
     <meta name="twitter:card" content="summary" />
-    <meta
-      name="twitter:image"
-      content="https://amiminnie.github.io/images/icons/articles.svg" />
+    <meta name="twitter:image" content="https://amiminnie.github.io/images/icons/articles.svg" />
 
     <link rel="icon" href="images/icons/articles.svg" />
     <link rel="apple-touch-icon" href="images/icons/articles.svg" />
@@ -62,7 +58,7 @@
           <button
             id="admin-login-btn"
             class="theme-btn"
-            onclick="toggleAdminAuth()"
+            onclick="handleAuthNavigation()"
             style="padding: 0 10px; width: auto; font-family: inherit">
             <i class="bi bi-key-fill"></i>
           </button>
@@ -86,10 +82,10 @@
 
             <section class="thoughts">
               <div class="admin-toolbar" id="admin-toolbar" style="display: none">
-                <button class="btn-add" onclick="window.location.href='/articles/builder.html'">+ write</button>
-                <button class="btn-add" onclick="logoutAdmin()" style="background: #cc241d; margin-left: 10px">
-                  logout
+                <button class="btn-add btn" onclick="window.location.href='/articles/builder.html'">
+                  <i class="bi bi-pencil-square"></i> new post
                 </button>
+                <button style="display: none;" onclick="logoutAdmin()"></button>
               </div>
 
               <ul id="thoughts-list" class="thoughts-list">
@@ -128,9 +124,39 @@
       const SUB_KEY = "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ";
       const supabaseClient = supabase.createClient(SUB_URL, SUB_KEY);
 
-      let isAdmin = !!localStorage.getItem("admin_password");
-
+      let isAdmin = false;
       let fetchedArticlesCache = [];
+
+      async function checkAdminStatus(session) {
+        if (!session?.user) return false;
+
+        const { data, error } = await supabaseClient
+          .from("user_roles")
+          .select("role")
+          .eq("user_id", session.user.id)
+          .eq("role", "admin")
+          .maybeSingle();
+
+        return !error && !!data;
+      }
+
+      async function initAuth() {
+        const {
+          data: { session }
+        } = await supabaseClient.auth.getSession();
+
+        isAdmin = await checkAdminStatus(session);
+        updateAdminUI();
+
+        supabaseClient.auth.onAuthStateChange(async (_event, session) => {
+          const loggedInAdmin = await checkAdminStatus(session);
+          if (isAdmin !== loggedInAdmin) {
+            isAdmin = loggedInAdmin;
+            fetchedArticlesCache = [];
+            loadThoughts().then(() => handleRouting());
+          }
+        });
+      }
 
       function navigateToArticle(tag) {
         const url = new URL(window.location.href);
@@ -152,73 +178,21 @@
           loginBtn.innerText = "admin";
         } else {
           toolbar.style.display = "none";
-          loginBtn.innerText = "login";
+          loginBtn.innerText = "";
         }
       }
 
-      function createAuthClient(password) {
-        return supabase.createClient(SUB_URL, SUB_KEY, {
-          global: { headers: { "x-editor-key": password } }
-        });
-      }
-
-      function getAuthClient() {
-        const savedPassword = localStorage.getItem("admin_password");
-        if (!savedPassword) return supabaseClient;
-        return createAuthClient(savedPassword);
-      }
-
-      async function toggleAdminAuth() {
-        if (localStorage.getItem("admin_password")) {
-          alert("You are already authenticated with a saved password!");
-          return;
-        }
-
-        const password = prompt("Enter Editor/Database Key password:");
-        if (!password) return;
-
-        try {
-          const testClient = createAuthClient(password);
-
-          const { data: sample, error: sampleError } = await supabaseClient
-            .from("blogs")
-            .select("tag, public")
-            .limit(1)
-            .maybeSingle();
-
-          if (sampleError || !sample) {
-            alert("No available entries found to test write configurations against.");
-            return;
-          }
-
-          const { data, error } = await testClient
-            .from("blogs")
-            .update({ public: sample.public })
-            .eq("tag", sample.tag)
-            .select("tag");
-
-          if (error || !data || data.length === 0) {
-            throw new Error("Write clearance missing or invalid key.");
-          }
-
-          localStorage.setItem("admin_password", password);
-          isAdmin = true;
-          updateAdminUI();
-          fetchedArticlesCache = [];
-          loadThoughts();
-          alert("Authenticated successfully!");
-        } catch (err) {
-          alert("Authentication failed! Write clearance missing or invalid key.");
-          console.error("Authorization check caught error:", err);
+      function handleAuthNavigation() {
+        if (isAdmin) {
+          logoutAdmin();
+        } else {
+          window.location.href = "/login";
         }
       }
 
-      function logoutAdmin() {
-        localStorage.removeItem("admin_password");
-        isAdmin = false;
-        updateAdminUI();
-        fetchedArticlesCache = [];
-        loadThoughts().then(() => handleRouting());
+      async function logoutAdmin() {
+        await supabaseClient.auth.signOut();
+        alert("Logged out successfully.");
       }
 
       async function loadThoughts() {
@@ -237,7 +211,7 @@
             const { data: items, error } = await query.order("id", { ascending: false });
 
             if (error) throw error;
-            fetchedArticlesCache = items;
+            fetchedArticlesCache = items || [];
           }
 
           list.innerHTML = "";
@@ -247,26 +221,26 @@
 
             const adminButtons = isAdmin
               ? `
-  <div class="item-actions" style="display: flex; gap: 8px; align-items: center;">
-    <button class="action-link" style="color: ${item.public ? "#b8bb26" : "#fb4934"}" onclick="togglePublicVisibility('${item.tag}', ${item.public})" title="Toggle Visibility Status">
-      <i class="bi ${item.public ? "bi-eye" : "bi-eye-slash"}"></i>
-    </button>
-    <button class="action-link edit-color" onclick="editArticle('${item.tag}')">
-      <i class="bi bi-pencil"></i>
-    </button>
-    <button class="action-link delete-color" onclick="deleteArticle('${item.tag}')">
-      <i class="bi bi-trash"></i>
-    </button>
-  </div>`
+<div class="item-actions" style="display: flex;">
+  <button class="action-link btn" style="color: ${item.public ? "#b8bb26" : "#fb4934"}" onclick="togglePublicVisibility('${item.tag}', ${item.public})" title="Toggle Visibility Status">
+    <i class="bi ${item.public ? "bi-eye" : "bi-eye-slash"}"></i>
+  </button>
+  <button class="action-link btn edit-color" onclick="editArticle('${item.tag}')">
+    <i class="bi bi-pencil"></i>
+  </button>
+  <button class="action-link btn delete-color" onclick="deleteArticle('${item.tag}')">
+    <i class="bi bi-trash"></i>
+  </button>
+</div>`
               : "";
 
             div.innerHTML = `
-  <a class="thought-link" href="?id=${item.tag}" onclick="event.preventDefault(); navigateToArticle('${item.tag}')">
-      <h3 class="gallery-title">${item.title} ${!item.public && isAdmin ? '<span style="font-size:11px; background:#fb4934; color:#fff; padding:2px 6px; border-radius:4px; vertical-align:middle;margin-left:5px;">Draft</span>' : ""}</h3>
-      <p class="gallery-description"><i>${item.description}</i></p>
-      <p class="gallery-date"><em>${item.date}</em></p>
-  </a>
-  ${adminButtons}
+<a class="thought-link" href="?id=${item.tag}" onclick="event.preventDefault(); navigateToArticle('${item.tag}')">
+    <h3 class="gallery-title">${item.title} ${!item.public && isAdmin ? '<span style="font-size:11px; background:#fb4934; color:#fff; padding:2px 6px; border-radius:4px; vertical-align:middle;margin-left:5px;">Draft</span>' : ""}</h3>
+    <p class="gallery-description"><i>${item.description}</i></p>
+    <p class="gallery-date"><em>${item.date}</em></p>
+</a>
+${adminButtons}
 `;
             list.appendChild(div);
           });
@@ -283,6 +257,7 @@
             `;
             sidebarList.appendChild(li);
           });
+
           const hiddenLi = document.createElement("li");
           hiddenLi.className = "sidebar-item sidebar-fake-end";
           hiddenLi.setAttribute("aria-hidden", "true");
@@ -379,10 +354,9 @@
       }
 
       async function togglePublicVisibility(tag, currentStatus) {
-        const sbAuth = getAuthClient();
         const nextStatus = !currentStatus;
 
-        const { error } = await sbAuth.from("blogs").update({ public: nextStatus }).eq("tag", tag);
+        const { error } = await supabaseClient.from("blogs").update({ public: nextStatus }).eq("tag", tag);
 
         if (error) {
           alert("Visibility alteration failed: " + error.message);
@@ -393,15 +367,8 @@
       }
 
       async function deleteArticle(tag) {
-        let password = localStorage.getItem("admin_password");
-        if (!password) {
-          password = prompt("Enter Editor Password to delete this post:");
-          if (!password) return;
-        }
-
         if (confirm(`Are you sure you want to permanently delete "${tag}"?`)) {
-          const sbAuth = createAuthClient(password);
-          const { error } = await sbAuth.from("blogs").delete().eq("tag", tag);
+          const { error } = await supabaseClient.from("blogs").delete().eq("tag", tag);
 
           if (error) {
             alert("Delete failed: " + error.message);
@@ -419,7 +386,10 @@
 
       window.addEventListener("popstate", handleRouting);
 
-      loadThoughts().then(() => handleRouting());
+      // Initialize Auth & App
+      initAuth().then(() => {
+        loadThoughts().then(() => handleRouting());
+      });
     </script>
   </body>
 </html>

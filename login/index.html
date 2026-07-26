@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>amiminnie - admin login</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="color-scheme" content="light dark" />
+        <meta name="theme-color" content="#111111" />
+
+        <link id="theme-style" rel="stylesheet" href="/assets/styles/dark.css" />
+        <link id="style" rel="stylesheet" href="/assets/styles/style.css" />
+
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    </head>
+    <body>
+        <div class="container">
+            <section class="guestbook surface">
+                <h2>Login</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <input type="email" id="email" placeholder="admin@example.com" class="txtarea" required />
+                    </div>
+                    <div class="form-group">
+                        <input type="password" id="password" placeholder="******" class="txtarea" required />
+                    </div>
+                    <button type="submit" class="btnsoft">Sign In</button>
+                </form>
+            </section>
+        </div>
+
+        <script>
+            const SUB_URL = "https://miwcmqwhudshgetmrmhf.supabase.co";
+            const SUB_KEY = "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ";
+            const supabaseClient = supabase.createClient(SUB_URL, SUB_KEY);
+
+            async function checkExistingSession() {
+                const {
+                    data: { session }
+                } = await supabaseClient.auth.getSession();
+
+                if (session?.user) {
+                    const { data: roleData } = await supabaseClient
+                        .from("user_roles")
+                        .select("role")
+                        .eq("user_id", session.user.id)
+                        .eq("role", "admin")
+                        .maybeSingle();
+
+                    if (roleData) {
+                        window.location.href = "/articles";
+                    }
+                }
+            }
+            checkExistingSession();
+
+            document.getElementById("login-form").addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const email = document.getElementById("email").value;
+                const password = document.getElementById("password").value;
+
+                try {
+                    const { data, error } = await supabaseClient.auth.signInWithPassword({
+                        email,
+                        password
+                    });
+
+                    if (error) throw error;
+                    const { data: roleData, error: roleError } = await supabaseClient
+                        .from("user_roles")
+                        .select("role")
+                        .eq("user_id", data.user.id)
+                        .eq("role", "admin")
+                        .maybeSingle();
+
+                    if (roleError || !roleData) {
+                        await supabaseClient.auth.signOut();
+                        alert("Access denied: You do not have admin permissions.");
+                        return;
+                    }
+
+                    alert("Successfully logged in!");
+                    window.location.href = "/articles";
+                } catch (err) {
+                    alert("Login failed: " + err.message);
+                    console.error(err);
+                }
+            });
+        </script>
+    </body>
+</html>

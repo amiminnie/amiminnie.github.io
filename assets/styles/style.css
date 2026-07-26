@@ -770,20 +770,9 @@ nav.article-active .nav-back-btn {
 }
 
 .btn-add {
-  background: none;
-  border: 1px solid #333;
-  color: inherit;
   padding: 6px 14px;
   cursor: pointer;
-  font-family: "Overlock", sans-serif;
-  border-radius: 4px;
   font-size: 0.85rem;
-  transition: 0.2s;
-}
-
-.btn-add:hover {
-  border-color: #4caf50;
-  color: #4caf50;
 }
 
 .thought-item {
@@ -794,22 +783,7 @@ nav.article-active .nav-back-btn {
   position: absolute;
   top: 0;
   right: 0;
-  gap: 12px;
-}
-
-.action-link {
-  background: none;
-  border: none;
-  font-family: "Overlock", sans-serif;
-  font-size: 0.7rem;
-  cursor: pointer;
-  letter-spacing: 1px;
-  opacity: 0.5;
-  transition: 0.2s;
-}
-
-.action-link:hover {
-  opacity: 1;
+  gap: 0;
 }
 
 .edit-color {

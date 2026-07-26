@@ -29,10 +29,8 @@
                     <button class="close-modal-btn btn" onclick="toggleSettingsModal()"><i class="bi bi-x"></i></button>
                 </div>
 
-                <label style="color: var(--accent); margin-bottom: -5px">AUTHENTICATION</label>
-                <label>Password</label>
-                <input type="password" id="editor-key" placeholder="••••••••" class="txtarea" />
-                <label>Article ID</label>
+                <label style="color: var(--accent); margin-bottom: -5px">ARTICLE SETTINGS</label>
+                <label>Article ID (Tag)</label>
                 <input type="text" id="article-tag" placeholder="my-post" class="txtarea" />
                 <label style="color: var(--accent); margin-bottom: -5px">Metadata</label>
                 <label>Thumbnail</label>
@@ -49,7 +47,7 @@
                     placeholder="what it is all about!"
                     class="txtarea"
                     style="margin-bottom: 10px;"
-                          ></textarea>
+                ></textarea>
                 <button class="publish-btn btnsoft" id="publish-btn" onclick="publishToSupabase()">
                     <i class="bi bi-floppy-fill"></i> Save
                 </button>
@@ -80,7 +78,7 @@
                     <nav>
                         <a href="/" onclick="event.preventDefault();">about</a>
                         <a href="/archive" onclick="event.preventDefault();">archive</a>
-                        <a href="/articles" onclick="event.preventDefault();">articles</a>
+                        <a href="/articles">articles</a>
                         <a href="" onclick="event.preventDefault();" class="active">builder</a>
                     </nav>
                 </header>
@@ -129,7 +127,7 @@
         <script>
             const SUB_URL = "https://miwcmqwhudshgetmrmhf.supabase.co";
             const ANON_KEY = "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ";
-            const sbPublic = supabase.createClient(SUB_URL, ANON_KEY);
+            const supabaseClient = supabase.createClient(SUB_URL, ANON_KEY);
 
             let blocks = [];
             let currentPreviewTheme = "dark";
@@ -189,22 +187,6 @@
                 }
             }
 
-            function togglePreviewTheme() {
-                const themeLink = document.getElementById("theme-style");
-                const btn = document.getElementById("theme-toggle-btn");
-                if (currentPreviewTheme === "dark") {
-                    themeLink.href = "light.css";
-                    currentPreviewTheme = "light";
-                    document.body.classList.add("light-theme");
-                    btn.innerHTML = `<i class="bi bi-palette-fill"></i> Toggle: Light Mode`;
-                } else {
-                    themeLink.href = "dark.css";
-                    currentPreviewTheme = "dark";
-                    document.body.classList.remove("light-theme");
-                    btn.innerHTML = `<i class="bi bi-palette-fill"></i> Toggle: Dark Mode`;
-                }
-            }
-
             function addBlock(type, content = "", media = "", alt = "", styles = null) {
                 const id = Date.now() + Math.random();
                 const defaultStyles = styles || {
@@ -215,7 +197,6 @@
                     customCss: ""
                 };
 
-                // Set native sample standard default copy for new dialogue quote containers
                 if (type === "conversation" && !content) {
                     content =
                         "<p><i>The dozen may be one of the earliest primitive integer groupings... <strong>Twelve is convenient because it has a maximal number of divisors...</strong></i></p>";
@@ -298,12 +279,18 @@
                 return style.trim() ? ` style="${style.trim()}"` : "";
             }
 
-            async function uploadImageDirect(inputFieldId) {
-                const password = document.getElementById("editor-key").value;
-                if (!password) {
-                    alert("Enter Database Key Password first!");
-                    return;
+            async function ensureAuthenticated() {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session) {
+                    alert("You must be logged in as an admin to perform this action.");
+                    window.location.href = "/login";
+                    return false;
                 }
+                return true;
+            }
+
+            async function uploadImageDirect(inputFieldId) {
+                if (!(await ensureAuthenticated())) return;
 
                 const fileInput = document.createElement("input");
                 fileInput.type = "file";
@@ -313,12 +300,8 @@
                     const file = e.target.files[0];
                     if (!file) return;
 
-                    const sbAdmin = supabase.createClient(SUB_URL, ANON_KEY, {
-                        global: { headers: { "x-editor-key": password } }
-                    });
-
                     const fileName = `${Date.now()}-${file.name.replace(/\s/g, "_")}`;
-                    const { data, error } = await sbAdmin.storage.from("blog-assets").upload(fileName, file);
+                    const { data, error } = await supabaseClient.storage.from("blog-assets").upload(fileName, file);
 
                     if (error) {
                         alert("Upload failed: " + error.message);
@@ -331,11 +314,7 @@
             }
 
             async function uploadBlockImage(id) {
-                const password = document.getElementById("editor-key").value;
-                if (!password) {
-                    alert("Enter Database Key Password in the settings popup first!");
-                    return;
-                }
+                if (!(await ensureAuthenticated())) return;
 
                 const fileInput = document.createElement("input");
                 fileInput.type = "file";
@@ -345,12 +324,8 @@
                     const file = e.target.files[0];
                     if (!file) return;
 
-                    const sbAdmin = supabase.createClient(SUB_URL, ANON_KEY, {
-                        global: { headers: { "x-editor-key": password } }
-                    });
-
                     const fileName = `${Date.now()}-${file.name.replace(/\s/g, "_")}`;
-                    const { data, error } = await sbAdmin.storage.from("blog-assets").upload(fileName, file);
+                    const { data, error } = await supabaseClient.storage.from("blog-assets").upload(fileName, file);
 
                     if (error) {
                         alert("Upload failed: " + error.message);
@@ -384,7 +359,7 @@
                         wrapper.classList.add("dragging");
                         e.dataTransfer.setData("text/plain", index);
                     });
-                    wrapper.addEventListener("dragend", (e) => {
+                    wrapper.addEventListener("dragend", () => {
                         wrapper.classList.remove("dragging");
                         wrapper.removeAttribute("draggable");
                     });
@@ -419,7 +394,7 @@
                         const currentCss = b.styles?.customCss || "";
 
                         stylesPanel.innerHTML = `
-                            <div class="style-group" >
+                            <div class="style-group">
                                 <label>Size (<span id="lbl-size-${b.id}">${currentSize}rem</span>)</label>
                                 <input type="range" min="0.5" max="3.5" step="0.1" value="${currentSize}" oninput="updateBlockStyleLive(${b.id}, 'fontSize', this.value)" />
                             </div>
@@ -440,7 +415,7 @@
                             </div>
                             <div class="style-group" style="flex-grow:1;">
                                 <label>Custom</label>
-                                <input type="text" class="txtarea"  value="${currentCss}" oninput="updateBlockStyleLive(${b.id}, 'customCss', this.value)" style="width:100%;" />
+                                <input type="text" class="txtarea" value="${currentCss}" oninput="updateBlockStyleLive(${b.id}, 'customCss', this.value)" style="width:100%;" />
                             </div>
                         `;
                         wrapper.appendChild(stylesPanel);
@@ -569,25 +544,22 @@
             }
 
             async function publishToSupabase() {
-                const password = document.getElementById("editor-key").value;
+                if (!(await ensureAuthenticated())) return;
+
                 const tag = document.getElementById("article-tag").value;
                 const btn = document.getElementById("publish-btn");
 
-                if (!password || !tag) {
-                    alert("Key and Unique Article Tag are required.");
+                if (!tag) {
+                    alert("A Unique Article Tag is required.");
                     return;
                 }
-
-                const sbAdmin = supabase.createClient(SUB_URL, ANON_KEY, {
-                    global: { headers: { "x-editor-key": password } }
-                });
 
                 btn.innerText = "SAVING DATA...";
                 btn.disabled = true;
 
                 const compiledOutput = compileHTML();
 
-                const { error } = await sbAdmin.from("blogs").upsert(
+                const { error } = await supabaseClient.from("blogs").upsert(
                     {
                         tag: tag,
                         title: document.getElementById("canvas-title").innerText,
@@ -600,13 +572,14 @@
                     { onConflict: "tag" }
                 );
 
-                if (error) alert("Error: " + error.message);
-                else {
+                if (error) {
+                    alert("Error saving article: " + error.message);
+                } else {
                     alert("Article successfully synced!");
                     toggleSettingsModal();
                 }
 
-                btn.innerText = "SAVE TO DATABASE";
+                btn.innerText = "SAVE";
                 btn.disabled = false;
             }
 
@@ -615,7 +588,7 @@
                 const editTag = urlParams.get("edit");
 
                 if (editTag) {
-                    const { data } = await sbPublic.from("blogs").select("*").eq("tag", editTag).single();
+                    const { data } = await supabaseClient.from("blogs").select("*").eq("tag", editTag).single();
                     if (data) {
                         document.getElementById("article-tag").value = data.tag;
                         document.getElementById("canvas-title").innerText = data.title || "";
