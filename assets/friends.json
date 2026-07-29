@@ -59,13 +59,8 @@
         "links": [
             {
                 "icon": "<i class='bi bi-globe2'></i>",
-                "url": "#https://dihanramanayaka.github.io/hello/",
+                "url": "#https://randomcatuser.github.io/",
                 "label": "Website"
-            },
-            {
-                "icon": "<i class='bi bi-newspaper'></i>",
-                "url": "#https://randomcatuser.github.io/RandomThoughts-/",
-                "label": "Blog"
             },
             {
                 "icon": "<i class='bi bi-github'></i>",
