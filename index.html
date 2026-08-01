@@ -86,6 +86,57 @@
           </div>
         </section>
 
+        <section class="projects-section">
+          <div class="section-headers">
+            <h1 data-i18n="projects">Projects</h1>
+            <p class="subtitle" data-i18n="projects-subtitle">something cool you could try out maybe!</p>
+          </div>
+
+          <div class="projects-scroll-container">
+            <a
+              href="#self://colon3"
+              class="project-card surface"
+              style="
+                background: linear-gradient(90deg, #ffdce888, #ffdce811);
+                border: none;
+                box-shadow: none;
+                text-shadow: 0 0 18px var(--shading);
+              ">
+              <div class="project-img">
+                <img
+                  src="images/projects/colon3.png"
+                  alt="Colon3"
+                  style="transform: rotate(-4deg); width: 110px; height: auto" />
+              </div>
+              <div class="project-details">
+                <h2 class="project-title" style="color: var(--surface-text)">:3 Your Internet!</h2>
+                <p class="project-description">
+                  Cute extension that replaces emoticons like :] with the more awesome :3 + more replacement features
+                </p>
+              </div>
+            </a>
+            <a
+              href="https://github.com/amiminnie/Notesweeper"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="project-card surface"
+              style="
+                border: none;
+                box-shadow: none;
+                border-top: solid 20px #ffffff11;
+                background: #ffffff11;
+                outline: solid 1px #ffffff66;
+              ">
+              <div class="project-img"><img src="images/projects/notesweeper.png" alt="Colon3" /></div>
+              <div class="project-details">
+                <h2 class="project-title">Notesweeper</h2>
+                <p class="project-description">It's Minesweeper, but inside Notepad.</p>
+              </div>
+            </a>
+          </div>
+        </section>
+
+        <!--
         <section class="section-headers">
           <h1 data-i18n="comics">Comics</h1>
           <p class="subtitle" data-i18n="comics-subtitle">you might find these relatable, only if you're like me...</p>
@@ -94,6 +145,7 @@
             <p data-i18n="comics-loading">flipping through the pages...</p>
           </div>
         </section>
+        -->
 
         <section class="social-list">
           <h1 data-i18n="what-to-do">what to do</h1>
@@ -421,7 +473,7 @@
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
       const isLocalhost =
-        location.hostname === "localhostt" || location.hostname === "127.0.0.1" || location.hostname === "";
+        location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "";
       const SUPABASE_URL = "https://miwcmqwhudshgetmrmhf.supabase.co";
       const SUPABASE_KEY = "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ";
 
@@ -764,7 +816,8 @@
       // --- Initialize App ---
       initAuth().then(() => {
         loadMessages();
-        loadLatestDrawings();
+        //loadLatestDrawings();
+        // ENABLE THIS IF YOU TURN ON SKETCHBOOK AGAIN
       });
     </script>
 
