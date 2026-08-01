@@ -1,0 +1,1203 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>:3 Your Internet! — amiminnie</title>
+        <link
+            href="https://fonts.googleapis.com/css2?family=Overlock:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
+            rel="stylesheet" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <style>
+            :root {
+                --bg-main: #fff6fa;
+                --bg-dark: #ffe6f0;
+                --surface-hgt: #ffa2c5;
+                --surface-hgt-shadow: #ff86b6;
+                --surface-text: #ff5f9e;
+                --surface: #ffdce8;
+                --surface-shadow: #ffb4cc;
+                --surface-dsb: #ffeef4;
+                --highlight: #ffffffcc;
+                --shading: #80164015;
+                --text-main: #c22b67;
+                --border-solid: #ffc1d9;
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            @keyframes fadeInOnLoad {
+                from {
+                    opacity: 0;
+                    transform: translateY(-10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: "Overlock", sans-serif;
+                background: linear-gradient(180deg, var(--surface) 100px, var(--bg-main) 250px);
+                color: var(--text-main);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-height: 100vh;
+                animation: fadeInOnLoad 1s ease-out forwards;
+            }
+
+            .material-symbols-outlined {
+                font-variation-settings:
+                    "FILL" 0,
+                    "wght" 400,
+                    "GRAD" 0,
+                    "opsz" 24;
+            }
+
+            /* Layout Elements */
+            header {
+                width: 100%;
+                max-width: 800px;
+                padding: 40px 20px 20px;
+                text-align: left;
+            }
+
+            h1 {
+                font-size: 42px;
+                margin: 0;
+                color: var(--surface-text);
+                display: inline-block;
+            }
+
+            .tagline {
+                font-size: 18px;
+                font-weight: 700;
+                color: var(--text-main);
+                margin: 0 0 20px 0;
+            }
+
+            .layout-container {
+                width: 100%;
+                max-width: 800px;
+                display: flex;
+                gap: 25px;
+                align-items: flex-start;
+                padding: 0 20px 40px;
+            }
+
+            @media (min-width: 1120px) {
+                .layout-container {
+                    max-width: 1100px;
+                }
+            }
+
+            main {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .card {
+                background-color: var(--surface);
+                color: var(--surface-text);
+                border-bottom: 5px solid var(--surface-shadow);
+                border-top: 1px solid var(--highlight);
+                box-shadow: 5px 5px 0 var(--shading);
+                padding: 25px;
+                margin-bottom: 25px;
+                transform: translateY(0);
+                position: relative;
+            }
+
+            h2 {
+                font-size: 26px;
+                margin: 0 0 8px 0;
+                color: var(--surface-text);
+                display: inline-block;
+                box-shadow: inset 0 -12px 0 0 var(--border-solid);
+            }
+            H3 {
+                margin: 0;
+            }
+
+            p {
+                color: var(--text-main);
+                font-size: 16px;
+                line-height: 1.5;
+                margin: 0 0 10px 0;
+            }
+
+            .popup-container {
+                font-family: "Overlock", sans-serif;
+                width: 250px;
+                flex-shrink: 0;
+                padding: 15px;
+                background-color: var(--surface);
+                color: var(--surface-text);
+                border-bottom: 5px solid var(--surface-shadow);
+                border-top: 1px solid var(--highlight);
+                box-shadow: 0 0 5px #00000077;
+                outline: solid 1px var(--text-main);
+                transition: all 0.2s ease;
+            }
+
+            @media (max-width: 600px) {
+                .layout-container {
+                    flex-direction: column;
+                    align-items: center;
+                }
+                .popup-container {
+                    order: -1;
+                    z-index: 999;
+                    margin-bottom: 100px;
+                }
+
+                main {
+                    width: 100%;
+                }
+            }
+
+            .header-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 12px;
+            }
+
+            .header-row h2 {
+                margin: 0;
+                box-shadow: inset 0 -13px 0 0 var(--border-solid);
+            }
+
+            .setting-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin: 8px 0;
+                font-size: 15px;
+            }
+
+            .switch-container {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .switch {
+                appearance: none;
+                width: 32px;
+                height: 21px;
+                border-top: 3px solid var(--surface-shadow);
+                border-bottom: 1px solid var(--highlight);
+                background: var(--surface-dsb);
+                position: relative;
+                cursor: pointer;
+                display: inline-block;
+            }
+
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+            .slider:before {
+                content: "";
+                position: absolute;
+                top: -5px;
+                right: 12px;
+                width: 20px;
+                height: 16px;
+                background: var(--surface-hgt);
+                border-bottom: 5px solid var(--surface-hgt-shadow);
+                border-top: 1px solid var(--highlight);
+                box-shadow:
+                    3px 3px 0 var(--shading),
+                    2px 2px 0 var(--shading);
+                transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.3);
+            }
+
+            .slider:hover:before {
+                border-bottom: 6px solid var(--surface-hgt-shadow);
+                margin-top: -1px;
+                box-shadow:
+                    4px 4px 0 var(--shading),
+                    2px 2px 0 var(--shading);
+            }
+
+            input:checked + .slider:before {
+                transform: translateX(12px);
+            }
+
+            .listing {
+                border-top: 2px dashed var(--border-solid);
+                padding-top: 5px;
+            }
+            .bottom-listing {
+                border-top: 2px dashed var(--border-solid);
+                margin-top: 8px;
+                padding-top: 5px;
+            }
+
+            .icon-btn {
+                border: none;
+                text-align: center;
+                width: 22px;
+                height: 25px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                background: var(--surface-hgt);
+                border-bottom: 5px solid var(--surface-hgt-shadow);
+                border-top: 1px solid var(--highlight);
+                color: var(--surface-text);
+                cursor: pointer;
+                font-weight: bold;
+                box-shadow:
+                    3px 3px 0 var(--shading),
+                    2px 2px 0 var(--shading);
+                transition: all 0.2s ease;
+            }
+            .icon-btn .material-symbols-outlined {
+                font-size: 1rem;
+                color: var(--surface-dsb);
+                text-shadow: 0 0 3px var(--surface-text);
+            }
+            .icon-btn:hover {
+                border-bottom: 6px solid var(--surface-hgt-shadow);
+                margin-top: -1px;
+                box-shadow:
+                    4px 4px 0 var(--shading),
+                    2px 2px 0 var(--shading);
+            }
+            .icon-btn:active {
+                border-bottom: 3px solid var(--surface-hgt-shadow);
+                box-shadow: 1px 1px 0 var(--shading);
+                margin-top: 2px;
+            }
+
+            .hidden-panel {
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                transform: translateY(-10px);
+                transition:
+                    max-height 0.4s ease,
+                    opacity 0.6s ease,
+                    transform 0.1s ease 0.4s,
+                    padding 0.6s ease;
+            }
+
+            .hidden-panel:nth-child(2) {
+                border-bottom: 2px dashed var(--border-solid);
+            }
+
+            .hidden-panel.active {
+                opacity: 1;
+                padding-top: 5px;
+                padding-bottom: 20px;
+                max-height: 500px;
+                transform: translateY(0);
+                transition:
+                    max-height 0.4s ease-in-out,
+                    opacity 0.6s ease,
+                    transform 1s ease,
+                    padding 0.6s cubic-bezier(0.34, 2, 0.64, 1);
+            }
+
+            .input-group {
+                display: flex;
+                gap: 5px;
+                margin-bottom: 10px;
+            }
+            .input-group input {
+                width: 40%;
+                font-size: 12px;
+                height: 23px;
+                background: var(--bg-main);
+                border: none;
+                border-top: 3px solid var(--surface-shadow);
+                padding: 3px;
+                color: var(--text-main);
+            }
+            .input-group input:focus {
+                outline: none;
+                border-bottom: 1px solid var(--highlight);
+            }
+
+            .scroll-list {
+                max-height: 100px;
+                overflow-y: auto;
+                margin-bottom: 5px;
+                border-top: 3px solid var(--surface-shadow);
+            }
+
+            .scroll-list .material-symbols-outlined {
+                font-size: 0.7rem;
+                vertical-align: -3px;
+            }
+
+            .scroll-list::-webkit-scrollbar {
+                width: 10px;
+            }
+            .scroll-list::-webkit-scrollbar-track {
+                background: var(--bg-dark);
+            }
+            .scroll-list::-webkit-scrollbar-thumb {
+                background-color: var(--surface-hgt);
+                border-bottom: solid 4px var(--surface-hgt-shadow);
+                border-top: solid 1px var(--highlight);
+                transition: border 0.1s ease;
+            }
+            .scroll-list::-webkit-scrollbar-thumb:hover {
+                border-bottom: solid 2px var(--surface-hgt-shadow);
+            }
+
+            .rule-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding-bottom: 2px;
+                padding-left: 8px;
+                font-size: 12px;
+                background: var(--bg-main);
+            }
+            .rule-row:hover {
+                background: white;
+            }
+
+            .del-btn {
+                cursor: pointer;
+                font-weight: bold;
+                border: none;
+                background: none;
+            }
+            .del-btn .material-symbols-outlined {
+                font-size: 16px;
+                color: #ff5050;
+                pointer-events: none;
+            }
+            .del-btn:hover .material-symbols-outlined {
+                transform: translateY(1px);
+            }
+
+            .action-btn {
+                width: 100%;
+                padding: 0.3rem 0.5rem;
+                border: none;
+                background: var(--surface-hgt);
+                border-bottom: 5px solid var(--surface-hgt-shadow);
+                border-top: 1px solid var(--highlight);
+                color: var(--surface-dsb);
+                text-shadow: 0 0 3px var(--surface-text);
+                cursor: pointer;
+                font-weight: bold;
+                box-shadow:
+                    3px 3px 0 var(--shading),
+                    2px 2px 0 var(--shading);
+                transition: all 0.2s ease;
+                font-family: "Overlock", sans-serif;
+            }
+            .action-btn .material-symbols-outlined {
+                font-size: 0.8rem;
+                color: var(--surface-dsb);
+                text-shadow: 0 0 3px var(--surface-text);
+            }
+            .action-btn:hover {
+                border-bottom: 6px solid var(--surface-hgt-shadow);
+                margin-top: -1px;
+                box-shadow:
+                    4px 4px 0 var(--shading),
+                    2px 2px 0 var(--shading);
+            }
+            .action-btn:active {
+                border-bottom: 3px solid var(--surface-hgt-shadow);
+                box-shadow: 1px 1px 0 var(--shading);
+                margin-top: 2px;
+            }
+
+            .preset-link {
+                width: 100%;
+                background: transparent;
+                color: var(--surface-text);
+                border: none;
+                cursor: pointer;
+                font-family: "Overlock", sans-serif;
+                text-align: right;
+                font-size: 12px;
+                padding: 0;
+                margin-bottom: 5px;
+                display: block;
+            }
+            .txtarea {
+                padding: 0.5rem;
+                width: 100%;
+                border: none;
+                border-top: 5px solid var(--surface-shadow);
+                border-bottom: 1px solid var(--highlight);
+                background: var(--surface-dsb);
+                color: var(--text-main);
+                font-family: inherit;
+                outline: 0 solid var(--highlight);
+                transition: outline 0.1s ease;
+                resize: vertical;
+            }
+
+            .txtarea:focus {
+                outline: 2px solid var(--highlight);
+            }
+
+            .addon-card {
+                display: flex;
+                flex-direction: column;
+                background-color: #2b2a33;
+                gap: 15px;
+                font-family: "segoe UI", Tahoma, Geneva, sans-serif;
+            }
+            .addon-top-row {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .addon-content {
+                flex: 1;
+                min-width: 0;
+            }
+            .addon-header {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+            }
+
+            .addon-icon {
+                width: 60px;
+                height: 60px;
+                box-shadow: 3px 3px 0 var(--shading);
+                flex-shrink: 0;
+            }
+
+            .addon-info h2 {
+                margin: 0;
+                font-size: 24px;
+                box-shadow: none;
+                color: white;
+            }
+
+            .addon-author {
+                margin: 2px 0 0 0;
+                font-size: 14px;
+                opacity: 0.9;
+                color: #ffe6f0;
+            }
+
+            .addon-description {
+                margin: 0;
+                font-size: 15px;
+                line-height: 1.4;
+                color: white;
+            }
+
+            .addon-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                width: 100%;
+                padding: 10px 16px;
+                background: #0054e6;
+                color: white;
+                text-decoration: none;
+            }
+
+            .addon-btn:hover {
+                background: #003eaa;
+            }
+            @media (max-width: 1199px) {
+                .addon-card {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                .addon-top-row {
+                    display: contents;
+                }
+
+                .addon-header {
+                    order: 1;
+                }
+
+                .addon-description {
+                    order: 2;
+                }
+
+                .addon-btn {
+                    order: 3;
+                }
+            }
+            @media (min-width: 1200px) {
+                .addon-top-row {
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+
+                .addon-btn {
+                    width: auto;
+                }
+            }
+            footer {
+                width: 100%;
+                max-width: 800px;
+                padding: 20px;
+                font-size: 0.9rem;
+                text-align: center;
+                color: var(--text-main);
+                border-top: 2px dashed var(--border-solid);
+                margin-top: auto;
+            }
+
+            footer a {
+                color: var(--text-main);
+                text-decoration: underline;
+                font-weight: bold;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1 id="page-title">:3 Your internet!</h1>
+            <p class="tagline" id="page-tagline">Transform plain old emoticons into sillies across the internet!</p>
+        </header>
+
+        <div class="layout-container">
+            <main>
+                <section class="card">
+                    <h2>Test it out!</h2>
+                    <p>
+                        :3 Your Internet (code-named Colon3) is a cute add-on, originally created as a joke, to replace
+                        assigned emoticons into our awesome little fella that is :3
+                    </p>
+                    <p>Toggle on and off the extension preview and see the emoticons change!</p>
+                    <textarea class="txtarea" style="font-size: 1rem">Can I get a cookie :)</textarea>
+                </section>
+
+                <section class="card">
+                    <h2>Downloads</h2>
+                    <h3>FireFox</h3>
+                    <p>You can instantly add the extension to Firefox here!</p>
+                    <div class="card addon-card">
+                        <div class="addon-top-row">
+                            <div class="addon-header">
+                                <img
+                                    src="https://github.com/amiminnie/Colon3/blob/main/images/128.png?raw=true"
+                                    alt=":3 Logo"
+                                    class="addon-icon" />
+                                <div class="addon-info">
+                                    <h2>:3 Your Internet!</h2>
+                                    <p class="addon-author">by amiminnie</p>
+                                </div>
+                            </div>
+
+                            <a
+                                href="https://addons.mozilla.org/en-US/firefox/addon/amiminnie-colon3/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                class="addon-btn">
+                                Add to Firefox
+                            </a>
+                        </div>
+
+                        <p class="addon-description">
+                            Cute add-on that replaces emoticons like :] with the more awesome :3 + more replacement
+                            features
+                        </p>
+                    </div>
+
+                    <h3>Other browsers...</h3>
+                    <p>
+                        Since Chrome web store and many others costs money to post an extension, I currently cannot
+                        afford that. You can instead download the source code from my repository and add it to your
+                        browser through developer options.
+                    </p>
+                    <a
+                        href="https://github.com/amiminnie/Colon3/releases/latest"
+                        target="_blank"
+                        rel="noopener noreferrer">
+                        <img src="https://gh-card.dev/repos/amiminnie/Colon3.svg" alt="Colon3 Card" />
+                    </a>
+                </section>
+            </main>
+
+            <div class="popup-container">
+                <div class="header-row">
+                    <h2>:3 Your Internet!</h2>
+                    <label class="switch">
+                        <input type="checkbox" id="globalToggle" checked />
+                        <span class="slider" title="toggle extension"></span>
+                    </label>
+                </div>
+
+                <div class="listing">
+                    <div class="setting-item">
+                        <span>Make it :3</span>
+                        <div class="switch-container">
+                            <label class="switch">
+                                <input type="checkbox" id="threeToggle" checked />
+                                <span class="slider" title="toggle sillies"></span>
+                            </label>
+                            <button id="toggleSettingsBtn" class="icon-btn" title="edit sillies">
+                                <span class="material-symbols-outlined"> settings </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="settingsPanel" class="hidden-panel">
+                        <div class="input-group">
+                            <input type="text" id="newKey" placeholder=":)" />
+                            <span class="material-symbols-outlined"> arrow_forward </span>
+                            <input type="text" id="newValue" placeholder=":3" />
+                            <button id="addBtn" class="action-btn" style="width: auto; margin: 0">
+                                <span class="material-symbols-outlined"> add_2 </span>
+                            </button>
+                        </div>
+                        <div id="emojiListContainer" class="scroll-list"></div>
+                        <p id="emptyWarning" style="color: #ff4d4d; font-size: 11px; margin: 0 0 5px 0">
+                            <b>Nothing here, add something!</b>
+                        </p>
+                        <button id="loadPresetBtn" class="preset-link">Load Preset</button>
+                        <button id="saveBtn" class="action-btn">Save</button>
+                    </div>
+
+                    <div class="setting-item">
+                        <span>Other Sillies</span>
+                        <div class="switch-container">
+                            <label class="switch">
+                                <input type="checkbox" id="silliesToggle" checked />
+                                <span class="slider" title="toggle sillies"></span>
+                            </label>
+                            <button id="toggleSilliesSettingsBtn" class="icon-btn" title="edit sillies">
+                                <span class="material-symbols-outlined"> settings </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="silliesSettingsPanel" class="hidden-panel">
+                        <div class="input-group">
+                            <input type="text" id="newSillyKey" placeholder="cookie" />
+                            <span class="material-symbols-outlined"> arrow_forward </span>
+                            <input type="text" id="newSillyValue" placeholder="biscuit" />
+                            <button id="addSillyBtn" class="action-btn" style="width: auto; margin: 0">
+                                <span class="material-symbols-outlined"> add_2 </span>
+                            </button>
+                        </div>
+                        <div id="sillyListContainer" class="scroll-list"></div>
+                        <p id="sillyEmptyWarning" style="color: #ff4d4d; font-size: 11px; margin: 0 0 5px 0">
+                            <b>It's empty, add something!</b>
+                        </p>
+                        <button id="loadSillyPresetBtn" class="preset-link">Load Preset</button>
+                        <button id="saveSillyBtn" class="action-btn">Save</button>
+                    </div>
+
+                    <div class="bottom-listing">
+                        <div class="setting-item" style="margin: 4px 0 0 0">
+                            <span>Per-site enable</span>
+                            <div class="switch-container">
+                                <label class="switch">
+                                    <input type="checkbox" id="siteToggle" checked />
+                                    <span class="slider" title="toggle for this site"></span>
+                                </label>
+                                <button id="toggleSitesBtn" class="icon-btn" title="view disabled sites">
+                                    <span class="material-symbols-outlined"> ad_group_off </span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="sitesPanel" class="hidden-panel">
+                        <div id="disabledSitesContainer" class="scroll-list"></div>
+                        <p
+                            id="noDisabledSites"
+                            style="color: var(--text-main); font-size: 11px; margin: 0; text-align: center">
+                            Nothing here yet!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            Colon3 v1.3 - Created by
+            <a href="https://amiminnie.github.io" target="_blank" rel="noopener noreferrer">amiminnie</a>
+        </footer>
+
+        <script>
+            // Local Storage Mock fallback
+            let mockStorage = {};
+            if (!window.chrome || !chrome.storage) {
+                window.chrome = {
+                    tabs: { query: (obj, cb) => cb([{ url: window.location.href, id: 1 }]), reload: () => {} },
+                    storage: {
+                        local: {
+                            get: (keys, cb) => {
+                                let res = {};
+                                keys.forEach((k) => {
+                                    if (mockStorage[k] !== undefined) res[k] = mockStorage[k];
+                                });
+                                cb(res);
+                            },
+                            set: (obj, cb) => {
+                                Object.assign(mockStorage, obj);
+                                if (cb) cb();
+                            }
+                        }
+                    }
+                };
+            }
+
+            const globalToggle = document.getElementById("globalToggle");
+            const threeToggle = document.getElementById("threeToggle");
+            const silliesToggle = document.getElementById("silliesToggle");
+            const siteToggle = document.getElementById("siteToggle");
+            const toggleSettingsBtn = document.getElementById("toggleSettingsBtn");
+            const toggleSilliesSettingsBtn = document.getElementById("toggleSilliesSettingsBtn");
+            const toggleSitesBtn = document.getElementById("toggleSitesBtn");
+            const settingsPanel = document.getElementById("settingsPanel");
+            const silliesSettingsPanel = document.getElementById("silliesSettingsPanel");
+            const sitesPanel = document.getElementById("sitesPanel");
+            const listContainer = document.getElementById("emojiListContainer");
+            const newKey = document.getElementById("newKey");
+            const newValue = document.getElementById("newValue");
+            const addBtn = document.getElementById("addBtn");
+            const saveBtn = document.getElementById("saveBtn");
+            const loadPresetBtn = document.getElementById("loadPresetBtn");
+            const warningMsg = document.getElementById("emptyWarning");
+            const sillyListContainer = document.getElementById("sillyListContainer");
+            const newSillyKey = document.getElementById("newSillyKey");
+            const newSillyValue = document.getElementById("newSillyValue");
+            const addSillyBtn = document.getElementById("addSillyBtn");
+            const saveSillyBtn = document.getElementById("saveSillyBtn");
+            const loadSillyPresetBtn = document.getElementById("loadSillyPresetBtn");
+            const sillyWarningMsg = document.getElementById("sillyEmptyWarning");
+            const disabledSitesContainer = document.getElementById("disabledSitesContainer");
+            const noDisabledSitesMsg = document.getElementById("noDisabledSites");
+
+            let rules = {};
+            let sillyRules = {};
+            let disabledSites = [];
+            let currentHost = window.location.hostname || "localhost";
+
+            const presetReplacements = {
+                ":)": ":3",
+                ": )": ":3",
+                ":-)": ":3",
+                "=)": ":3",
+                ":]": ":3",
+                "=]": ":3",
+                ":>": ":3",
+                ":D": ":3",
+                ";)": ";3",
+                "; )": ";3",
+                ";-)": ";3",
+                ";]": ";3",
+                ";>": ";3",
+                ";D": ";3",
+                ":(": "3:",
+                ": (": "3:",
+                ":-(": "3:",
+                "=(": "3:",
+                ":[": "3:",
+                "=[": "3:",
+                "D:": "3:",
+                xD: "X3",
+                XD: "X3"
+            };
+
+            const sillyPresetReplacements = {
+                cookie: "biscuit",
+                Cookie: "Biscuit",
+                coffee: "beans",
+                socks: "thigh highs",
+                incognito: "sketchy"
+            };
+
+            const textNodesMap = [];
+            function cacheOriginalTextNodes(element) {
+                const walk = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+                let node;
+                while ((node = walk.nextNode())) {
+                    if (
+                        node.parentElement &&
+                        !["SCRIPT", "STYLE", "INPUT", "TEXTAREA", "BUTTON"].includes(node.parentElement.tagName)
+                    ) {
+                        textNodesMap.push({ node: node, original: node.nodeValue });
+                    }
+                }
+            }
+
+            function cacheOriginalTextNodes(element) {
+                const walk = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
+                let node;
+                while ((node = walk.nextNode())) {
+                    if (
+                        node.parentElement &&
+                        !["SCRIPT", "STYLE", "INPUT", "TEXTAREA", "BUTTON"].includes(node.parentElement.tagName)
+                    ) {
+                        textNodesMap.push({
+                            isInput: false,
+                            node: node,
+                            original: node.nodeValue
+                        });
+                    }
+                }
+
+                const inputElements = element.querySelectorAll("textarea, input[type='text']");
+                inputElements.forEach((el) => {
+                    const item = {
+                        isInput: true,
+                        node: el,
+                        original: el.value
+                    };
+                    textNodesMap.push(item);
+
+                    el.addEventListener("input", () => {
+                        item.original = el.value;
+                        applyReplacementsToSite();
+                    });
+                });
+            }
+
+            function applyReplacementsToSite() {
+                const isGlobal = globalToggle.checked;
+                const isSiteEnabled = siteToggle.checked;
+                const isThree = threeToggle.checked;
+                const isSillies = silliesToggle.checked;
+
+                textNodesMap.forEach((item) => {
+                    let text = item.original;
+                    if (isGlobal && isSiteEnabled) {
+                        if (isThree) {
+                            Object.entries(rules).forEach(([k, v]) => {
+                                text = text.split(k).join(v);
+                            });
+                        }
+                        if (isSillies) {
+                            Object.entries(sillyRules).forEach(([k, v]) => {
+                                const regex = new RegExp(`\\b${k}\\b`, "g");
+                                text = text.replace(regex, v);
+                            });
+                        }
+                    }
+
+                    // Apply changes to .value for input/textarea, or .nodeValue for text nodes
+                    if (item.isInput) {
+                        item.node.value = text;
+                    } else {
+                        item.node.nodeValue = text;
+                    }
+                });
+            }
+
+            function forceTabRefresh() {
+                applyReplacementsToSite();
+            }
+
+            chrome.storage.local.get(
+                [
+                    "globalEnabled",
+                    "threeEnabled",
+                    "silliesEnabled",
+                    "disabledSites",
+                    "replacements",
+                    "sillyReplacements"
+                ],
+                (data) => {
+                    globalToggle.checked = data.globalEnabled !== false;
+                    threeToggle.checked = data.threeEnabled !== false;
+                    silliesToggle.checked = data.silliesEnabled !== false;
+                    disabledSites = data.disabledSites || [];
+
+                    siteToggle.checked = !disabledSites.includes(currentHost);
+
+                    rules = data.replacements !== undefined ? data.replacements : { ...presetReplacements };
+                    sillyRules =
+                        data.sillyReplacements !== undefined ? data.sillyReplacements : { ...sillyPresetReplacements };
+
+                    renderRules();
+                    renderSillyRules();
+                    renderDisabledSites();
+
+                    // Cache page text and trigger initial live DOM replacement
+                    cacheOriginalTextNodes(document.body);
+                    applyReplacementsToSite();
+                }
+            );
+
+            let isAnimating = false;
+            const ANIMATION_DURATION = 100;
+
+            function openPanel(panelToOpen) {
+                if (isAnimating) return;
+                const currentlyActive = [settingsPanel, silliesSettingsPanel, sitesPanel].find((panel) =>
+                    panel.classList.contains("active")
+                );
+                if (currentlyActive === panelToOpen) {
+                    isAnimating = true;
+                    panelToOpen.classList.remove("active");
+                    setTimeout(() => {
+                        isAnimating = false;
+                    }, ANIMATION_DURATION);
+                    return;
+                }
+
+                if (currentlyActive) {
+                    isAnimating = true;
+                    currentlyActive.classList.remove("active");
+                    setTimeout(() => {
+                        panelToOpen.classList.add("active");
+                        setTimeout(() => {
+                            isAnimating = false;
+                        }, ANIMATION_DURATION);
+                    }, ANIMATION_DURATION);
+                    return;
+                }
+                isAnimating = true;
+                panelToOpen.classList.add("active");
+                setTimeout(() => {
+                    isAnimating = false;
+                }, ANIMATION_DURATION);
+            }
+
+            toggleSettingsBtn.addEventListener("click", () => openPanel(settingsPanel));
+            toggleSilliesSettingsBtn.addEventListener("click", () => openPanel(silliesSettingsPanel));
+            toggleSitesBtn.addEventListener("click", () => openPanel(sitesPanel));
+
+            function renderRules() {
+                listContainer.textContent = "";
+                const keys = Object.entries(rules);
+                warningMsg.style.display = keys.length === 0 ? "block" : "none";
+
+                keys.forEach(([key, val]) => {
+                    const row = document.createElement("div");
+                    row.className = "rule-row";
+                    const contentSpan = document.createElement("span");
+                    contentSpan.appendChild(document.createTextNode(key));
+                    const arrowSpan = document.createElement("span");
+                    arrowSpan.className = "material-symbols-outlined";
+                    arrowSpan.textContent = "arrow_forward";
+                    contentSpan.appendChild(arrowSpan);
+                    contentSpan.appendChild(document.createTextNode(` ${val}`));
+                    const delBtn = document.createElement("button");
+                    delBtn.className = "del-btn";
+                    delBtn.setAttribute("data-key", key);
+                    const closeSpan = document.createElement("span");
+                    closeSpan.className = "material-symbols-outlined";
+                    closeSpan.textContent = "close";
+                    delBtn.appendChild(closeSpan);
+                    row.appendChild(contentSpan);
+                    row.appendChild(delBtn);
+                    listContainer.appendChild(row);
+                });
+
+                document.querySelectorAll("#settingsPanel .del-btn").forEach((btn) => {
+                    btn.addEventListener("click", (e) => {
+                        const keyToDelete = e.currentTarget.getAttribute("data-key");
+                        if (keyToDelete) {
+                            delete rules[keyToDelete];
+                            renderRules();
+                            chrome.storage.local.set({ replacements: rules }, () => forceTabRefresh());
+                        }
+                    });
+                });
+            }
+
+            function renderSillyRules() {
+                sillyListContainer.textContent = "";
+                const keys = Object.entries(sillyRules);
+                sillyWarningMsg.style.display = keys.length === 0 ? "block" : "none";
+
+                keys.forEach(([key, val]) => {
+                    const row = document.createElement("div");
+                    row.className = "rule-row";
+                    const contentSpan = document.createElement("span");
+                    contentSpan.appendChild(document.createTextNode(key));
+                    const arrowSpan = document.createElement("span");
+                    arrowSpan.className = "material-symbols-outlined";
+                    arrowSpan.textContent = "arrow_forward";
+                    contentSpan.appendChild(arrowSpan);
+                    contentSpan.appendChild(document.createTextNode(` ${val}`));
+                    const delBtn = document.createElement("button");
+                    delBtn.className = "del-btn";
+                    delBtn.setAttribute("data-key", key);
+                    const closeSpan = document.createElement("span");
+                    closeSpan.className = "material-symbols-outlined";
+                    closeSpan.textContent = "close";
+                    delBtn.appendChild(closeSpan);
+                    row.appendChild(contentSpan);
+                    row.appendChild(delBtn);
+                    sillyListContainer.appendChild(row);
+                });
+
+                document.querySelectorAll("#silliesSettingsPanel .del-btn").forEach((btn) => {
+                    btn.addEventListener("click", (e) => {
+                        const keyToDelete = e.currentTarget.getAttribute("data-key");
+                        if (keyToDelete) {
+                            delete sillyRules[keyToDelete];
+                            renderSillyRules();
+                            chrome.storage.local.set({ sillyReplacements: sillyRules }, () => forceTabRefresh());
+                        }
+                    });
+                });
+            }
+
+            function renderDisabledSites() {
+                disabledSitesContainer.textContent = "";
+                noDisabledSitesMsg.style.display = disabledSites.length === 0 ? "block" : "none";
+
+                disabledSites.forEach((site) => {
+                    const row = document.createElement("div");
+                    row.className = "rule-row";
+                    const siteSpan = document.createElement("span");
+                    siteSpan.style.overflow = "hidden";
+                    siteSpan.style.textOverflow = "ellipsis";
+                    siteSpan.style.whiteSpace = "nowrap";
+                    siteSpan.style.maxWidth = "150px";
+                    siteSpan.textContent = site;
+                    const delBtn = document.createElement("button");
+                    delBtn.className = "del-site-btn del-btn";
+                    delBtn.setAttribute("data-site", site);
+
+                    const closeSpan = document.createElement("span");
+                    closeSpan.className = "material-symbols-outlined";
+                    closeSpan.textContent = "close";
+                    delBtn.appendChild(closeSpan);
+
+                    row.appendChild(siteSpan);
+                    row.appendChild(delBtn);
+                    disabledSitesContainer.appendChild(row);
+                });
+
+                document.querySelectorAll(".del-site-btn").forEach((btn) => {
+                    btn.addEventListener("click", (e) => {
+                        const siteToEnable = e.currentTarget.getAttribute("data-site");
+                        if (siteToEnable) {
+                            disabledSites = disabledSites.filter((s) => s !== siteToEnable);
+                            if (siteToEnable === currentHost) siteToggle.checked = true;
+                            saveDisabledSites(true);
+                        }
+                    });
+                });
+            }
+
+            function updateExtensionState() {
+                chrome.storage.local.set(
+                    {
+                        globalEnabled: globalToggle.checked,
+                        threeEnabled: threeToggle.checked,
+                        silliesEnabled: silliesToggle.checked
+                    },
+                    () => saveDisabledSites(true)
+                );
+            }
+
+            function saveDisabledSites(shouldRefresh = false) {
+                chrome.storage.local.set({ disabledSites: disabledSites }, () => {
+                    renderDisabledSites();
+                    if (shouldRefresh) forceTabRefresh();
+                });
+            }
+
+            globalToggle.addEventListener("change", updateExtensionState);
+            threeToggle.addEventListener("change", updateExtensionState);
+            silliesToggle.addEventListener("change", updateExtensionState);
+
+            siteToggle.addEventListener("change", () => {
+                if (!currentHost) return;
+                if (!siteToggle.checked && !disabledSites.includes(currentHost)) {
+                    disabledSites.push(currentHost);
+                } else if (siteToggle.checked) {
+                    disabledSites = disabledSites.filter((s) => s !== currentHost);
+                }
+                updateExtensionState();
+            });
+
+            loadPresetBtn.addEventListener("click", () => {
+                rules = { ...presetReplacements };
+                renderRules();
+            });
+
+            addBtn.addEventListener("click", () => {
+                const k = newKey.value.trim();
+                const v = newValue.value.trim();
+                if (k && v) {
+                    rules[k] = v;
+                    newKey.value = "";
+                    newValue.value = "";
+                    renderRules();
+                }
+            });
+
+            saveBtn.addEventListener("click", () => {
+                chrome.storage.local.set({ replacements: rules }, () => {
+                    const text = saveBtn.innerText;
+                    saveBtn.innerText = "Saved! :3";
+                    setTimeout(() => {
+                        saveBtn.innerText = text;
+                        forceTabRefresh();
+                    }, 1000);
+                });
+            });
+
+            loadSillyPresetBtn.addEventListener("click", () => {
+                sillyRules = { ...sillyPresetReplacements };
+                renderSillyRules();
+            });
+
+            addSillyBtn.addEventListener("click", () => {
+                const k = newSillyKey.value.trim();
+                const v = newSillyValue.value.trim();
+                if (k && v) {
+                    sillyRules[k] = v;
+                    newSillyKey.value = "";
+                    newSillyValue.value = "";
+                    renderSillyRules();
+                }
+            });
+
+            saveSillyBtn.addEventListener("click", () => {
+                chrome.storage.local.set({ sillyReplacements: sillyRules }, () => {
+                    const text = saveSillyBtn.innerText;
+                    saveSillyBtn.innerText = "Saved! :3";
+                    setTimeout(() => {
+                        saveSillyBtn.innerText = text;
+                        forceTabRefresh();
+                    }, 1000);
+                });
+            });
+
+            const popup = document.querySelector(".popup-container");
+            const mobile = window.matchMedia("(max-width: 600px)");
+
+            function resizePopup() {
+                if (mobile.matches) {
+                    const calculatedScale = (window.innerWidth * 0.9) / 280;
+                    const scale = Math.min(calculatedScale, 1.3);
+
+                    popup.style.transform = `scale(${scale})`;
+                    popup.style.transformOrigin = "top center";
+                } else {
+                    popup.style.transform = "";
+                }
+            }
+            window.addEventListener("resize", resizePopup);
+            resizePopup();
+        </script>
+    </body>
+</html>
