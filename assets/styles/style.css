@@ -367,6 +367,7 @@ nav.article-active .nav-back-btn {
 
 .gallery-image {
   width: 100%;
+  aspect-ratio: 1 / 1;
   height: auto;
   object-fit: cover;
 }
@@ -415,7 +416,8 @@ nav.article-active .nav-back-btn {
 
 .gallery-item.art-page .gallery-title,
 .gallery-item.art-page .gallery-description,
-.gallery-item.art-page .gallery-date {
+.gallery-item.art-page .gallery-date
+{
   opacity: 0;
   max-height: 0;
   margin: 0;
@@ -449,12 +451,15 @@ nav.article-active .nav-back-btn {
   max-height: 100px;
   margin-bottom: 0.25rem;
 }
+.gallery-item.art-page:hover .gallery-image {
+  aspect-ratio: auto;
+}
+
 .gallery-item.art-page:hover .gallery-date {
   opacity: 1;
   max-height: 30px;
   padding-bottom: 0.5rem;
 }
-
 .sketchbook-gallery:has(.art-page:hover) .art-page:not(:hover) {
   filter: brightness(0.5) blur(2px);
 }
@@ -1535,10 +1540,10 @@ footer {
   margin-top: -5px;
 }
 
-.settings-popup input[type="checkbox"] {
+input[type="checkbox"] {
   appearance: none;
-  width: 41px;
-  height: 25px;
+  width: 35px;
+  height: 21px;
   border-top: 3px solid var(--surface-shadow);
   border-bottom: 1px solid var(--highlight);
   background: var(--surface-dsb);
@@ -1546,27 +1551,28 @@ footer {
   cursor: pointer;
 }
 
-.settings-popup input[type="checkbox"]::before {
+input[type="checkbox"]::before {
   content: "";
   position: absolute;
   top: -5px;
-  width: 25px;
-  height: 19px;
+  width: 20px;
+  height: 16px;
   background: var(--surface-hgt);
   border-bottom: 5px solid var(--surface-hgt-shadow);
   border-top: 1px solid var(--highlight);
   transition: transform 0.1s ease;
 }
 
-.settings-popup input[type="checkbox"]:disabled:before {
+input[type="checkbox"]:disabled:before {
   background: var(--surface);
   border-bottom: 5px solid var(--surface-shadow);
   border-top: 1px solid var(--highlight);
 }
 
-.settings-popup input[type="checkbox"]:checked::before {
+input[type="checkbox"]:checked::before {
   transform: translateX(15px);
 }
+
 
 #petals-canvas {
   position: fixed;
@@ -2055,28 +2061,28 @@ footer {
   margin-right: 4px;
 }
 
-.projects-scroll-container {
-display: flex;
+.h-scroll-container {
+  display: flex;
   gap: 1.5rem;
   overflow-x: auto;
-  overflow-y: hidden; 
+  overflow-y: hidden;
   padding: 30px 0 40px 0;
   scroll-snap-type: x mandatory;
 }
 
-.projects-scroll-container::-webkit-scrollbar {
+.h-scroll-container::-webkit-scrollbar {
   width: 10px;
 }
-.projects-scroll-container::-webkit-scrollbar-track {
+.h-scroll-container::-webkit-scrollbar-track {
   background: var(--bg-dark);
 }
-.projects-scroll-container::-webkit-scrollbar-thumb {
+.h-scroll-container::-webkit-scrollbar-thumb {
   background-color: var(--surface);
   border-bottom: solid 4px var(--surface-shadow);
   border-top: solid 1px var(--highlight);
   transition: border 0.1s ease;
 }
-.projects-scroll-container::-webkit-scrollbar-thumb:hover {
+.h-scroll-container::-webkit-scrollbar-thumb:hover {
   border-bottom: solid 2px var(--surface-shadow);
 }
 
@@ -2106,9 +2112,11 @@ body::-webkit-scrollbar-thumb:hover {
   margin-right: 1px;
   scroll-snap-align: start;
   text-decoration: none;
-  transition: transform 0.2s ease, filter 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease;
 }
-.project-card:hover{
+.project-card:hover {
   transform: scale(0.99);
   filter: brightness(0.9);
 }
