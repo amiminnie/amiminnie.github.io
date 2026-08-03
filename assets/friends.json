@@ -107,5 +107,24 @@
         "description": "Justice, The High Priestes",
         "hoverColor": "var(--card-agender)",
         "links": []
+    },
+    {
+        "name": "Eesha",
+        "avatar": "https://cdn.discordapp.com/avatars/1420739579723513948/e88c4e313d97b61679c3094d732906f6.webp?size=1024",
+        "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1271174324375519273/animated?size=1024",
+        "description": "Never gonna give you up",
+        "hoverColor": "",
+        "links": [
+            {
+                "icon": "<i class='bi bi-globe2'></i>",
+                "url": "#https://eeshamandiw79-bot.github.io/amieesha.web/",
+                "label": "Website"
+            },
+            {
+                "icon": "<i class='bi bi-film'></i>",
+                "label": "Portfolio",
+                "url": "#https://eeshamandiw79-bot.github.io/my.website/"
+            }
+        ]
     }
 ]
