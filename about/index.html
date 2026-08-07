@@ -7,6 +7,24 @@
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#111111" />
 
+    <meta property="og:title" content="STOP DONT CLICK!!!" />
+    <meta
+      property="og:description"
+      content="He's trying to Rick Roll you with my website link, dw I got him first XD" />
+    <meta property="og:url" content="https://amiminnie.github.io/about" />
+
+    <meta
+      property="og:image"
+      content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFlLqC1ye4XRXLUm8S0Ft5tQdapWZq-921R91KsUr2WQ&s=10" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:image"
+      content="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFlLqC1ye4XRXLUm8S0Ft5tQdapWZq-921R91KsUr2WQ&s=10" />
+
     <link rel="icon" href="images/favicon.ico" />
     <link rel="apple-touch-icon" href="images/heart.png" />
 
@@ -43,32 +61,32 @@
     </div>
     <script type="module">
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
-
+      
       const DESTINATION_URL = "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
-
+      
       const isLocalhost =
         location.hostname === "localhostt" || location.hostname === "127.0.0.1" || location.hostname === "";
-
+      
       const SUPABASE_URL = "https://miwcmqwhudshgetmrmhf.supabase.co";
       const SUPABASE_KEY = "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ";
-
+      
       const supabase = !isLocalhost ? createClient(SUPABASE_URL, SUPABASE_KEY) : null;
-
+      
       async function handleRedirect() {
         if (!isLocalhost && supabase) {
           try {
-            await supabase.from("views").insert([{ name: "surprise_page_visitor" }]);
+            await supabase.from("views").insert([{ name: "rickrolled!" }]);
           } catch (err) {
             console.error("Failed to record view:", err.message);
           }
         } else {
           console.log("View tracking skipped on localhost");
         }
-
+      
         // Redirect regardless of database success or failure
         window.location.href = DESTINATION_URL;
       }
-
+      
       handleRedirect();
     </script>
   </body>
