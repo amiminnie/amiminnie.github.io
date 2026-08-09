@@ -34,9 +34,11 @@
                 <input type="text" id="article-tag" placeholder="my-post" class="txtarea" />
                 <label style="color: var(--accent); margin-bottom: -5px">Metadata</label>
                 <label>Thumbnail</label>
-                <div class="input-with-btn">
+                <div class="btn">
                     <input type="text" id="thumb-url" placeholder="images/thumbnail.png" class="txtarea" />
-                    <button class="action-btn btn" onclick="uploadImageDirect('thumb-url')">
+                    <button
+                        class="action-btn btn"
+                        onclick="handleUpload((url) => document.getElementById('thumb-url').value = url)">
                         <i class="bi bi-upload"></i>
                     </button>
                 </div>
@@ -46,8 +48,7 @@
                     rows="3"
                     placeholder="what it is all about!"
                     class="txtarea"
-                    style="margin-bottom: 10px;"
-                ></textarea>
+                    style="margin-bottom: 10px"></textarea>
                 <button class="publish-btn btnsoft" id="publish-btn" onclick="publishToSupabase()">
                     <i class="bi bi-floppy-fill"></i> Save
                 </button>
@@ -67,12 +68,15 @@
             <button onclick="formatText('strikeThrough')" title="Strikethrough" class="btn">
                 <i class="bi bi-type-strikethrough"></i>
             </button>
+            <button onclick="formatLink()" title="Hyperlink" class="btn">
+                <i class="bi bi-link-45deg"></i>
+            </button>
             <button onclick="formatText('removeFormat')" title="Clear Formatting" class="btn">
                 <i class="bi bi-x"></i>
             </button>
         </div>
 
-        <div class="preview-pane">
+        <div class="preview-pane" onclick="handleCanvasClick(event)">
             <div class="container">
                 <header>
                     <nav>
@@ -100,15 +104,36 @@
 
                         <div id="blocks-container"></div>
 
-                        <div class="quick-insert-container">
-                            <button onclick="addBlock('p')" class="btn"><i class="bi bi-text-left"></i></button>
-                            <button onclick="addBlock('h2')" class="btn"><i class="bi bi-type-h2"></i></button>
-                            <button onclick="addBlock('h3')" class="btn"><i class="bi bi-type-h3"></i></button>
-                            <button onclick="addBlock('conversation')" class="btn"><i class="bi bi-quote"></i></button>
-                            <button onclick="addBlock('ul')" class="btn"><i class="bi bi-list-ul"></i></button>
-                            <button onclick="addBlock('thought')" class="btn"><i class="bi bi-image"></i></button>
-                            <button onclick="addBlock('hr')" class="btn"><i class="bi bi-reception-0"></i></button>
-                            <button onclick="addBlock('html')" class="btn"><i class="bi bi-filetype-html"></i></button>
+                        <div style="margin-top: 20px">
+                            <div class="quick-insert-container">
+                                <button onclick="addBlock('p')" class="btn" title="Paragraph">
+                                    <i class="bi bi-text-left"></i>
+                                </button>
+                                <button onclick="addBlock('h2')" class="btn" title="Header 2">
+                                    <i class="bi bi-type-h2"></i>
+                                </button>
+                                <button onclick="addBlock('h3')" class="btn" title="Header 3">
+                                    <i class="bi bi-type-h3"></i>
+                                </button>
+                                <button onclick="addBlock('img')" class="btn" title="Standalone Image">
+                                    <i class="bi bi-image"></i>
+                                </button>
+                                <button onclick="addBlock('conversation')" class="btn" title="Quote/Dialogue">
+                                    <i class="bi bi-quote"></i>
+                                </button>
+                                <button onclick="addBlock('ul')" class="btn" title="List">
+                                    <i class="bi bi-list-ul"></i>
+                                </button>
+                                <button onclick="addBlock('split')" class="btn" title="Flexible Split Layout">
+                                    <i class="bi bi-layout-split"></i>
+                                </button>
+                                <button onclick="addBlock('hr')" class="btn" title="Divider">
+                                    <i class="bi bi-reception-0"></i>
+                                </button>
+                                <button onclick="addBlock('html')" class="btn" title="Custom HTML">
+                                    <i class="bi bi-filetype-html"></i>
+                                </button>
+                            </div>
                         </div>
                     </article>
                 </main>
@@ -130,7 +155,7 @@
             const supabaseClient = supabase.createClient(SUB_URL, ANON_KEY);
 
             let blocks = [];
-            let currentPreviewTheme = "dark";
+            let activeTargetInfo = null; // null = main canvas, or { splitId, colIndex }
 
             function toggleSettingsModal() {
                 const modal = document.getElementById("settings-modal");
@@ -143,6 +168,21 @@
                     modal.classList.remove("open");
                 }
             };
+
+            function handleCanvasClick(e) {
+                // Deselect active column if user clicks outside of any nested column
+                if (
+                    !e.target.closest(".nested-column") &&
+                    !e.target.closest(".quick-insert-container") &&
+                    !e.target.closest("#target-bar-indicator") &&
+                    !e.target.closest(".block-controls")
+                ) {
+                    if (activeTargetInfo !== null) {
+                        activeTargetInfo = null;
+                        document.querySelectorAll('.nested-column').forEach(el => el.classList.remove('selected-column'));
+                    }
+                }
+            }
 
             document.addEventListener("selectionchange", handleSelection);
 
@@ -178,8 +218,8 @@
                 toolbar.style.top = `${rect.top + window.scrollY - toolbar.offsetHeight - 8}px`;
             }
 
-            function formatText(command) {
-                document.execCommand(command, false, null);
+            function formatText(command, value = null) {
+                document.execCommand(command, false, value);
                 const activeEl = document.activeElement;
                 if (activeEl && activeEl.hasAttribute("contenteditable")) {
                     const event = new Event("input", { bubbles: true });
@@ -187,7 +227,14 @@
                 }
             }
 
-            function addBlock(type, content = "", media = "", alt = "", styles = null) {
+            function formatLink() {
+                const url = prompt("Enter link URL:", "https://");
+                if (url) {
+                    formatText("createLink", url);
+                }
+            }
+
+            function createNewBlockObject(type, content = "", url = "", alt = "", styles = null) {
                 const id = Date.now() + Math.random();
                 const defaultStyles = styles || {
                     fontSize: "",
@@ -202,38 +249,77 @@
                         "<p><i>The dozen may be one of the earliest primitive integer groupings... <strong>Twelve is convenient because it has a maximal number of divisors...</strong></i></p>";
                 }
 
-                blocks.push({
+                if (type === "split") {
+                    return {
+                        id,
+                        type,
+                        gridCols: "1fr 1fr",
+                        columns: [[], []],
+                        styles: defaultStyles,
+                        showStyles: false
+                    };
+                }
+
+                return {
                     id,
                     type,
                     v1: content,
-                    v2: media,
-                    v3: alt,
+                    url: url,
+                    alt: alt,
                     isEditingHtml: false,
                     styles: defaultStyles,
                     showStyles: false
-                });
+                };
+            }
+
+            function getActiveTargetArray() {
+                if (!activeTargetInfo) return blocks;
+                const splitBlock = findBlockById(activeTargetInfo.splitId);
+                if (splitBlock && splitBlock.columns && splitBlock.columns[activeTargetInfo.colIndex]) {
+                    return splitBlock.columns[activeTargetInfo.colIndex];
+                }
+                activeTargetInfo = null;
+                return blocks;
+            }
+
+            function addBlock(type) {
+                const targetArray = getActiveTargetArray();
+                const newBlock = createNewBlockObject(type);
+                targetArray.push(newBlock);
                 renderEditor();
             }
 
-            function removeBlock(id) {
-                blocks = blocks.filter((b) => b.id !== id);
-                renderEditor();
+            function removeBlockById(id, targetArray = blocks) {
+                const index = targetArray.findIndex((b) => b.id === id);
+                if (index !== -1) {
+                    targetArray.splice(index, 1);
+                    return true;
+                }
+                for (let b of targetArray) {
+                    if (b.type === "split" && b.columns) {
+                        for (let col of b.columns) {
+                            if (removeBlockById(id, col)) return true;
+                        }
+                    }
+                }
+                return false;
             }
 
-            function moveBlock(fromIndex, toIndex) {
-                if (toIndex < 0 || toIndex >= blocks.length) return;
-                const [movedItem] = blocks.splice(fromIndex, 1);
-                blocks.splice(toIndex, 0, movedItem);
-                renderEditor();
-            }
-
-            function updateBlockValue(id, field, value) {
-                const b = blocks.find((x) => x.id === id);
-                if (b) b[field] = value;
+            function findBlockById(id, targetArray = blocks) {
+                for (let b of targetArray) {
+                    if (b.id === id) return b;
+                    if (b.type === "split" && b.columns) {
+                        for (let col of b.columns) {
+                            const found = findBlockById(id, col);
+                            if (found) return found;
+                        }
+                    }
+                }
+                return null;
             }
 
             function toggleBlockStyles(id) {
-                const b = blocks.find((x) => x.id === id);
+                const b = findBlockById(id);
                 if (b) {
                     b.showStyles = !b.showStyles;
                     renderEditor();
@@ -241,7 +327,7 @@
             }
 
             function updateBlockStyleLive(id, prop, value) {
-                const b = blocks.find((x) => x.id === id);
+                const b = findBlockById(id);
                 if (!b) return;
                 if (!b.styles) b.styles = {};
                 b.styles[prop] = value;
@@ -280,7 +366,9 @@
             }
 
             async function ensureAuthenticated() {
-                const { data: { session } } = await supabaseClient.auth.getSession();
+                const {
+                    data: { session }
+                } = await supabaseClient.auth.getSession();
                 if (!session) {
                     alert("You must be logged in as an admin to perform this action.");
                     window.location.href = "/login";
@@ -289,7 +377,7 @@
                 return true;
             }
 
-            async function uploadImageDirect(inputFieldId) {
+            async function handleUpload(onSuccess) {
                 if (!(await ensureAuthenticated())) return;
 
                 const fileInput = document.createElement("input");
@@ -307,216 +395,269 @@
                         alert("Upload failed: " + error.message);
                     } else {
                         const publicUrl = `${SUB_URL}/storage/v1/object/public/blog-assets/${fileName}`;
-                        document.getElementById(inputFieldId).value = publicUrl;
-                    }
-                };
-                fileInput.click();
-            }
-
-            async function uploadBlockImage(id) {
-                if (!(await ensureAuthenticated())) return;
-
-                const fileInput = document.createElement("input");
-                fileInput.type = "file";
-                fileInput.accept = "image/*";
-
-                fileInput.onchange = async (e) => {
-                    const file = e.target.files[0];
-                    if (!file) return;
-
-                    const fileName = `${Date.now()}-${file.name.replace(/\s/g, "_")}`;
-                    const { data, error } = await supabaseClient.storage.from("blog-assets").upload(fileName, file);
-
-                    if (error) {
-                        alert("Upload failed: " + error.message);
-                    } else {
-                        const publicUrl = `${SUB_URL}/storage/v1/object/public/blog-assets/${fileName}`;
-                        updateBlockValue(id, "v2", publicUrl);
-                        renderEditor();
+                        onSuccess(publicUrl);
                     }
                 };
                 fileInput.click();
             }
 
             function toggleHtmlEdit(id) {
-                const b = blocks.find((x) => x.id === id);
+                const b = findBlockById(id);
                 if (b) {
                     b.isEditingHtml = !b.isEditingHtml;
                     renderEditor();
                 }
             }
 
+            function selectColumn(splitId, colIndex, event) {
+                if (event) event.stopPropagation();
+                
+                if (activeTargetInfo && activeTargetInfo.splitId === splitId && activeTargetInfo.colIndex === colIndex) {
+                    return; 
+                }
+                
+                activeTargetInfo = { splitId, colIndex };
+                
+                document.querySelectorAll('.nested-column').forEach(el => el.classList.remove('selected-column'));
+                if (event && event.currentTarget) {
+                    event.currentTarget.classList.add('selected-column');
+                } else {
+                    renderEditor();
+                }
+            }
+
+            function deselectColumn() {
+                activeTargetInfo = null;
+                renderEditor();
+            }
+
+            function buildBlockElement(b, parentArray) {
+                const wrapper = document.createElement("div");
+                wrapper.className = "block-wrapper";
+
+                const controls = document.createElement("div");
+                controls.className = "block-controls";
+                controls.innerHTML = `
+                    <button class="drag-handle btn" title="Drag to Reorder"><i class="bi bi-grip-vertical"></i></button>
+                    <button onclick="toggleBlockStyles(${b.id})" title="Toggle Styles" class="btn"><i class="bi bi-palette"></i></button>
+                    <button onclick="removeBlockById(${b.id}); renderEditor();" title="Delete Block" class="btn"><i class="bi bi-trash3"></i></button>
+                `;
+                wrapper.appendChild(controls);
+
+                if (b.showStyles) {
+                    const stylesPanel = document.createElement("div");
+                    stylesPanel.className = "block-styles-panel surface";
+                    const currentSize = b.styles?.fontSize || "1.0";
+                    const currentColor = b.styles?.color || "#ffffff";
+                    const currentBg = b.styles?.bgColor || "#000000";
+                    const currentAlign = b.styles?.textAlign || "left";
+                    const currentCss = b.styles?.customCss || "";
+
+                    let splitControls = "";
+                    if (b.type === "split") {
+                        const currentGrid = b.gridCols || "1fr 1fr";
+                        splitControls = `
+                            <div class="style-group" style="flex-grow:1; border-top: 1px solid var(--accent); padding-top: 10px; margin-top: 5px;">
+                                <label>Layout Widths (e.g. 1fr 1fr, 300px 1fr, 40% 60%)</label>
+                                <input type="text" class="txtarea" onchange="findBlockById(${b.id}).gridCols = this.value; renderEditor();" value="${currentGrid}" style="width:100%;" />
+                            </div>
+                        `;
+                    }
+
+                    stylesPanel.innerHTML = `
+                        <div class="style-group">
+                            <label>Size (<span id="lbl-size-${b.id}">${currentSize}rem</span>)</label>
+                            <input type="range" min="0.5" max="3.5" step="0.1" value="${currentSize}" oninput="updateBlockStyleLive(${b.id}, 'fontSize', this.value)" />
+                        </div>
+                        <div class="style-group">
+                            <label>Text</label>
+                            <input type="color" value="${currentColor}" oninput="updateBlockStyleLive(${b.id}, 'color', this.value)" title="Text Color" />
+                        </div>
+                        <div class="style-group">
+                            <label>BG</label>
+                            <input type="color" value="${currentBg}" oninput="updateBlockStyleLive(${b.id}, 'bgColor', this.value)" title="Background Color" />
+                        </div>
+                        <div class="style-group">
+                            <div class="align-btn-group">
+                                <button class="align-btn ${currentAlign === "left" ? "active" : ""} btn" onclick="updateBlockStyleLive(${b.id}, 'textAlign', 'left'); renderEditor();" title="Align Left"><i class="bi bi-text-left"></i></button>
+                                <button class="align-btn ${currentAlign === "center" ? "active" : ""} btn" onclick="updateBlockStyleLive(${b.id}, 'textAlign', 'center'); renderEditor();" title="Align Center"><i class="bi bi-text-center"></i></button>
+                                <button class="align-btn ${currentAlign === "right" ? "active" : ""} btn" onclick="updateBlockStyleLive(${b.id}, 'textAlign', 'right'); renderEditor();" title="Align Right"><i class="bi bi-text-right"></i></button>
+                            </div>
+                        </div>
+                        <div class="style-group" style="flex-grow:1;">
+                            <label>Custom CSS</label>
+                            <input type="text" class="txtarea" value="${currentCss}" oninput="updateBlockStyleLive(${b.id}, 'customCss', this.value)" style="width:100%;" />
+                        </div>
+                        ${splitControls}
+                    `;
+                    wrapper.appendChild(stylesPanel);
+                }
+
+                let contentNode;
+
+                if (b.type === "p") {
+                    contentNode = document.createElement("p");
+                    contentNode.className = "wysiwyg-editor";
+                    contentNode.contentEditable = "true";
+                    contentNode.setAttribute("placeholder", "Click to type paragraph content...");
+                    contentNode.innerHTML = b.v1 || "";
+                    contentNode.addEventListener("input", (e) => (b.v1 = e.target.innerHTML));
+                } else if (b.type === "h2") {
+                    contentNode = document.createElement("h2");
+                    contentNode.className = "wysiwyg-editor";
+                    contentNode.contentEditable = "true";
+                    contentNode.setAttribute("placeholder", "Header 2");
+                    contentNode.innerHTML = b.v1 || "";
+                    contentNode.addEventListener("input", (e) => (b.v1 = e.target.innerHTML));
+                } else if (b.type === "h3") {
+                    contentNode = document.createElement("h3");
+                    contentNode.className = "wysiwyg-editor";
+                    contentNode.contentEditable = "true";
+                    contentNode.setAttribute("placeholder", "Header 3");
+                    contentNode.innerHTML = b.v1 || "";
+                    contentNode.addEventListener("input", (e) => (b.v1 = e.target.innerHTML));
+                } else if (b.type === "img") {
+                    contentNode = document.createElement("div");
+                    contentNode.className = "image-block-editor";
+
+                    contentNode.innerHTML = `
+                        <div class="input-with-btn">
+                            <input type="text" placeholder="Paste Image URL or upload..." value="${b.url || ""}" class="txtarea img-url-input" style="flex-grow:1;" />
+                            <button class="action-btn btn upload-btn" title="Upload Image"><i class="bi bi-upload"></i> Upload</button>
+                        </div>
+                        <input type="text" placeholder="Alt text (optional)" value="${b.alt || ""}" class="txtarea img-alt-input" />
+                        <div class="img-preview" style="text-align:center; background:rgba(0,0,0,0.2); padding:10px; border-radius:4px; min-height:60px; display:flex; align-items:center; justify-content:center;">
+                            ${b.url ? `<img src="${b.url}" alt="${b.alt || ""}" style="max-width:100%; max-height:300px; object-fit:contain; border-radius:4px;" />` : `<span style="color:#888; font-size:12px; font-style:italic;">No Image URL Provided</span>`}
+                        </div>
+                    `;
+
+                    const urlInput = contentNode.querySelector(".img-url-input");
+                    const altInput = contentNode.querySelector(".img-alt-input");
+                    const uploadBtn = contentNode.querySelector(".upload-btn");
+
+                    urlInput.addEventListener("input", (e) => {
+                        b.url = e.target.value;
+                        const preview = contentNode.querySelector(".img-preview");
+                        preview.innerHTML = b.url
+                            ? `<img src="${b.url}" alt="${b.alt || ""}" style="max-width:100%; max-height:300px; object-fit:contain; border-radius:4px;" />`
+                            : `<span style="color:#888; font-size:12px; font-style:italic;">No Image URL Provided</span>`;
+                    });
+
+                    altInput.addEventListener("input", (e) => {
+                        b.alt = e.target.value;
+                    });
+
+                    uploadBtn.addEventListener("click", (e) => {
+                        e.stopPropagation();
+                        handleUpload((publicUrl) => {
+                            b.url = publicUrl;
+                            renderEditor();
+                        });
+                    });
+                } else if (b.type === "conversation") {
+                    contentNode = document.createElement("div");
+                    contentNode.className = "conversation wysiwyg-editor";
+                    contentNode.contentEditable = "true";
+                    contentNode.setAttribute("placeholder", "Enter dialogue or quote box text content...");
+                    contentNode.innerHTML = b.v1 || "";
+                    contentNode.addEventListener("input", (e) => (b.v1 = e.target.innerHTML));
+                } else if (b.type === "hr") {
+                    contentNode = document.createElement("hr");
+                    contentNode.style.margin = "2rem 0";
+                } else if (b.type === "ul") {
+                    contentNode = document.createElement("ul");
+                    contentNode.className = "wysiwyg-editor";
+                    contentNode.contentEditable = "true";
+                    contentNode.setAttribute("placeholder", "• Item 1 (Press shift+enter for new lines)");
+                    contentNode.innerHTML = b.v1 || "<li></li>";
+                    contentNode.addEventListener("input", (e) => (b.v1 = e.target.innerHTML));
+                } else if (b.type === "html") {
+                    contentNode = document.createElement("div");
+                    contentNode.className = "html-block-container";
+                    if (b.isEditingHtml) {
+                        contentNode.innerHTML = `
+                            <span class="html-badge">Editing Code</span>
+                            <textarea class="html-editor-textarea" rows="8">${b.v1 || ""}</textarea>
+                            <button onclick="toggleHtmlEdit(${b.id})" style="margin-top:8px; width:100%; font-size:11px; background:#222; color:#fff; border:1px solid #444; padding:6px; cursor:pointer;">Render Output</button>
+                        `;
+                        const txt = contentNode.querySelector("textarea");
+                        txt.addEventListener("input", (e) => (b.v1 = e.target.value));
+                    } else {
+                        contentNode.innerHTML = `
+                            <span class="html-badge">HTML Output</span>
+                            <div>${b.v1 || "<p style='color:#666; font-style:italic;'>[Empty HTML Block - Click to Edit Code]</p>"}</div>
+                            <button class="media-overlay-btn btn" onclick="toggleHtmlEdit(${b.id})" style="display:block; bottom: 8px; top:auto; transform:translateX(-50%);">Edit HTML Code</button>
+                        `;
+                    }
+                } else if (b.type === "split") {
+                    contentNode = document.createElement("div");
+                    contentNode.className = "split-layout";
+
+                    let gridCols = b.gridCols || "1fr 1fr";
+                    if (b.ratio) {
+                        if (b.ratio === "60-40") gridCols = "6fr 4fr";
+                        else if (b.ratio === "40-60") gridCols = "4fr 6fr";
+                        else if (b.ratio === "30-70") gridCols = "3fr 7fr";
+                        else if (b.ratio === "70-30") gridCols = "7fr 3fr";
+                        
+                        b.gridCols = gridCols; 
+                        delete b.ratio; 
+                    }
+
+                    contentNode.style.display = "grid";
+                    contentNode.style.gridTemplateColumns = gridCols;
+                    contentNode.style.gap = "1.5rem";
+                    contentNode.style.alignItems = "start";
+                    contentNode.style.marginBottom = "1.5rem";
+
+                    if (!b.columns) b.columns = [[], []];
+
+                    b.columns.forEach((colArray, colIdx) => {
+                        const isSelected =
+                            activeTargetInfo &&
+                            activeTargetInfo.splitId === b.id &&
+                            activeTargetInfo.colIndex === colIdx;
+
+                        const colDiv = document.createElement("div");
+                        colDiv.className = `nested-column ${isSelected ? "selected-column" : ""}`;
+                        colDiv.onclick = (e) => selectColumn(b.id, colIdx, e);
+
+                        colArray.forEach((nestedBlock) => {
+                            colDiv.appendChild(buildBlockElement(nestedBlock, colArray));
+                        });
+
+                        contentNode.appendChild(colDiv);
+                    });
+                }
+
+                if (contentNode) {
+                    contentNode.id = `block-content-${b.id}`;
+                    applyStylesToElement(contentNode, b.styles);
+                    wrapper.appendChild(contentNode);
+                }
+
+                return wrapper;
+            }
+
             function renderEditor() {
                 const container = document.getElementById("blocks-container");
                 container.innerHTML = "";
 
-                blocks.forEach((b, index) => {
-                    const wrapper = document.createElement("div");
-                    wrapper.className = "block-wrapper";
-                    wrapper.dataset.index = index;
-
-                    wrapper.addEventListener("dragstart", (e) => {
-                        wrapper.classList.add("dragging");
-                        e.dataTransfer.setData("text/plain", index);
-                    });
-                    wrapper.addEventListener("dragend", () => {
-                        wrapper.classList.remove("dragging");
-                        wrapper.removeAttribute("draggable");
-                    });
-                    wrapper.addEventListener("dragover", (e) => e.preventDefault());
-                    wrapper.addEventListener("drop", (e) => {
-                        e.preventDefault();
-                        const draggedIndex = parseInt(e.dataTransfer.getData("text/plain"));
-                        if (draggedIndex !== index) moveBlock(draggedIndex, index);
-                    });
-
-                    const controls = document.createElement("div");
-                    controls.className = "block-controls";
-                    controls.innerHTML = `
-                        <button class="drag-handle btn" title="Drag to Reorder"><i class="bi bi-grip-vertical"></i></button>
-                        <button onclick="toggleBlockStyles(${b.id})" title="Toggle Styles" class="btn"><i class="bi bi-palette"></i></button>
-                        <button onclick="removeBlock(${b.id})" title="Delete Block" class="btn"><i class="bi bi-trash3"></i></button>
-                    `;
-                    wrapper.appendChild(controls);
-
-                    const handle = controls.querySelector(".drag-handle");
-                    handle.addEventListener("mousedown", () => wrapper.setAttribute("draggable", "true"));
-                    handle.addEventListener("mouseup", () => wrapper.removeAttribute("draggable"));
-                    handle.addEventListener("mouseleave", () => wrapper.removeAttribute("draggable"));
-
-                    if (b.showStyles) {
-                        const stylesPanel = document.createElement("div");
-                        stylesPanel.className = "block-styles-panel surface";
-                        const currentSize = b.styles?.fontSize || "1.0";
-                        const currentColor = b.styles?.color || "#ffffff";
-                        const currentBg = b.styles?.bgColor || "#000000";
-                        const currentAlign = b.styles?.textAlign || "left";
-                        const currentCss = b.styles?.customCss || "";
-
-                        stylesPanel.innerHTML = `
-                            <div class="style-group">
-                                <label>Size (<span id="lbl-size-${b.id}">${currentSize}rem</span>)</label>
-                                <input type="range" min="0.5" max="3.5" step="0.1" value="${currentSize}" oninput="updateBlockStyleLive(${b.id}, 'fontSize', this.value)" />
-                            </div>
-                            <div class="style-group">
-                                <label>Text</label>
-                                <input type="color" value="${currentColor}" oninput="updateBlockStyleLive(${b.id}, 'color', this.value)" title="Text Color" />
-                            </div>
-                            <div class="style-group">
-                                <label>BG</label>
-                                <input type="color" value="${currentBg}" oninput="updateBlockStyleLive(${b.id}, 'bgColor', this.value)" title="Background Color" />
-                            </div>
-                            <div class="style-group">
-                                <div class="align-btn-group">
-                                    <button class="align-btn ${currentAlign === "left" ? "active" : ""} btn" onclick="updateBlockStyleLive(${b.id}, 'textAlign', 'left'); renderEditor();" title="Align Left"><i class="bi bi-text-left"></i></button>
-                                    <button class="align-btn ${currentAlign === "center" ? "active" : ""} btn" onclick="updateBlockStyleLive(${b.id}, 'textAlign', 'center'); renderEditor();" title="Align Center"><i class="bi bi-text-center"></i></button>
-                                    <button class="align-btn ${currentAlign === "right" ? "active" : ""} btn" onclick="updateBlockStyleLive(${b.id}, 'textAlign', 'right'); renderEditor();" title="Align Right"><i class="bi bi-text-right"></i></button>
-                                </div>
-                            </div>
-                            <div class="style-group" style="flex-grow:1;">
-                                <label>Custom</label>
-                                <input type="text" class="txtarea" value="${currentCss}" oninput="updateBlockStyleLive(${b.id}, 'customCss', this.value)" style="width:100%;" />
-                            </div>
-                        `;
-                        wrapper.appendChild(stylesPanel);
-                    }
-
-                    let contentNode;
-
-                    if (b.type === "p") {
-                        contentNode = document.createElement("p");
-                        contentNode.className = "wysiwyg-editor";
-                        contentNode.contentEditable = "true";
-                        contentNode.setAttribute("placeholder", "Click to type paragraph content...");
-                        contentNode.innerHTML = b.v1 || "";
-                        contentNode.addEventListener("input", (e) => updateBlockValue(b.id, "v1", e.target.innerHTML));
-                    } else if (b.type === "h2") {
-                        contentNode = document.createElement("h2");
-                        contentNode.className = "wysiwyg-editor";
-                        contentNode.contentEditable = "true";
-                        contentNode.setAttribute("placeholder", "Header 2");
-                        contentNode.innerHTML = b.v1 || "";
-                        contentNode.addEventListener("input", (e) => updateBlockValue(b.id, "v1", e.target.innerHTML));
-                    } else if (b.type === "h3") {
-                        contentNode = document.createElement("h3");
-                        contentNode.className = "wysiwyg-editor";
-                        contentNode.contentEditable = "true";
-                        contentNode.setAttribute("placeholder", "Header 3");
-                        contentNode.innerHTML = b.v1 || "";
-                        contentNode.addEventListener("input", (e) => updateBlockValue(b.id, "v1", e.target.innerHTML));
-                    } else if (b.type === "conversation") {
-                        contentNode = document.createElement("div");
-                        contentNode.className = "conversation wysiwyg-editor";
-                        contentNode.contentEditable = "true";
-                        contentNode.setAttribute("placeholder", "Enter dialogue or quote box text content...");
-                        contentNode.innerHTML = b.v1 || "";
-                        contentNode.addEventListener("input", (e) => updateBlockValue(b.id, "v1", e.target.innerHTML));
-                    } else if (b.type === "hr") {
-                        contentNode = document.createElement("hr");
-                        contentNode.style.margin = "2rem 0";
-                    } else if (b.type === "ul") {
-                        contentNode = document.createElement("ul");
-                        contentNode.className = "wysiwyg-editor";
-                        contentNode.contentEditable = "true";
-                        contentNode.setAttribute("placeholder", "• Item 1 (Press shift+enter for new lines)");
-                        contentNode.innerHTML = b.v1 || "<li></li>";
-                        contentNode.addEventListener("input", (e) => updateBlockValue(b.id, "v1", e.target.innerHTML));
-                    } else if (b.type === "html") {
-                        contentNode = document.createElement("div");
-                        contentNode.className = "html-block-container";
-                        if (b.isEditingHtml) {
-                            contentNode.innerHTML = `
-                                <span class="html-badge">Editing Code</span>
-                                <textarea class="html-editor-textarea" rows="8">${b.v1 || ""}</textarea>
-                                <button onclick="toggleHtmlEdit(${b.id})" style="margin-top:8px; width:100%; font-size:11px; background:#222; color:#fff; border:1px solid #444; padding:6px; cursor:pointer;">Render Output</button>
-                            `;
-                            const txt = contentNode.querySelector("textarea");
-                            txt.addEventListener("input", (e) => updateBlockValue(b.id, "v1", e.target.value));
-                        } else {
-                            contentNode.innerHTML = `
-                                <span class="html-badge">HTML Output</span>
-                                <div>${b.v1 || "<p style='color:#666; font-style:italic;'>[Empty HTML Block - Click to Edit Code]</p>"}</div>
-                                <button class="media-overlay-btn btn" onclick="toggleHtmlEdit(${b.id})" style="display:block; bottom: 8px; top:auto; transform:translateX(-50%);">Edit HTML Code</button>
-                            `;
-                        }
-                    } else if (b.type === "thought") {
-                        contentNode = document.createElement("div");
-                        contentNode.className = "thought-row";
-
-                        const textDiv = document.createElement("div");
-                        textDiv.className = "thought-text wysiwyg-editor";
-                        textDiv.contentEditable = "true";
-                        textDiv.setAttribute("placeholder", "Write block text descriptive content here...");
-                        textDiv.innerHTML = b.v1 || "";
-                        textDiv.addEventListener("input", (e) => updateBlockValue(b.id, "v1", e.target.innerHTML));
-
-                        const mediaDiv = document.createElement("div");
-                        mediaDiv.className = "thought-media";
-                        const defaultImg = b.v2 || "images/gallery.png";
-                        mediaDiv.innerHTML = `
-                            <img src="${defaultImg}" alt="${b.v3 || "Article Graphic"}" />
-                            <button class="media-overlay-btn btn" onclick="uploadBlockImage(${b.id})">Upload Image</button>
-                        `;
-
-                        contentNode.appendChild(textDiv);
-                        contentNode.appendChild(mediaDiv);
-                    }
-
-                    contentNode.id = `block-content-${b.id}`;
-                    applyStylesToElement(contentNode, b.styles);
-
-                    wrapper.appendChild(contentNode);
-                    container.appendChild(wrapper);
+                blocks.forEach((b) => {
+                    const blockEl = buildBlockElement(b, blocks);
+                    container.appendChild(blockEl);
                 });
             }
 
-            function compileHTML() {
-                const title = document.getElementById("canvas-title").innerText || "Article Title";
-                const date = document.getElementById("canvas-date").innerText || "Publication Date";
+            function compileHTML(targetBlocks = blocks) {
+                let html = "";
+                if (targetBlocks === blocks) {
+                    const title = document.getElementById("canvas-title").innerText || "Article Title";
+                    const date = document.getElementById("canvas-date").innerText || "Publication Date";
+                    html += `<h1>${title}</h1>\n<p><em>${date}</em></p>\n`;
+                }
 
-                let html = `<h1>${title}</h1>\n<p><em>${date}</em></p>\n`;
-
-                blocks.forEach((b) => {
+                targetBlocks.forEach((b) => {
                     const styleStr = getBlockStyleString(b);
                     if (b.type === "p" && b.v1) {
                         html += `<p${styleStr}>${b.v1}</p>\n`;
@@ -524,6 +665,8 @@
                         html += `<h2${styleStr}>${b.v1}</h2>\n`;
                     } else if (b.type === "h3" && b.v1) {
                         html += `<h3${styleStr}>${b.v1}</h3>\n`;
+                    } else if (b.type === "img" && b.url) {
+                        html += `<figure${styleStr}><img src="${b.url}" alt="${b.alt || ""}" style="max-width:100%; height:auto; border-radius: 6px;" /></figure>\n`;
                     } else if (b.type === "conversation" && b.v1) {
                         html += `<div class="conversation"${styleStr}>\n${b.v1}\n</div>\n`;
                     } else if (b.type === "hr") {
@@ -532,12 +675,21 @@
                         html += `${b.v1}\n`;
                     } else if (b.type === "ul" && b.v1) {
                         html += `<ul${styleStr}>\n${b.v1}\n</ul>\n`;
-                    } else if (b.type === "thought") {
-                        html += `
-                            <div class="thought-row"${styleStr}>
-                                <div class="thought-text"><p>${b.v1}</p></div>
-                                <div class="thought-media"><img src="${b.v2}" alt="${b.v3}" /></div>
-                            </div>\n`;
+                    } else if (b.type === "split") {
+                        let gridCols = b.gridCols || "1fr 1fr";
+                        
+                        if (b.ratio) {
+                            if (b.ratio === "60-40") gridCols = "6fr 4fr";
+                            else if (b.ratio === "40-60") gridCols = "4fr 6fr";
+                            else if (b.ratio === "30-70") gridCols = "3fr 7fr";
+                            else if (b.ratio === "70-30") gridCols = "7fr 3fr";
+                        }
+
+                        html += `<div class="split-layout" style="display: grid; grid-template-columns: ${gridCols}; gap: 1.5rem; margin-bottom: 1.5rem; align-items: start;"${styleStr}>\n`;
+                        (b.columns || []).forEach((colBlocks) => {
+                            html += `  <div>\n${compileHTML(colBlocks)}  </div>\n`;
+                        });
+                        html += `</div>\n`;
                     }
                 });
                 return html;
@@ -583,6 +735,45 @@
                 btn.disabled = false;
             }
 
+            function normalizeLegacyBlocks(rawBlocks) {
+                return rawBlocks.map((b) => {
+                    if (b.type === "thought") {
+                        return {
+                            id: b.id || Date.now(),
+                            type: "split",
+                            gridCols: "1fr 1fr",
+                            columns: [[createNewBlockObject("p", b.v1)], [createNewBlockObject("img", "", b.v2, b.v3)]]
+                        };
+                    }
+                    if (b.type === "split" && !b.columns) {
+                        const col1 =
+                            b.col1?.type === "image"
+                                ? createNewBlockObject("img", "", b.col1.value)
+                                : createNewBlockObject("p", b.col1?.value || "");
+                        const col2 =
+                            b.col2?.type === "image"
+                                ? createNewBlockObject("img", "", b.col2.value)
+                                : createNewBlockObject("p", b.col2?.value || "");
+                        
+                        let legacyGrid = "1fr 1fr";
+                        if (b.ratio) {
+                            if (b.ratio === "60-40") legacyGrid = "6fr 4fr";
+                            else if (b.ratio === "40-60") legacyGrid = "4fr 6fr";
+                            else if (b.ratio === "30-70") legacyGrid = "3fr 7fr";
+                            else if (b.ratio === "70-30") legacyGrid = "7fr 3fr";
+                        }
+                        
+                        return {
+                            id: b.id || Date.now(),
+                            type: "split",
+                            gridCols: legacyGrid,
+                            columns: [[col1], [col2]]
+                        };
+                    }
+                    return b;
+                });
+            }
+
             window.onload = async () => {
                 const urlParams = new URLSearchParams(window.location.search);
                 const editTag = urlParams.get("edit");
@@ -597,11 +788,11 @@
                         document.getElementById("short-desc").value = data.description || "";
 
                         if (data.raw_json && Array.isArray(data.raw_json)) {
-                            blocks = data.raw_json;
+                            blocks = normalizeLegacyBlocks(data.raw_json);
                             renderEditor();
                         } else {
                             blocks = [];
-                            addBlock("p", data.content);
+                            addBlock("p");
                         }
                     }
                 } else {
