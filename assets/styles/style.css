@@ -853,7 +853,7 @@ nav.article-active .nav-back-btn {
 }
 
 .thought-content a {
-  color: var(--accent);
+  color: var(--text-hgt);
   text-decoration: none;
 }
 
@@ -862,6 +862,13 @@ nav.article-active .nav-back-btn {
 }
 .thought-content em {
   color: var(--text-muted);
+}
+
+.thought-content hr {
+  border: none;
+  border-top: 10px solid var(--surface-dsb);
+  margin-bottom: 30px;
+  margin-top: 10px;
 }
 
 .thought-row {
@@ -991,24 +998,19 @@ nav.article-active .nav-back-btn {
    ========================================================================== */
 
 .conversation {
-  margin: 2rem 0;
+  margin-bottom: 10px;
+  font-size: 1.3rem;
+  color: var(--text-hgt);
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  background-color: var(--bg-dark);
+  background-color: var(--surface-dsb);
   padding: 2rem;
-  border-radius: 10px;
+  border-bottom: solid 1px var(--highlight);
 }
 
 .conversation h3 {
   border: none;
-}
-
-@media (max-width: 500px) {
-  .conversation {
-    margin: 2rem -2rem;
-    width: 100% !important;
-  }
 }
 
 .bubble {
@@ -1856,7 +1858,6 @@ input[type="checkbox"]:checked::before {
     padding: 1.5rem;
   }
 }
-
 
 .nested-column {
   display: flex;

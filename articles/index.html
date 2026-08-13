@@ -99,15 +99,18 @@
           <div id="read-view">
             <article id="thought-content" class="thought-content"></article>
 
-            <section class="social-list" style="border: none">
-              <a class="social-item" href="/#guestbook">
-                <img src="/images/comment.png" alt="gallery" />
-                <div class="social-text">
-                  <h2>leave a comment &gt;&gt;</h2>
-                  <p>i'd appreceate to read what you have to say about this!</p>
-                </div>
-              </a>
+            <section class="guestbook surface" id="guestbook">
+              <h2 data-i18n="leave-comment">leave a comment!</h2>
+              <form id="guestbook-form">
+                <input type="text" id="name" placeholder="nickname (optional)" class="txtarea" />
+                <textarea id="message" placeholder="what do you think about this article?" required class="txtarea"></textarea>
+                <button type="submit" data-i18n="send-comment" class="btnsoft">Send!</button>
+              </form>
+              <div id="guestbook-entries">
+                <p data-i18n="comments-loading">loading what others have to say…</p>
+              </div>
             </section>
+            
             <p>&nbsp;</p>
           </div>
         </div>
@@ -126,6 +129,15 @@
 
       let isAdmin = false;
       let fetchedArticlesCache = [];
+      let currentArticleId = null;
+      let currentArticleTag = null;
+
+      const escapeHTML = (str) => {
+        return str.replace(
+          /[&<>"']/g,
+          (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[m]
+        );
+      };
 
       async function checkAdminStatus(session) {
         if (!session?.user) return false;
@@ -202,16 +214,34 @@
 
         try {
           if (fetchedArticlesCache.length === 0) {
-            let query = supabaseClient.from("blogs").select("tag, title, description, date, public");
+            let query = supabaseClient.from("blogs").select("id, tag, title, description, date, public");
 
             if (!isAdmin) {
               query = query.eq("public", true);
             }
 
             const { data: items, error } = await query.order("id", { ascending: false });
-
             if (error) throw error;
-            fetchedArticlesCache = items || [];
+
+            const blogIds = items.map(item => item.id);
+            let commentCounts = {};
+            if (blogIds.length > 0) {
+              const { data: commentsData } = await supabaseClient
+                .from("blog_comments")
+                .select("blog_id")
+                .in("blog_id", blogIds);
+
+              if (commentsData) {
+                commentsData.forEach(c => {
+                  commentCounts[c.blog_id] = (commentCounts[c.blog_id] || 0) + 1;
+                });
+              }
+            }
+
+            fetchedArticlesCache = items.map(item => ({
+              ...item,
+              commentCount: commentCounts[item.id] || 0
+            })) || [];
           }
 
           list.innerHTML = "";
@@ -238,7 +268,7 @@
 <a class="thought-link" href="?id=${item.tag}" onclick="event.preventDefault(); navigateToArticle('${item.tag}')">
     <h3 class="gallery-title">${item.title} ${!item.public && isAdmin ? '<span style="font-size:11px; background:#fb4934; color:#fff; padding:2px 6px; border-radius:4px; vertical-align:middle;margin-left:5px;">Draft</span>' : ""}</h3>
     <p class="gallery-description"><i>${item.description}</i></p>
-    <p class="gallery-date"><em>${item.date}</em></p>
+    <p class="gallery-date"><em>${item.date} &bull; ${item.commentCount} comment${item.commentCount === 1 ? '' : 's'}</em></p>
 </a>
 ${adminButtons}
 `;
@@ -252,7 +282,7 @@ ${adminButtons}
             li.setAttribute("data-tag", item.tag);
             li.innerHTML = `
               <a href="?id=${item.tag}" title="${item.title}" onclick="event.preventDefault(); navigateToArticle('${item.tag}')">
-                ${item.title} ${!item.public && isAdmin ? "admin" : ""}
+                ${item.title} (${item.commentCount}) ${!item.public && isAdmin ? "admin" : ""}
               </a>
             `;
             sidebarList.appendChild(li);
@@ -286,26 +316,144 @@ ${adminButtons}
         });
       }
 
+      async function loadArticleComments(blogId) {
+        const entriesContainer = document.getElementById("guestbook-entries");
+        entriesContainer.innerHTML = "<p>loading what others have to say…</p>";
+
+        try {
+          const { data: comments, error } = await supabaseClient
+            .from("blog_comments")
+            .select("*")
+            .eq("blog_id", blogId)
+            .order("created_at", { ascending: false });
+
+          if (error) throw error;
+
+          entriesContainer.innerHTML = "";
+          if (!comments || comments.length === 0) {
+            entriesContainer.innerHTML = "<p>aww nothing</p>";
+            return;
+          }
+
+          comments.forEach((msg) => {
+            const div = document.createElement("div");
+            div.className = "guestbook-entry";
+
+            div.innerHTML = `
+              <div class="guestbook-entry-header">
+                <strong>${msg.name}</strong>
+                <small class="guestbook-entry-time">
+                  ${new Date(msg.created_at).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })} - 
+                  ${new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                </small>
+              </div>
+              <p>${msg.message}</p>
+            `;
+
+            if (isAdmin) {
+              const replyContainer = document.createElement("div");
+              replyContainer.className = "guestbook-reply admin-reply-box";
+              replyContainer.style.cssText = "display: flex; align-items: center; gap: 6px; margin-top: 6px;";
+
+              replyContainer.innerHTML = `
+                <i class='bi bi-arrow-return-right'></i>
+                <input 
+                  type="text" 
+                  class="inline-reply-input txtarea block-wrapper" 
+                  value="${msg.reply ? msg.reply : ""}" 
+                  placeholder="no reply"
+                  style="width:100%"
+                  onblur="handleInlineReplySave('${msg.id}', this.value, '${msg.reply || ""}')"
+                  onkeydown="if(event.key === 'Enter') { event.preventDefault(); this.blur(); }"
+                />
+              `;
+              div.appendChild(replyContainer);
+            } else if (msg.reply) {
+              const replyDiv = document.createElement("div");
+              replyDiv.className = "guestbook-reply";
+              replyDiv.innerHTML = `
+                <i class='bi bi-arrow-return-right'></i>
+                <span>${msg.reply}</span>
+              `;
+              div.appendChild(replyDiv);
+            }
+
+            if (isAdmin) {
+              div.style.position = "relative";
+              const adminControls = document.createElement("div");
+              adminControls.className = "admin-actions";
+              adminControls.style.cssText = "position: absolute; top: 0; right: 0;";
+              adminControls.innerHTML = `
+                <button class="btn" style="scale: 0.7;" onclick="deleteComment('${msg.id}')" title="Delete entry">
+                  <i class="bi bi-x-lg"></i>
+                </button>
+              `;
+              div.appendChild(adminControls);
+            }
+
+            entriesContainer.appendChild(div);
+          });
+        } catch (err) {
+          entriesContainer.innerHTML = `<p>idk, they say ${err.message} happened :/</p>`;
+        }
+      }
+
+      window.deleteComment = async function (commentId) {
+        if (!isAdmin) return;
+
+        if (confirm("Are you sure you want to delete this comment?")) {
+          const { error } = await supabaseClient.from("blog_comments").delete().eq("id", commentId);
+
+          if (error) {
+            alert("Failed to delete comment: " + error.message);
+          } else {
+            loadArticleComments(currentArticleId);
+          }
+        }
+      };
+
+      window.handleInlineReplySave = async function (id, newValue, previousValue) {
+        if (!isAdmin) return;
+
+        const trimmedValue = newValue.trim();
+        const escapedValue = trimmedValue ? escapeHTML(trimmedValue) : null;
+
+        if ((escapedValue === null && !previousValue) || escapedValue === previousValue) {
+          return;
+        }
+
+        const { error } = await supabaseClient.from("blog_comments").update({ reply: escapedValue }).eq("id", id);
+
+        if (error) {
+          alert("Failed to update reply: " + error.message);
+        }
+
+        loadArticleComments(currentArticleId);
+      };
+
       async function loadThought(tag) {
         const container = document.getElementById("thought-content");
         const track = document.getElementById("view-track");
 
         try {
-          let query = supabaseClient.from("blogs").select("title, content, public").eq("tag", tag);
+          let query = supabaseClient.from("blogs").select("id, title, content, public").eq("tag", tag);
           const { data: post, error } = await query.single();
 
           if (error || !post) {
             container.innerHTML = "<p>i havent thought of that yet</p>";
+            document.getElementById("guestbook").style.display = "none";
             track.classList.add("show-article");
             return;
           }
 
           if (!post.public && !isAdmin) {
             container.innerHTML = "<p>This content is currently restricted or hidden by the author.</p>";
+            document.getElementById("guestbook").style.display = "none";
             track.classList.add("show-article");
             return;
           }
 
+          document.getElementById("guestbook").style.display = "block";
           container.innerHTML = post.content;
 
           const scripts = container.querySelectorAll("script");
@@ -319,6 +467,10 @@ ${adminButtons}
           });
 
           document.title = `amiminnie - ${post.title}`;
+          
+          currentArticleId = post.id;
+          currentArticleTag = tag;
+          await loadArticleComments(post.id);
 
           track.classList.add("show-article");
           window.scrollTo({ top: 0, behavior: "smooth" });
@@ -328,6 +480,37 @@ ${adminButtons}
           console.error(err);
         }
       }
+
+      document.getElementById("guestbook-form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (!currentArticleId) return;
+
+        let rawName = document.getElementById("name").value.trim();
+        const rawMessage = document.getElementById("message").value.trim();
+        
+        if (!rawMessage) return;
+
+        if (rawName.includes("✿")) {
+          alert("hehe cheeky fella, verification badge is for my close friends!");
+          return;
+        }
+
+        const name = rawName ? escapeHTML(rawName) : "anonymous";
+        const message = escapeHTML(rawMessage);
+
+        try {
+          const { error } = await supabaseClient
+            .from("blog_comments")
+            .insert([{ blog_id: currentArticleId, name, message }]);
+
+          if (error) throw error;
+
+          document.getElementById("guestbook-form").reset();
+          loadArticleComments(currentArticleId);
+        } catch (err) {
+          alert("sorry, something happened: " + err.message);
+        }
+      });
 
       function handleRouting() {
         const track = document.getElementById("view-track");
@@ -349,6 +532,8 @@ ${adminButtons}
           mainNav.classList.remove("article-active");
           track.classList.remove("show-article");
           container.innerHTML = "";
+          currentArticleId = null;
+          currentArticleTag = null;
           document.title = "amiminnie - articles";
         }
       }
@@ -386,7 +571,6 @@ ${adminButtons}
 
       window.addEventListener("popstate", handleRouting);
 
-      // Initialize Auth & App
       initAuth().then(() => {
         loadThoughts().then(() => handleRouting());
       });
