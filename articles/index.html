@@ -85,7 +85,7 @@
                 <button class="btn-add btn" onclick="window.location.href='/articles/builder.html'">
                   <i class="bi bi-pencil-square"></i> new post
                 </button>
-                <button style="display: none;" onclick="logoutAdmin()"></button>
+                <button style="display: none" onclick="logoutAdmin()"></button>
               </div>
 
               <ul id="thoughts-list" class="thoughts-list">
@@ -100,17 +100,36 @@
             <article id="thought-content" class="thought-content"></article>
 
             <section class="guestbook surface" id="guestbook">
-              <h2 data-i18n="leave-comment">leave a comment!</h2>
-              <form id="guestbook-form">
-                <input type="text" id="name" placeholder="nickname (optional)" class="txtarea" />
-                <textarea id="message" placeholder="what do you think about this article?" required class="txtarea"></textarea>
-                <button type="submit" data-i18n="send-comment" class="btnsoft">Send!</button>
-              </form>
+              <h2 data-i18n="leave-comment">Comments</h2>
+
               <div id="guestbook-entries">
                 <p data-i18n="comments-loading">loading what others have to say…</p>
               </div>
+
+              <button
+                id="toggle-comment-btn"
+                class="btnsoft"
+                style="margin-top: 31px; width: 100%"
+                onclick="toggleCommentForm()"> Write a Comment
+              </button>
+
+              <form id="guestbook-form" style="display: none; flex-direction: column; gap: 10px; width: 100%">
+                <input
+                  type="text"
+                  id="name"
+                  placeholder="nickname (optional)"
+                  class="txtarea"
+                  style="width: 100%; box-sizing: border-box" />
+                <textarea
+                  id="message"
+                  placeholder="what do you think?"
+                  required
+                  class="txtarea"
+                  style="width: 100%; box-sizing: border-box; min-height: 80px"></textarea>
+                <button type="submit" data-i18n="send-comment" class="btnsoft" style="width: 100%">Send!</button>
+              </form>
             </section>
-            
+
             <p>&nbsp;</p>
           </div>
         </div>
@@ -223,7 +242,7 @@
             const { data: items, error } = await query.order("id", { ascending: false });
             if (error) throw error;
 
-            const blogIds = items.map(item => item.id);
+            const blogIds = items.map((item) => item.id);
             let commentCounts = {};
             if (blogIds.length > 0) {
               const { data: commentsData } = await supabaseClient
@@ -232,16 +251,17 @@
                 .in("blog_id", blogIds);
 
               if (commentsData) {
-                commentsData.forEach(c => {
+                commentsData.forEach((c) => {
                   commentCounts[c.blog_id] = (commentCounts[c.blog_id] || 0) + 1;
                 });
               }
             }
 
-            fetchedArticlesCache = items.map(item => ({
-              ...item,
-              commentCount: commentCounts[item.id] || 0
-            })) || [];
+            fetchedArticlesCache =
+              items.map((item) => ({
+                ...item,
+                commentCount: commentCounts[item.id] || 0
+              })) || [];
           }
 
           list.innerHTML = "";
@@ -268,7 +288,7 @@
 <a class="thought-link" href="?id=${item.tag}" onclick="event.preventDefault(); navigateToArticle('${item.tag}')">
     <h3 class="gallery-title">${item.title} ${!item.public && isAdmin ? '<span style="font-size:11px; background:#fb4934; color:#fff; padding:2px 6px; border-radius:4px; vertical-align:middle;margin-left:5px;">Draft</span>' : ""}</h3>
     <p class="gallery-description"><i>${item.description}</i></p>
-    <p class="gallery-date"><em>${item.date} &bull; ${item.commentCount} comment${item.commentCount === 1 ? '' : 's'}</em></p>
+    <p class="gallery-date"><em>${item.date} &bull; ${item.commentCount} comment${item.commentCount === 1 ? "" : "s"}</em></p>
 </a>
 ${adminButtons}
 `;
@@ -398,6 +418,16 @@ ${adminButtons}
         }
       }
 
+      function toggleCommentForm() {
+        const form = document.getElementById("guestbook-form");
+        const toggleBtn = document.getElementById("toggle-comment-btn");
+
+        if (form.style.display === "none") {
+          form.style.display = "flex";
+          toggleBtn.style.display = "none";
+        }
+      }
+
       window.deleteComment = async function (commentId) {
         if (!isAdmin) return;
 
@@ -467,7 +497,7 @@ ${adminButtons}
           });
 
           document.title = `amiminnie - ${post.title}`;
-          
+
           currentArticleId = post.id;
           currentArticleTag = tag;
           await loadArticleComments(post.id);
@@ -487,7 +517,7 @@ ${adminButtons}
 
         let rawName = document.getElementById("name").value.trim();
         const rawMessage = document.getElementById("message").value.trim();
-        
+
         if (!rawMessage) return;
 
         if (rawName.includes("✿")) {
@@ -505,7 +535,12 @@ ${adminButtons}
 
           if (error) throw error;
 
-          document.getElementById("guestbook-form").reset();
+          // Reset the form and collapse it again
+          const form = document.getElementById("guestbook-form");
+          form.reset();
+          form.style.display = "none";
+          document.getElementById("toggle-comment-btn").style.display = "inline-block";
+
           loadArticleComments(currentArticleId);
         } catch (err) {
           alert("sorry, something happened: " + err.message);
