@@ -1,13 +1,5 @@
 [
     {
-        "name": "Isuru",
-        "avatar": "https://cdn.discordapp.com/avatars/1360805395609813002/81ba5728345dc36aab8e29a222b2a5ec.webp?size=1024",
-        "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1404558257174876300/animated",
-        "description": "coffee- hide the coffee",
-        "hoverColor": "var(--card-starbucks)",
-        "links": []
-    },
-    {
         "name": "S4qC",
         "avatar": "https://cdn.discordapp.com/avatars/843354685556654110/cd5845c305736cd2df0996797d026f9b.webp?size=512",
         "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1287835633615765524/animated",
