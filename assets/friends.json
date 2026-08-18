@@ -1,7 +1,7 @@
 [
     {
         "name": "S4qC",
-        "avatar": "https://cdn.discordapp.com/avatars/843354685556654110/cd5845c305736cd2df0996797d026f9b.webp?size=512",
+        "avatar": "https://cdn.discordapp.com/avatars/843354685556654110/d67cff2c6825ae7a899750104cb7ae43.webp?size=1024",
         "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1287835633615765524/animated",
         "description": "Looking for the last 3 digits of π",
         "hoverBackground": "https://miwcmqwhudshgetmrmhf.supabase.co/storage/v1/object/public/blog-assets/1781678057769-banner-blur.png",
@@ -45,7 +45,7 @@
     {
         "name": "Dihan",
         "avatar": "https://github.com/RandomCatUser/RandomCatUser/blob/main/workflows/MyProfile.webp?raw=true",
-        "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1385050947855716503/animated",
+        "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1333866045282451527/animated?size=1024",
         "description": "behold our lord whiskers :3",
         "hoverBackground": "https://www.dropbox.com/scl/fi/w7g8m64woanhwr8yv447t/wmremove-transformed-1.webp?rlkey=7i9n39tnbyjpuu07qm9h668t3&st=plvfy0p7&dl=1",
         "links": [
@@ -95,7 +95,7 @@
     },
     {
         "name": "Rose",
-        "avatar": "https://cdn.discordapp.com/avatars/1255062122145120370/bbe6033217a46fd018dff6eac7c1af6b.webp?size=1024",
+        "avatar": "https://cdn.discordapp.com/avatars/1255062122145120370/e7007414847b944a5daecc83881a0540.webp?size=1024",
         "description": "Justice, The High Priestes",
         "hoverColor": "var(--card-agender)",
         "links": []
