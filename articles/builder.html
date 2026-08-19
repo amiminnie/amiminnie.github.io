@@ -317,6 +317,37 @@
                 }
                 return null;
             }
+            
+            function findParentArrayAndIndex(id, targetArray = blocks) {
+                for (let i = 0; i < targetArray.length; i++) {
+                    let b = targetArray[i];
+                    if (b.id === id) {
+                        return { parentArray: targetArray, index: i };
+                    }
+                    if (b.type === "split" && b.columns) {
+                        for (let col of b.columns) {
+                            let found = findParentArrayAndIndex(id, col);
+                            if (found) return found;
+                        }
+                    }
+                }
+                return null;
+            }
+
+            function moveBlock(id, direction) {
+                const found = findParentArrayAndIndex(id);
+                if (!found) return;
+
+                const { parentArray, index } = found;
+                const newIndex = direction === "up" ? index - 1 : index + 1;
+
+                if (newIndex >= 0 && newIndex < parentArray.length) {
+                    const temp = parentArray[index];
+                    parentArray[index] = parentArray[newIndex];
+                    parentArray[newIndex] = temp;
+                    renderEditor();
+                }
+            }
 
             function toggleBlockStyles(id) {
                 const b = findBlockById(id);
@@ -438,7 +469,8 @@
                 const controls = document.createElement("div");
                 controls.className = "block-controls";
                 controls.innerHTML = `
-                    <button class="drag-handle btn" title="Drag to Reorder"><i class="bi bi-grip-vertical"></i></button>
+                    <button onclick="moveBlock(${b.id}, 'up')" title="Move Up" class="btn"><i class="bi bi-chevron-up"></i></button>
+                    <button onclick="moveBlock(${b.id}, 'down')" title="Move Down" class="btn"><i class="bi bi-chevron-down"></i></button>
                     <button onclick="toggleBlockStyles(${b.id})" title="Toggle Styles" class="btn"><i class="bi bi-palette"></i></button>
                     <button onclick="removeBlockById(${b.id}); renderEditor();" title="Delete Block" class="btn"><i class="bi bi-trash3"></i></button>
                 `;
