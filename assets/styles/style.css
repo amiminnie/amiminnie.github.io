@@ -1680,7 +1680,7 @@ input[type="checkbox"]:checked::before {
 
 .block-controls {
   position: absolute;
-  left: -100px;
+  left: -210px;
   top: 0;
   display: none;
   flex-direction: row;
