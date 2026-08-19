@@ -179,7 +179,9 @@
                 ) {
                     if (activeTargetInfo !== null) {
                         activeTargetInfo = null;
-                        document.querySelectorAll('.nested-column').forEach(el => el.classList.remove('selected-column'));
+                        document
+                            .querySelectorAll(".nested-column")
+                            .forEach((el) => el.classList.remove("selected-column"));
                     }
                 }
             }
@@ -317,7 +319,7 @@
                 }
                 return null;
             }
-            
+
             function findParentArrayAndIndex(id, targetArray = blocks) {
                 for (let i = 0; i < targetArray.length; i++) {
                     let b = targetArray[i];
@@ -334,19 +336,38 @@
                 return null;
             }
 
-            function moveBlock(id, direction) {
+            function moveBlock(id, direction, steps = 1) {
                 const found = findParentArrayAndIndex(id);
                 if (!found) return;
 
                 const { parentArray, index } = found;
-                const newIndex = direction === "up" ? index - 1 : index + 1;
+                let newIndex = direction === "up" ? index - steps : index + steps;
 
-                if (newIndex >= 0 && newIndex < parentArray.length) {
-                    const temp = parentArray[index];
-                    parentArray[index] = parentArray[newIndex];
-                    parentArray[newIndex] = temp;
+                if (newIndex < 0) newIndex = 0;
+                if (newIndex >= parentArray.length) newIndex = parentArray.length - 1;
+
+                if (newIndex !== index) {
+                    const [item] = parentArray.splice(index, 1);
+                    parentArray.splice(newIndex, 0, item);
                     renderEditor();
                 }
+            }
+
+            function duplicateBlock(id) {
+                const found = findParentArrayAndIndex(id);
+                if (!found) return;
+
+                const { parentArray, index } = found;
+                const clonedBlock = JSON.parse(JSON.stringify(parentArray[index]));
+                function assignNewIds(block) {
+                    block.id = Date.now() + Math.random();
+                    if (block.type === "split" && block.columns) {
+                        block.columns.forEach((col) => col.forEach(assignNewIds));
+                    }
+                }
+                assignNewIds(clonedBlock);
+                parentArray.splice(index + 1, 0, clonedBlock);
+                renderEditor();
             }
 
             function toggleBlockStyles(id) {
@@ -442,16 +463,20 @@
 
             function selectColumn(splitId, colIndex, event) {
                 if (event) event.stopPropagation();
-                
-                if (activeTargetInfo && activeTargetInfo.splitId === splitId && activeTargetInfo.colIndex === colIndex) {
-                    return; 
+
+                if (
+                    activeTargetInfo &&
+                    activeTargetInfo.splitId === splitId &&
+                    activeTargetInfo.colIndex === colIndex
+                ) {
+                    return;
                 }
-                
+
                 activeTargetInfo = { splitId, colIndex };
-                
-                document.querySelectorAll('.nested-column').forEach(el => el.classList.remove('selected-column'));
+
+                document.querySelectorAll(".nested-column").forEach((el) => el.classList.remove("selected-column"));
                 if (event && event.currentTarget) {
-                    event.currentTarget.classList.add('selected-column');
+                    event.currentTarget.classList.add("selected-column");
                 } else {
                     renderEditor();
                 }
@@ -469,11 +494,14 @@
                 const controls = document.createElement("div");
                 controls.className = "block-controls";
                 controls.innerHTML = `
-                    <button onclick="moveBlock(${b.id}, 'up')" title="Move Up" class="btn"><i class="bi bi-chevron-up"></i></button>
-                    <button onclick="moveBlock(${b.id}, 'down')" title="Move Down" class="btn"><i class="bi bi-chevron-down"></i></button>
-                    <button onclick="toggleBlockStyles(${b.id})" title="Toggle Styles" class="btn"><i class="bi bi-palette"></i></button>
-                    <button onclick="removeBlockById(${b.id}); renderEditor();" title="Delete Block" class="btn"><i class="bi bi-trash3"></i></button>
-                `;
+    <button onclick="moveBlock(${b.id}, 'up', 10)" title="Move Up 10" class="btn"><i class="bi bi-chevron-double-up"></i></button>
+    <button onclick="moveBlock(${b.id}, 'up', 1)" title="Move Up" class="btn"><i class="bi bi-chevron-up"></i></button>
+    <button onclick="moveBlock(${b.id}, 'down', 1)" title="Move Down" class="btn"><i class="bi bi-chevron-down"></i></button>
+    <button onclick="moveBlock(${b.id}, 'down', 10)" title="Move Down 10" class="btn"><i class="bi bi-chevron-double-down"></i></button>
+    <button onclick="duplicateBlock(${b.id})" title="Duplicate Block" class="btn"><i class="bi bi-copy"></i></button>
+    <button onclick="toggleBlockStyles(${b.id})" title="Toggle Styles" class="btn"><i class="bi bi-palette"></i></button>
+    <button onclick="removeBlockById(${b.id}); renderEditor();" title="Delete Block" class="btn"><i class="bi bi-trash3"></i></button>
+`;
                 wrapper.appendChild(controls);
 
                 if (b.showStyles) {
@@ -631,9 +659,9 @@
                         else if (b.ratio === "40-60") gridCols = "4fr 6fr";
                         else if (b.ratio === "30-70") gridCols = "3fr 7fr";
                         else if (b.ratio === "70-30") gridCols = "7fr 3fr";
-                        
-                        b.gridCols = gridCols; 
-                        delete b.ratio; 
+
+                        b.gridCols = gridCols;
+                        delete b.ratio;
                     }
 
                     contentNode.style.display = "grid";
@@ -709,7 +737,7 @@
                         html += `<ul${styleStr}>\n${b.v1}\n</ul>\n`;
                     } else if (b.type === "split") {
                         let gridCols = b.gridCols || "1fr 1fr";
-                        
+
                         if (b.ratio) {
                             if (b.ratio === "60-40") gridCols = "6fr 4fr";
                             else if (b.ratio === "40-60") gridCols = "4fr 6fr";
@@ -786,7 +814,7 @@
                             b.col2?.type === "image"
                                 ? createNewBlockObject("img", "", b.col2.value)
                                 : createNewBlockObject("p", b.col2?.value || "");
-                        
+
                         let legacyGrid = "1fr 1fr";
                         if (b.ratio) {
                             if (b.ratio === "60-40") legacyGrid = "6fr 4fr";
@@ -794,7 +822,7 @@
                             else if (b.ratio === "30-70") legacyGrid = "3fr 7fr";
                             else if (b.ratio === "70-30") legacyGrid = "7fr 3fr";
                         }
-                        
+
                         return {
                             id: b.id || Date.now(),
                             type: "split",
