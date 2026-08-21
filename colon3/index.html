@@ -36,35 +36,17 @@
                 <section class="card" id="downloads">
                     <h2>Downloads</h2>
                     <p>You can download the latest version of the extension from Github.</p>
-                    <a
-                        href="https://github.com/amiminnie/Colon3/releases/tag/v1.31"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="download-link"
-                        ><i class="bi bi-file-earmark-zip"></i> &nbsp;Colon3-1.31.zip (latest stable)</a
-                    >
-                    <a
-                        href="https://github.com/amiminnie/Colon3/releases/tag/v1.2"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="download-link"
-                        ><i class="bi bi-file-earmark-zip"></i> &nbsp;Colon3-1.2.zip</a
-                    >
-                    <a
-                        href="https://github.com/amiminnie/Colon3/releases/tag/v1.0"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="download-link"
-                        ><i class="bi bi-file-earmark-zip"></i> &nbsp;Colon3-1.0.zip (legacy)</a
-                    >
+
+                    <div id="github-releases"><p class="download-link">Loading downloads...</p></div>
+
                     <p></p>
                     <a
                         href="https://github.com/amiminnie/Colon3"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="download-link"
-                        ><i class="bi bi-code"></i> &nbsp;Source code</a
-                    >
+                        class="download-link">
+                        <i class="bi bi-code"></i> &nbsp;Source code
+                    </a>
                 </section>
                 <section class="card">
                     <h2>Install</h2>
@@ -120,6 +102,30 @@
                             features
                         </p>
                     </div>
+                    <!--
+                    <h3>Google Chrome</h3>
+                    <p>Coming soon...?</p>
+                    -->
+                </section>
+
+                <section class="card">
+                    <h2>Issues</h2>
+                    <p>You can post any bugs or inconveniences on our</p>
+                    <div id="github-issues"><p class="download-link">Loading issues...</p></div>
+                    <p></p>
+                    <a
+                        href="https://github.com/amiminnie/Colon3/issues/new"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="download-link"
+                        ><i class="bi bi-flag"></i> &nbsp;Post issue</a
+                    >
+
+                    <h3>Upcoming...</h3>
+                    <p></p>
+                    <a class="download-link">Smarter emoticon recognition, not limted to a hardcoded rule set</a>
+                    <a class="download-link">Ease out the use of Google Icons in favour of local .svg icons</a>
+                    <a class="download-link">Caching so websites don't have to refresh every time</a>
                 </section>
             </main>
 
@@ -679,6 +685,89 @@
             }
             window.addEventListener("resize", resizePopup);
             resizePopup();
+
+            async function loadIssues() {
+                const container = document.getElementById("github-issues");
+                const repo = "amiminnie/Colon3";
+
+                try {
+                    const response = await fetch(`https://api.github.com/repos/${repo}/issues?state=open&per_page=5`);
+                    const issues = await response.json();
+
+                    if (issues.length === 0) {
+                        container.innerHTML = "No open issues.";
+                        return;
+                    }
+
+                    container.innerHTML = "";
+
+                    issues.forEach((issue) => {
+                        if (issue.pull_request) return;
+
+                        const link = document.createElement("a");
+                        link.href = issue.html_url;
+                        link.target = "_blank";
+                        link.className = "download-link";
+                        link.innerHTML = `<i class="bi bi-exclamation-diamond"></i> &nbsp;${issue.title}`;
+
+                        container.appendChild(link);
+                    });
+                } catch (error) {
+                    container.innerHTML = "Unable to load issues.";
+                    console.error("Error fetching issues:", error);
+                }
+            }
+
+            loadIssues();
+
+            async function loadReleases() {
+                const container = document.getElementById("github-releases");
+                const repo = "amiminnie/Colon3";
+
+                try {
+                    const response = await fetch(`https://api.github.com/repos/${repo}/releases`);
+                    const releases = await response.json();
+
+                    if (!Array.isArray(releases) || releases.length === 0) {
+                        container.innerHTML = "No releases found.";
+                        return;
+                    }
+
+                    container.innerHTML = "";
+
+                    releases.forEach((release, index) => {
+                        let downloadUrl = release.zipball_url;
+                        let fileName = `Colon3-${release.tag_name}.zip`;
+
+                        const zipAsset = release.assets.find((asset) => asset.name.endsWith(".zip"));
+                        if (zipAsset) {
+                            downloadUrl = zipAsset.browser_download_url;
+                            fileName = zipAsset.name;
+                        }
+
+                        let labelSuffix = "";
+                        if (index === 0) {
+                            labelSuffix = " (latest stable)";
+                        } else if (index === releases.length - 1) {
+                            labelSuffix = " (legacy)";
+                        }
+
+                        const link = document.createElement("a");
+                        link.href = downloadUrl;
+                        link.target = "_blank";
+                        link.rel = "noopener noreferrer";
+                        link.className = "download-link";
+                        link.innerHTML = `<i class="bi bi-file-earmark-zip"></i> &nbsp;${fileName}${labelSuffix}`;
+
+                        container.appendChild(link);
+                    });
+                } catch (error) {
+                    container.innerHTML = "Unable to load downloads.";
+                    console.error("Error fetching releases:", error);
+                }
+            }
+
+            loadReleases();
         </script>
     </body>
 </html>
