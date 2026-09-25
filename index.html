@@ -2,10 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>amiminnie</title>
+    <title>~*~ amiminnie!!!! ~*~</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="color-scheme" content="light dark" />
-    <meta name="theme-color" content="#111111" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#1f1317" />
 
     <meta property="og:title" content="amiminnie" />
     <meta property="og:description" content="My personal website that I totally didn't spend hundreds of hours on!" />
@@ -31,16 +31,11 @@
     <script src="/assets/scripts/browser.js" type="module"></script>
 
     <link id="theme-style" rel="stylesheet" href="/assets/styles/dark.css" />
-    <link id="style" rel="stylesheet" href="/assets/styles/style.css" />
+    <link id="style" rel="stylesheet" href="assets/styles/style.css" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Overlock:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap"
-      rel="stylesheet" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
-      rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=VT323&family=Trebuchet+MS&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
 
     <style>
@@ -60,231 +55,238 @@
   </head>
 
   <body>
-    <div class="container" id="container">
-      <header>
-        <nav>
-          <a href="" class="active" data-i18n="about-link">about</a>
-          <a href="archive" data-i18n="archive-link">archive</a>
-          <a href="articles" data-i18n="articles-link">articles</a>
-          <a rel="me" href="https://mastodon.social/@amiminnie"></a>
-          <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere with this!">
-            <i class="bi bi-palette-fill"></i>
-          </button>
-        </nav>
-      </header>
-
-      <main>
-        <section class="intro">
-          <p class="prefix" data-i18n="am-i">am i</p>
-          <h1 data-i18n="minnie">Minnie?</h1>
-          <p class="subtitle" data-i18n="who-i-am">she/they ⁘ artist ⁘ developer</p>
-
-          <div class="bio" data-i18n="my-bio">
-            <p>
-              sometimes i draw, things that make people awe <br />
-              when i write some code, it takes a while to load...
-            </p>
-          </div>
-        </section>
-
-        <section class="projects-section">
-          <div class="section-headers">
-            <h1 data-i18n="projects">Projects</h1>
-            <p class="subtitle" data-i18n="projects-subtitle">something cool you could try out maybe!</p>
-          </div>
-
-          <div class="h-scroll-container">
-            <a
-              href="#self://colon3"
-              class="project-card surface"
-              style="
-                background: linear-gradient(90deg, #ffdce888, #ffdce811);
-                border: none;
-                box-shadow: none;
-                text-shadow: 0 0 18px var(--shading);
-              ">
-              <div class="project-img">
-                <img
-                  src="images/projects/colon3.png"
-                  alt="Colon3"
-                  style="transform: rotate(-4deg); width: 110px; height: auto" />
-              </div>
-              <div class="project-details">
-                <h2 class="project-title" style="color: var(--surface-text)">:3 Your Internet!</h2>
-                <p class="project-description">
-                  Cute extension that replaces emoticons like :] with the more awesome :3 + more replacement features
-                </p>
-              </div>
-            </a>
-            <a
-              href="https://github.com/amiminnie/Notesweeper"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="project-card surface"
-              style="
-                border: none;
-                box-shadow: none;
-                border-top: solid 20px #9994;
-                background: #9992;
-                outline: solid 1px #9996;
-              ">
-              <div class="project-img"><img src="images/projects/notesweeper.png" alt="Colon3" /></div>
-              <div class="project-details">
-                <h2 class="project-title">Notesweeper</h2>
-                <p class="project-description">It's Minesweeper, but inside Notepad.</p>
-              </div>
-            </a>
-          </div>
-        </section>
-
-        <!--
-        <section class="section-headers">
-          <h1 data-i18n="comics">Comics</h1>
-          <p class="subtitle" data-i18n="comics-subtitle">you might find these relatable, only if you're like me...</p>
-
-          <div id="sketchbook-container" class="sketchbook-gallery">
-            <p data-i18n="comics-loading">flipping through the pages...</p>
-          </div>
-        </section>
-        -->
-
-        <section class="social-list">
-          <h1 data-i18n="what-to-do">what to do</h1>
-          <p class="subtitle" data-i18n="whattodo-subtitle">in case you're bored</p>
-          <a class="social-item" href="archive">
-            <img src="images/icons/archive.svg" alt="archive" />
-            <div class="social-text">
-              <h2 data-i18n="visit-archive">visit my archive!</h2>
-              <p data-i18n="visit-archive-subtitle">a hoard of random stuff i've made</p>
-            </div>
-          </a>
-          <a class="social-item" href="articles">
-            <img src="images/icons/articles.svg" alt="articles" />
-            <div class="social-text">
-              <h2 data-i18n="read-articles">read some articles</h2>
-              <p data-i18n="read-articles-subtitle">it's so random, may cure your boredom</p>
-            </div>
-          </a>
-          <a class="social-item" href="history">
-            <img src="images/icons/timemachine.svg" alt="timemachine" />
-            <div class="social-text">
-              <h2 data-i18n="timemachine">time machine</h2>
-              <p data-i18n="visit-timemachine-subtitle">interact with past snapshots of this site!</p>
-            </div>
-          </a>
-          <a class="social-item" href="#self://credits">
-            <img src="images/icons/credits.svg" alt="credits" />
-            <div class="social-text">
-              <h2 data-i18n="credits">credits</h2>
-              <p data-i18n="visit-credits-subtitle">for all that helped me</p>
-            </div>
-          </a>
-        </section>
-
-        <h1 style="margin-top: 25px; margin-bottom: -25px" data-i18n="guestbook">Guestbook</h1>
-        <section class="guestbook surface" id="guestbook">
-          <h2 data-i18n="leave-comment">leave a comment!</h2>
-          <form id="guestbook-form">
-            <input type="text" id="name" placeholder="nickname (optional)" class="txtarea" />
-            <textarea id="message" placeholder="what do you think?" required class="txtarea"></textarea>
-            <button type="submit" data-i18n="send-comment" class="btnsoft">Send!</button>
-          </form>
-          <div id="guestbook-entries">
-            <p data-i18n="comments-loading">loading what others have to say…</p>
-          </div>
-        </section>
-
-        <div class="social-wrapper">
-          <section class="friends-list">
-            <p class="prefixa" data-i18n="friends-prefix">these are my internet</p>
-            <h1 data-i18n="friends">friends!</h1>
-
-            <div id="friends-container"></div>
-          </section>
-
-          <section class="social-list">
-            <p class="prefixa" data-i18n="socials-prefix">check out my</p>
-            <h1 data-i18n="socials">presense</h1>
-            <div id="discord-link" class="social-item">
-              <img src="images/logos/discord.png" alt="Discord" />
-              <div class="social-text">
-                <h2 id="discord-name" data-i18n="discord">Discord</h2>
-                <p id="discord-details" data-i18n="discord-loading">amiminnie - add me as a friend!</p>
-              </div>
-            </div>
-
-            <a class="social-item" href="https://www.github.com/amiminnie/" target="_blank" rel="noopener noreferrer">
-              <img src="images/logos/github.png" alt="Github" />
-              <div class="social-text">
-                <h2 data-i18n="github">Github</h2>
-                <p data-i18n="github-subtitle">amiminnie - interesting stuff there</p>
-              </div>
-            </a>
-
-            <a
-              class="social-item"
-              href="https://www.duolingo.com/profile/amiminnie"
-              target="_blank"
-              rel="noopener noreferrer">
-              <img src="https://design.duolingo.com/28e4b3aebfae83e5ff2f.svg" alt="Duolingo" />
-              <div class="social-text">
-                <h2 data-i18n="reddit">Duolingo</h2>
-                <p data-i18n="reddit-subtitle">amiminnie - im active... extremely active</p>
-              </div>
-            </a>
-
-            <a
-              class="social-item"
-              href="https://geotastic.net/user-page/BqVenhUOwz/infos"
-              target="_blank"
-              rel="noopener noreferrer">
-              <img src="images/logos/geotastic-logo.png" alt="Geotastic" />
-              <div class="social-text">
-                <h2 data-i18n="reddit">Geotastic</h2>
-                <p data-i18n="reddit-subtitle">Exploring new - India or Ireland?</p>
-              </div>
-            </a>
-
-            <a
-              class="social-item"
-              href="https://www.reddit.com/user/amiminnie/"
-              target="_blank"
-              rel="noopener noreferrer">
-              <img src="images/logos/reddit.png" alt="Reddit" />
-              <div class="social-text">
-                <h2 data-i18n="reddit">Reddit</h2>
-                <p data-i18n="reddit-subtitle">r/amiminnie - don't check my post history</p>
-              </div>
-            </a>
-
-            <a class="social-item" href="https://amiminnie.bsky.social" target="_blank" rel="noopener noreferrer">
-              <img src="images/logos/bluesky.png" alt="Bluesky" />
-              <div class="social-text">
-                <h2 data-i18n="bluesky">Bluesky</h2>
-                <p data-i18n="bluesky-subtitle">@amiminnie.bsky.social - Twitter 2</p>
-              </div>
-            </a>
-
-            <a class="social-item" href="https://twitter.com/amiminnie1" target="_blank" rel="noopener noreferrer">
-              <img src="images/logos/twitter.png" alt="Twitter" />
-              <div class="social-text">
-                <h2 data-i18n="twitter">Twitter</h2>
-                <p data-i18n="twitter-subtitle">@amiminnie1 - i refuse to call it X</p>
-              </div>
-            </a>
-          </section>
+    <div class="page-wrapper">
+      <!-- Modern CSS Marquee Replacement -->
+      <div class="retro-ticker-container">
+        <div class="retro-ticker-content">
+          || WELCOME TO MY SITE || MAJOR RENOVATIONS ONGOING || SOME THINGS ARE DISABLED FOR NOW ||
         </div>
-      </main>
+      </div>
 
-      <footer>
-        <p data-i18n="amiminnie">amiminnie</p>
-        <p data-i18n="source-code">
-          here's the
-          <a href="https://github.com/amiminnie/amiminnie.github.io" target="_blank" rel="noopener noreferrer"
-            >source code!</a
-          >
-        </p>
-      </footer>
+      <div class="main-container">
+        <header>
+          <!-- Header Layout via Flexbox -->
+          <div class="header-banner">
+            <div class="header-title">
+              <span class="site-title">amiminnie</span>
+              <span class="site-subtitle">she/her ⁘ artist ⁘ developer</span>
+            </div>
+            <nav>
+              <a href="" class="active" data-i18n="about-link">[ About ]</a>
+              <a href="#archive" class="disabled" data-i18n="archive-link">[ Archive ]</a>
+              <a href="articles" class="disabled" data-i18n="articles-link">[ Articles ]</a>
+              <a rel="me" href="https://mastodon.social/@amiminnie"></a>
+              <!--
+            <button id="theme-toggle" class="theme-btn" title="Dark mode extensions may interfere with this!">
+              <i class="bi bi-palette-fill"></i> Theme
+            </button>
+            --></nav>
+          </div>
+
+          <hr class="retro-hr" />
+        </header>
+
+        <main class="layout-grid">
+          <!-- CENTER / PRIMARY CONTENT -->
+          <div class="main-content">
+            <!-- INTRO FIELDSET -->
+            <fieldset class="retro-fieldset">
+              <legend>:: Welcome ::</legend>
+              <section class="intro">
+                <h2>Welcome to my quiet corner on the internet!</h2>
+
+                <blockquote class="bio" data-i18n="my-bio">
+                  "sometimes i draw, things that make people awe<br />
+                  when i write some code, it takes a while to load..."
+                </blockquote>
+              </section>
+            </fieldset>
+
+            <fieldset class="retro-fieldset">
+              <legend>:: What To Do ::</legend>
+
+              <a class="social-item disabled" href="archive">
+                <img src="images/icons/archive.svg" alt="archive" width="24" height="24" />
+                <b><span data-i18n="visit-archive">visit my archive!</span></b> -
+                <span data-i18n="visit-archive-subtitle">a hoard of random stuff i've made</span>
+              </a>
+              <a class="social-item disabled" href="articles">
+                <img src="images/icons/articles.svg" alt="articles" width="24" height="24" />
+                <b><span data-i18n="read-articles">read some articles</span></b> -
+                <span data-i18n="read-articles-subtitle">it's so random, may cure your boredom</span>
+              </a>
+              <a class="social-item disabled" href="history">
+                <img src="images/icons/timemachine.svg" alt="timemachine" width="24" height="24" />
+                <b><span data-i18n="timemachine">time machine</span></b> -
+                <span data-i18n="visit-timemachine-subtitle">interact with past snapshots of this site!</span>
+              </a>
+              <a class="social-item disabled" href="#self://credits">
+                <img src="images/icons/credits.svg" alt="credits" width="24" height="24" />
+                <b><span data-i18n="credits">credits</span></b> -
+                <span data-i18n="visit-credits-subtitle">for all that helped me</span>
+              </a>
+            </fieldset>
+
+            <fieldset class="retro-fieldset">
+              <legend>:: Projects ::</legend>
+
+              <div class="projects-grid">
+                <a href="#self://colon3" class="project-card">
+                  <div class="project-icon">
+                    <img src="images/projects/colon3.png" alt="Colon3" />
+                  </div>
+                  <div class="project-info">
+                    <span class="project-title">:3 Your Internet!</span>
+                    <p class="project-description">
+                      Cute extension that replaces emoticons like :] with the more awesome :3 + more replacement
+                      features
+                    </p>
+                  </div>
+                </a>
+
+                <a
+                  href="https://github.com/amiminnie/Notesweeper"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="project-card">
+                  <div class="project-icon">
+                    <img src="images/projects/notesweeper.png" alt="Notesweeper" />
+                  </div>
+                  <div class="project-info">
+                    <span class="project-title project-alt">Notesweeper</span>
+                    <p class="project-description">It's Minesweeper, but inside Notepad.</p>
+                  </div>
+                </a>
+              </div>
+            </fieldset>
+
+            <fieldset class="retro-fieldset badges-fieldset">
+              <legend>:: Photography ::</legend>
+              <p>nothing here yet!</p>
+            </fieldset>
+
+            <fieldset class="retro-fieldset badges-fieldset">
+              <div class="badges-container">
+                <img src="images/badges/transnow2.gif" alt="88x31" />
+                <img src="images/badges/srgb-now.gif" alt="88x31" />
+                <img src="images/badges/css.gif" alt="88x31" />
+                <img src="images/badges/css.png" alt="88x31" />
+                <img src="images/badges/ban1.gif" alt="88x31" />
+                <img src="images/badges/discord.gif" alt="88x31" />
+                <img src="images/badges/windows.gif" alt="88x31" />
+                <img src="images/badges/nneighborhoodsmall.gif" alt="88x31" />
+                <img src="images/badges/queercoded.png" alt="88x31" />
+                <img src="images/badges/blender_get.gif" alt="88x31" />
+                <img src="images/badges/bestviewedwith.gif" alt="88x31" />
+                <img src="images/badges/psrc_freespin.gif" alt="88x31" />
+              </div>
+            </fieldset>
+          </div>
+
+          <aside class="sidebar-left">
+            <fieldset class="retro-fieldset" id="guestbook">
+              <legend>:: Guestbook! ::</legend>
+
+              <form id="guestbook-form">
+                <div class="form-row">
+                  <input type="text" id="name" placeholder="nickname (optional)" class="txtarea" />
+                </div>
+                <div class="form-row">
+                  <textarea id="message" placeholder="what do you think?" required class="txtarea" rows="4"></textarea>
+                </div>
+                <div class="form-row form-submit">
+                  <button type="submit" data-i18n="send-comment" class="btnsoft fullwidth">Submit</button>
+                </div>
+              </form>
+
+              <hr class="retro-hr-thin" />
+
+              <div id="guestbook-entries">
+                <p data-i18n="comments-loading">loading what others have to say…</p>
+              </div>
+            </fieldset>
+          </aside>
+
+          <aside class="sidebar-right">
+            <fieldset class="retro-fieldset">
+              <legend>:: Socials ::</legend>
+              <div class="social-list">
+                <div id="discord-link" class="social-item">
+                  <img src="images/icons/discord.png" alt="Discord" width="20" height="20" />
+                  <span id="discord-name" data-i18n="discord">Discord - amiminnie</span>
+                </div>
+
+                <a
+                  class="social-item"
+                  href="https://www.github.com/amiminnie/"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  <img src="images/icons/github.png" alt="Github" width="20" height="20" />
+                  <span data-i18n="github">Github - where my projects live</span>
+                </a>
+
+                <a
+                  class="social-item"
+                  href="https://www.duolingo.com/profile/amiminnie"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  <img src="images/icons/duolingo.png" alt="Duolingo" width="20" height="20" />
+                  <span>Duolingo - active... extremely</span>
+                </a>
+
+                <a
+                  class="social-item"
+                  href="https://geotastic.net/user-page/BqVenhUOwz/infos"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  <img src="images/logos/geotastic-logo.png" alt="Geotastic" width="20" height="20" />
+                  <span>Geotastic - driving on the... right??</span>
+                </a>
+
+                <a
+                  class="social-item"
+                  href="https://www.reddit.com/user/amiminnie/"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  <img src="images/icons/reddit.png" alt="Reddit" width="20" height="20" />
+                  <span data-i18n="reddit">Reddit - be carefull over here</span>
+                </a>
+                <a class="social-item" href="https://twitter.com/amiminnie1" target="_blank" rel="noopener noreferrer">
+                  <img src="images/icons/twitter.png" alt="Twitter" width="20" height="20" />
+                  <span data-i18n="twitter">Twitter - a lot of ragebait...</span>
+                </a>
+                <a class="social-item" href="https://amiminnie.bsky.social" target="_blank" rel="noopener noreferrer">
+                  <img src="images/logos/bluesky.png" alt="Bluesky" width="20" height="20" />
+                  <span data-i18n="bluesky">Bluesky - better twitter alternative?</span>
+                </a>
+                <a
+                  class="social-item"
+                  href="https://mastodon.social/@amiminnie"
+                  target="_blank"
+                  rel="noopener noreferrer">
+                  <img src="images/icons/mastodon.png" alt="Mastodon" width="20" height="20" />
+                  <span data-i18n="mastodon">Mastodon - also twitter but not corporate</span>
+                </a>
+              </div>
+            </fieldset>
+            <fieldset class="retro-fieldset">
+              <legend>:: Friends ::</legend>
+              <div id="friends-container"></div>
+            </fieldset>
+          </aside>
+        </main>
+
+        <hr class="retro-hr" />
+
+        <footer>
+          <p data-i18n="amiminnie">&copy; 2026 ChipFlare - No Rights Reserved.</p>
+          <p data-i18n="source-code">
+            <a href="https://github.com/amiminnie/amiminnie.github.io" target="_blank" rel="noopener noreferrer"
+              >View Source Code</a
+            >
+          </p>
+        </footer>
+      </div>
     </div>
 
     <div id="google_translate_element" style="display: none"></div>
@@ -322,15 +324,17 @@
     </script>
 
     <script>
-      function startSlugRain() {
-        if (location.hash !== "#slug") return;
-
+      function startRainEffect() {
+        const hash = location.hash;
+        // :3
+        if (hash !== "#slug" && hash !== "#autumn") return;
+        const imagePath = hash === "#autumn" ? "images/effects/autumn.png" : "images/effects/slug.png";
         history.replaceState(null, "", location.pathname + location.search);
 
         const duration = 6000;
         const endTime = Date.now() + duration;
 
-        function spawnSlug() {
+        function spawnItem() {
           const img = document.createElement("img");
           const size = 30 + Math.random() * 70;
           const startX = Math.random() * window.innerWidth;
@@ -338,7 +342,7 @@
           const rotation = (Math.random() - 0.5) * 1080;
           const fallTime = 3000 + Math.random() * 3000;
 
-          img.src = "images/effects/slug.png";
+          img.src = imagePath;
           img.style.position = "fixed";
           img.style.left = startX + "px";
           img.style.top = -size + "px";
@@ -353,9 +357,9 @@
 
           requestAnimationFrame(() => {
             img.style.transform = `
-                translate(${drift}px, ${window.innerHeight + size + 100}px)
-                rotate(${rotation}deg)
-            `;
+          translate(${drift}px, ${window.innerHeight + size + 100}px)
+          rotate(${rotation}deg)
+        `;
           });
 
           setTimeout(() => img.remove(), fallTime);
@@ -365,7 +369,7 @@
           () => {
             const count = 1 + Math.floor(Math.random() * 3);
             for (let i = 0; i < count; i++) {
-              spawnSlug();
+              spawnItem();
             }
 
             if (Date.now() > endTime) {
@@ -376,8 +380,8 @@
         );
       }
 
-      window.addEventListener("hashchange", startSlugRain);
-      startSlugRain();
+      window.addEventListener("hashchange", startRainEffect);
+      startRainEffect();
     </script>
 
     <script>
@@ -391,18 +395,9 @@
           const card = document.createElement("div");
           card.className = "friends-item";
 
-          if (friend.hoverBackground) {
-            card.style.setProperty(
-              "--hover-bg",
-              `linear-gradient(rgba(0,0,0,.3), rgba(0,0,0,.7)), url("${friend.hoverBackground}")`
-            );
-          }
-
-          if (friend.hoverColor) {
-            card.style.setProperty("--hover-color", friend.hoverColor);
-          }
           const avatarWrapper = document.createElement("div");
           avatarWrapper.className = "avatar-wrapper";
+
           if (friend.decoration) {
             const deco = document.createElement("img");
             deco.src = friend.decoration;
@@ -410,21 +405,22 @@
             deco.alt = "";
             avatarWrapper.appendChild(deco);
           }
+
           const avatar = document.createElement("img");
           avatar.src = friend.avatar;
           avatar.alt = friend.name;
           avatarWrapper.appendChild(avatar);
+
           const text = document.createElement("div");
           text.className = "friends-text";
+
           const h2 = document.createElement("h2");
           h2.textContent = friend.name;
+
           const nameLinks = document.createElement("span");
           nameLinks.className = "name-links";
-          let bottomLinks = null;
-          const hasLinks = friend.links && friend.links.length > 0;
-          if (hasLinks) {
-            bottomLinks = document.createElement("div");
-            bottomLinks.className = "bottom-links";
+
+          if (friend.links && friend.links.length > 0) {
             friend.links.forEach((link) => {
               const iconBtn = document.createElement("a");
               iconBtn.className = "friend-btn btn";
@@ -435,32 +431,25 @@
               }
               iconBtn.innerHTML = `${link.icon}`;
               nameLinks.appendChild(iconBtn);
-              const fullBtn = document.createElement("a");
-              fullBtn.className = "friend-btn btn";
-              if (link.url) fullBtn.href = link.url;
-              if (link.id) fullBtn.id = link.id;
-              fullBtn.innerHTML = `
-          ${link.icon}
-          <span class="label">${link.label || ""}</span>
-        `;
-              bottomLinks.appendChild(fullBtn);
             });
           }
+
           h2.appendChild(nameLinks);
+
           const p = document.createElement("p");
-          if (friend.secretFont) {
-            p.style.fontFamily = "CustomSecretFont, sans-serif";
+          if (friend.Tivathi) {
+            p.style.fontFamily = "Tivathi, sans-serif";
           }
+
           if (friend.htmlDescription) {
             p.innerHTML = friend.description;
           } else {
             p.textContent = friend.description;
           }
+
           text.appendChild(h2);
           text.appendChild(p);
-          if (bottomLinks) {
-            text.appendChild(bottomLinks);
-          }
+
           card.appendChild(avatarWrapper);
           card.appendChild(text);
           container.appendChild(card);
@@ -478,7 +467,6 @@
       const SUPABASE_URL = "https://miwcmqwhudshgetmrmhf.supabase.co";
       const SUPABASE_KEY = "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ";
 
-      // Attach client globally to window
       window.supabase = !isLocalhost ? createClient(SUPABASE_URL, SUPABASE_KEY) : null;
       const supabase = window.supabase;
 
@@ -486,8 +474,9 @@
       const guestbookEntries = document.getElementById("guestbook-entries");
 
       let isAdmin = false;
+      let currentPage = 1;
+      const PAGE_SIZE = 8;
 
-      // --- Admin Auth Verification ---
       async function checkAdminStatus(session) {
         if (!session?.user || !supabase) return false;
 
@@ -518,17 +507,20 @@
         });
       }
 
-      // --- Load Guestbook Entries ---
       async function loadMessages() {
         if (isLocalhost || !supabase) {
           guestbookEntries.innerHTML = "<p>guestbook disabled in local development</p>";
           return;
         }
         try {
-          const { data, error } = await supabase
+          const from = (currentPage - 1) * PAGE_SIZE;
+          const to = from + PAGE_SIZE - 1;
+
+          const { data, count, error } = await supabase
             .from("guestbook")
-            .select("*")
-            .order("created_at", { ascending: false });
+            .select("*", { count: "exact" })
+            .order("created_at", { ascending: false })
+            .range(from, to);
 
           if (error) throw error;
 
@@ -589,21 +581,54 @@
               adminControls.style.cssText = "position: absolute; top: 0; right: 0;";
 
               adminControls.innerHTML = `
-    <button class="btn" style="scale: 0.7;"onclick="handleDeleteMessage('${msg.id}')" title="Delete entry">
-      <i class="bi bi-x-lg"></i>
-    </button>
-  `;
+            <button class="btn" style="scale: 0.7;" onclick="handleDeleteMessage('${msg.id}')" title="Delete entry">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          `;
               div.appendChild(adminControls);
             }
 
             guestbookEntries.appendChild(div);
           });
+
+          const totalPages = Math.ceil((count || 0) / PAGE_SIZE);
+          if (totalPages > 1) {
+            const paginationContainer = document.createElement("div");
+            paginationContainer.className = "guestbook-pagination";
+            paginationContainer.style.cssText =
+              "display: flex; justify-content: space-between; align-items: center; margin-top: 10px;";
+
+            paginationContainer.innerHTML = `
+          <button class="btn" id="prev-page-btn" ${currentPage === 1 ? "disabled" : ""}>
+            <i class="bi bi-caret-left-fill"></i>
+          </button>
+          <span>${currentPage} / ${totalPages}</span>
+          <button class="btn" id="next-page-btn" ${currentPage >= totalPages ? "disabled" : ""}>
+            <i class="bi bi-caret-right-fill"></i>
+          </button>
+        `;
+
+            guestbookEntries.appendChild(paginationContainer);
+
+            document.getElementById("prev-page-btn").addEventListener("click", () => {
+              if (currentPage > 1) {
+                currentPage--;
+                loadMessages();
+              }
+            });
+
+            document.getElementById("next-page-btn").addEventListener("click", () => {
+              if (currentPage < totalPages) {
+                currentPage++;
+                loadMessages();
+              }
+            });
+          }
         } catch (err) {
           guestbookEntries.innerHTML = `<p>idk, they say ${err.message} happened :/</p>`;
         }
       }
 
-      // --- Admin Actions (Global Handlers) ---
       window.handleDeleteMessage = async function (id) {
         if (!isAdmin) return;
 
@@ -618,14 +643,12 @@
         }
       };
 
-      // --- Inline Reply Save Handler ---
       window.handleInlineReplySave = async function (id, newValue, previousValue) {
         if (!isAdmin) return;
 
         const trimmedValue = newValue.trim();
         const escapedValue = trimmedValue ? escapeHTML(trimmedValue) : null;
 
-        // Skip DB call if there are no changes
         if ((escapedValue === null && !previousValue) || escapedValue === previousValue) {
           return;
         }
@@ -646,13 +669,13 @@
         );
       };
 
-      // --- Guestbook Form Submission ---
       guestbookForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         if (isLocalhost || !supabase) {
           alert("guestbook disabled in local development");
           return;
         }
+
         let rawName = document.getElementById("name").value.trim();
         const rawMessage = document.getElementById("message").value.trim();
         if (!rawMessage) return;
@@ -665,186 +688,25 @@
         const name = rawName ? escapeHTML(rawName) : "anonymous";
         const message = escapeHTML(rawMessage);
 
+        const submitBtn = guestbookForm.querySelector("button[type='submit']");
+        if (submitBtn) submitBtn.disabled = true;
+
         try {
           const { error } = await supabase.from("guestbook").insert([{ name, message }]);
           if (error) throw error;
           guestbookForm.reset();
-          loadMessages();
+          currentPage = 1; 
+          await loadMessages();
         } catch (err) {
           alert("sorry, something happened: " + err.message);
+        } finally {
+          if (submitBtn) submitBtn.disabled = false;
         }
       });
 
-      // --- Heart Particle Visual Effects ---
-      const flagColors = {
-        transgender: ["#5bcef0", "#f5a9b8", "#ffffff"],
-        nonbinary: ["#fcf434", "#ffffff", "#9c59d1", "#2c2c2c"],
-        agender: ["#000000", "#a3a3a3", "#ffffff", "#baf4af"],
-        pansexual: ["#ff218d", "#ffd800", "#21b1ff"],
-        starbucks: ["#00704a", "#f2f0eb", "#1e4135"],
-        bilexicon: ["#7bb5ef", "#5a6edc", "#3d1a78"],
-        america: ["#0055ff", "#ffffff", "#aa0000"],
-        saad: ["#000000"],
-        default: ["#ff8ef1"]
-      };
-
-      document.querySelectorAll(".friends-item").forEach((item) => {
-        const img = item.querySelector("img");
-        if (!img) return;
-        item.addEventListener("mouseenter", () => {
-          let flagType = "default";
-          const flags = Object.keys(flagColors);
-          for (const flag of flags) {
-            if (item.classList.contains(flag)) {
-              flagType = flag;
-              break;
-            }
-          }
-
-          spawnHeartsFromImage(img, flagType);
-        });
-      });
-
-      function spawnHeartsFromImage(img, flagType) {
-        const rect = img.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-
-        const currentPalette = flagColors[flagType] || flagColors["default"];
-
-        for (let i = 0; i < 12; i++) {
-          const heart = document.createElement("div");
-          heart.className = "heart-particle";
-          const randomColor = currentPalette[Math.floor(Math.random() * currentPalette.length)];
-          heart.innerHTML = `
-        <svg viewBox="0 0 24 24" width="100%" height="100%">
-          <path fill="${randomColor}" d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-        </svg>
-      `;
-
-          heart.style.left = `${centerX}px`;
-          heart.style.top = `${centerY}px`;
-          const angle = Math.random() * Math.PI * 2;
-          const distance = 50 + Math.random() * 20;
-          const x = Math.cos(angle) * distance;
-          const y = Math.sin(angle) * distance;
-          heart.style.setProperty("--x", `${x}px`);
-          heart.style.setProperty("--y", `${y}px`);
-
-          document.body.appendChild(heart);
-          setTimeout(() => {
-            heart.remove();
-          }, 800);
-        }
-      }
-
-      // --- Sketchbook Drawings ---
-      async function loadLatestDrawings() {
-        const container = document.getElementById("sketchbook-container");
-
-        if (isLocalhost || !supabase) {
-          container.innerHTML = "<p>sketchbook disabled in local development</p>";
-          return;
-        }
-
-        try {
-          const { data: drawings, error } = await supabase
-            .from("gallery")
-            .select("*")
-            .contains("tags", JSON.stringify(["home"]))
-            .order("created_at", { ascending: false });
-
-          if (error) throw error;
-
-          container.innerHTML = "";
-
-          if (!drawings || drawings.length === 0) {
-            container.innerHTML = "<p>nothing?... :/</p>";
-            return;
-          }
-
-          const columns = Math.ceil(Math.sqrt(drawings.length * 1.3));
-          const rows = Math.ceil(drawings.length / columns);
-
-          const cellWidth = 90 / columns;
-          const cellHeight = 85 / rows;
-
-          drawings.forEach((art, index) => {
-            const pageCard = document.createElement("div");
-            pageCard.className = "gallery-item art-page";
-            const col = index % columns;
-            const row = Math.floor(index / columns);
-            const rowOffset = row % 2 === 1 ? cellWidth / 2 : 0;
-
-            const randomOffsetX = (Math.random() - 0.5) * cellWidth * 0.08;
-            const randomOffsetY = (Math.random() - 0.5) * cellHeight * 0.08;
-
-            const randomLeft = 5 + col * cellWidth + rowOffset + randomOffsetX;
-            const randomTop = 5 + row * cellHeight + randomOffsetY;
-
-            const randomRotation = (Math.random() - 0.5) * 8;
-            const randomScale = 0.95 + Math.random() * 0.05;
-
-            pageCard.style.left = `${randomLeft}%`;
-            pageCard.style.top = `${randomTop}%`;
-            pageCard.style.transform = `rotate(${randomRotation}deg) scale(${randomScale})`;
-            pageCard.style.zIndex = index + 1;
-
-            pageCard.innerHTML = `
-          <img 
-            class="gallery-image" 
-            src="${art.image || "images/unavailable.png"}" 
-            alt="${art.title || "Untitled"}" 
-            loading="lazy"
-          />
-          <div class="gallery-title">${art.title || "Untitled"}</div>
-          <div class="gallery-description">${art.description || "No description."}</div>
-          <div class="gallery-date">
-            ${new Date(art.created_at).toLocaleDateString(undefined, {
-              month: "short",
-              year: "numeric"
-            })}
-          </div>
-        `;
-
-            container.appendChild(pageCard);
-          });
-        } catch (err) {
-          container.innerHTML = `<p>couldn't open the sketchbook: ${err.message}</p>`;
-        }
-      }
-
-      // --- Initialize App ---
       initAuth().then(() => {
         loadMessages();
-        //loadLatestDrawings();
-        // ENABLE THIS IF YOU TURN ON SKETCHBOOK AGAIN
       });
-    </script>
-
-    <script>
-      function updateBudapestTime() {
-        const timeEl = document.getElementById("budapest-time");
-        if (!timeEl) return;
-
-        try {
-          const options = {
-            timeZone: "Europe/Budapest",
-            hour: "2-digit",
-            minute: "2-digit",
-            second: "2-digit",
-            hour12: false
-          };
-
-          const formatter = new Intl.DateTimeFormat("en-US", options);
-          timeEl.textContent = formatter.format(new Date());
-        } catch (err) {
-          timeEl.textContent = "some time";
-        }
-      }
-
-      updateBudapestTime();
-      setInterval(updateBudapestTime, 1000);
     </script>
   </body>
 </html>

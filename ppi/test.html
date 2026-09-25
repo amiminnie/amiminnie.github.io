@@ -1,0 +1,552 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Advanced PPI Simulator</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet" />
+        <style>
+            :root {
+                --primary: #2563eb;
+                --primary-hover: #1d4ed8;
+                --bg: #f8fafc;
+                --surface: #ffffff;
+                --text: #0f172a;
+                --text-light: #64748b;
+                --border: #e2e8f0;
+            }
+
+            body {
+                font-family:
+                    "Inter",
+                    system-ui,
+                    -apple-system,
+                    sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: var(--bg);
+                color: var(--text);
+                overflow-x: hidden;
+            }
+
+            /* Landing Page Hero Section */
+            .hero {
+                background: linear-gradient(135deg, #1e3a8a, var(--primary));
+                color: white;
+                padding: 4rem 2rem;
+                text-align: center;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            }
+
+            .hero h1 {
+                margin: 0;
+                font-size: 2.5rem;
+                font-weight: 800;
+            }
+            .hero p {
+                font-size: 1.1rem;
+                opacity: 0.9;
+                max-width: 600px;
+                margin: 1rem auto 0;
+            }
+
+            /* Main Grid Layout */
+            .container {
+                max-width: 1200px;
+                margin: -2rem auto 3rem;
+                padding: 0 1.5rem;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                gap: 1.5rem;
+                position: relative;
+                z-index: 10;
+            }
+
+            .section {
+                background: var(--surface);
+                padding: 24px;
+                border-radius: 12px;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                border: 1px solid var(--border);
+                display: flex;
+                flex-direction: column;
+            }
+
+            .section h3 {
+                margin-top: 0;
+                color: var(--primary);
+                font-size: 1.25rem;
+                border-bottom: 2px solid var(--bg);
+                padding-bottom: 0.5rem;
+            }
+
+            .section p {
+                color: var(--text-light);
+                font-size: 0.9rem;
+                margin-bottom: 1.5rem;
+            }
+            .hidden {
+                display: none !important;
+            }
+
+            /* Inputs and Buttons */
+            input[type="number"],
+            input[type="text"] {
+                width: 100%;
+                padding: 12px;
+                margin: 8px 0;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                box-sizing: border-box;
+                font-size: 16px;
+                background: #f8fafc;
+                transition: border-color 0.2s;
+            }
+            input[type="number"]:focus,
+            input[type="text"]:focus {
+                border-color: var(--primary);
+                outline: none;
+            }
+
+            button {
+                width: 100%;
+                padding: 14px;
+                background-color: var(--primary);
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+                margin-top: auto;
+                transition: background-color 0.2s;
+            }
+            button:hover {
+                background-color: var(--primary-hover);
+            }
+            button.secondary {
+                background-color: #64748b;
+            }
+            button.secondary:hover {
+                background-color: #475569;
+            }
+            button.danger {
+                background-color: #ef4444;
+            }
+            button.danger:hover {
+                background-color: #dc2626;
+            }
+
+            /* Search Results */
+            #device-results {
+                max-height: 180px;
+                overflow-y: auto;
+                margin-top: 5px;
+                border-radius: 8px;
+                border: 1px solid var(--border);
+            }
+            .device-item {
+                padding: 12px;
+                cursor: pointer;
+                border-bottom: 1px solid var(--border);
+                background: var(--surface);
+                display: flex;
+                justify-content: space-between;
+                font-size: 14px;
+                transition: background 0.1s;
+            }
+            .device-item:last-child {
+                border-bottom: none;
+            }
+            .device-item:hover {
+                background: #eff6ff;
+            }
+
+            /* Overlays */
+            #fullscreen-view {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                z-index: 999;
+                display: flex;
+                flex-direction: column;
+                background-color: #000000;
+                justify-content: center;
+                align-items: center;
+                overflow: hidden;
+            }
+
+            canvas {
+                display: block;
+                width: 100%;
+                height: 100%;
+            }
+
+            /* Collapsable Bottom Drawer Controls */
+            #canvas-controls {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 50vh;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+                border-radius: 24px 24px 0 0;
+                box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.2);
+                display: flex;
+                flex-direction: column;
+                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                z-index: 1000;
+            }
+
+            #canvas-controls.collapsed {
+                transform: translateY(calc(100% - 48px));
+            }
+
+            #collapse-toggle {
+                background: transparent;
+                color: var(--text-light);
+                border: none;
+                padding: 14px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                width: 100%;
+                margin: 0;
+                border-bottom: 1px solid var(--border);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                border-radius: 24px 24px 0 0;
+            }
+
+            #collapse-toggle:hover {
+                background: rgba(0, 0, 0, 0.03);
+                color: var(--text);
+            }
+
+            .controls-content {
+                padding: 24px;
+                overflow-y: auto;
+                flex-grow: 1;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 24px;
+                align-items: start;
+            }
+
+            .control-group {
+                display: flex;
+                flex-direction: column;
+            }
+            .control-group label {
+                font-size: 13px;
+                font-weight: bold;
+                color: var(--text-light);
+                margin-bottom: 6px;
+            }
+            .color-pickers {
+                display: flex;
+                gap: 15px;
+            }
+            .color-pickers input[type="color"] {
+                width: 100%;
+                height: 42px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                cursor: pointer;
+                padding: 2px;
+            }
+
+            .drawer-footer {
+                padding: 16px 24px;
+                border-top: 1px solid var(--border);
+                background: var(--surface);
+            }
+        </style>
+    </head>
+    <body>
+        <!-- Canvas Simulator View (Set as primary view) -->
+        <div id="fullscreen-view">
+            <canvas id="simulatorCanvas"></canvas>
+
+            <!-- Collapsable Bottom Drawer -->
+            <div id="canvas-controls">
+                <button id="collapse-toggle" onclick="toggleSettings()">▼ Hide Settings</button>
+
+                <div class="controls-content">
+                    <div class="control-group">
+                        <label>Simulated Target PPI:</label>
+                        <input type="number" id="target-ppi" value="460" oninput="renderCanvasSimulation()" />
+                    </div>
+
+                    <div class="control-group">
+                        <label>Sample Text:</label>
+                        <input
+                            type="text"
+                            id="sim-text"
+                            value="Sphinx of black quartz, judge my vow."
+                            oninput="renderCanvasSimulation()" />
+                    </div>
+
+                    <div class="control-group color-pickers">
+                        <div style="flex: 1">
+                            <label>Background</label>
+                            <input type="color" id="sim-bg" value="#ffffff" oninput="renderCanvasSimulation()" />
+                        </div>
+                        <div style="flex: 1">
+                            <label>Text Color</label>
+                            <input type="color" id="sim-color" value="#0f172a" oninput="renderCanvasSimulation()" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="drawer-footer">
+                    <button
+                        class="secondary"
+                        onclick="openHome()"
+                        style="max-width: 300px; margin: 0 auto; display: block">
+                        Open Setup Dashboard
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Landing Page Dashboard View (Hidden by default) -->
+        <div id="view-home" class="hidden">
+            <header class="hero">
+                <h1>📱 Advanced PPI Simulator</h1>
+                <p>
+                    Calibrate your display hardware to simulate physical screen resolutions, text legibility, and exact
+                    scaling across various device profiles.
+                </p>
+            </header>
+
+            <div class="container">
+                <!-- Local JSON Search Section -->
+                <div class="section">
+                    <h3>🔍 Device Database</h3>
+                    <p>Search phone specifications from your local database.</p>
+                    <input
+                        type="text"
+                        id="device-search-input"
+                        placeholder="Search phone (e.g. 10 Pro)"
+                        oninput="handleSearchInput()" />
+                    <div id="device-results"></div>
+                </div>
+
+                <!-- Direct Input -->
+                <div class="section">
+                    <h3>🎯 Direct Override</h3>
+                    <p>If you already know your current monitor's physical PPI, enter it here.</p>
+                    <input type="number" id="direct-ppi" placeholder="e.g. 109 (1080p 24-inch)" />
+                    <button onclick="calibrateByDirectPPI()">Set PPI Directly</button>
+                </div>
+
+                <!-- Specs Calc -->
+                <div class="section">
+                    <h3>📏 Spec Calculator</h3>
+                    <p>Calculate your hardware PPI using your monitor's diagonal size and resolution.</p>
+                    <input type="number" id="screen-diag" placeholder="Screen Diagonal (inches)" step="0.1" />
+                    <input type="number" id="screen-w" placeholder="Resolution Width (px)" />
+                    <input type="number" id="screen-h" placeholder="Resolution Height (px)" />
+                    <button onclick="calibrateBySpecs()">Calculate & Simulate</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let actualHardwarePPI = 399; // Bypassed calibration, default to standard 96 PPI on refresh
+            let phoneDatabase = [];
+
+            const viewHome = document.getElementById("view-home");
+            const viewFS = document.getElementById("fullscreen-view");
+            const canvas = document.getElementById("simulatorCanvas");
+
+            // --- Bottom Drawer Toggle Logic ---
+            function toggleSettings() {
+                const controls = document.getElementById("canvas-controls");
+                const toggleBtn = document.getElementById("collapse-toggle");
+                controls.classList.toggle("collapsed");
+
+                if (controls.classList.contains("collapsed")) {
+                    toggleBtn.innerHTML = "▲ Show Settings";
+                } else {
+                    toggleBtn.innerHTML = "▼ Hide Settings";
+                }
+            }
+
+            function openHome() {
+                viewFS.classList.add("hidden");
+                viewHome.classList.remove("hidden");
+            }
+
+            // --- Load phones.json from Root on Initialization ---
+            async function loadPhoneDatabase() {
+                try {
+                    const response = await fetch("/ppi/phones.json");
+                    if (!response.ok) throw new Error("Network response was not ok");
+                    phoneDatabase = await response.json();
+                } catch (error) {
+                    console.error("Failed to load phones.json:", error);
+                }
+            }
+            loadPhoneDatabase();
+
+            // --- Autocomplete Search Logic ---
+            function handleSearchInput() {
+                const query = document.getElementById("device-search-input").value.trim().toLowerCase();
+                const resultsContainer = document.getElementById("device-results");
+
+                if (query.length === 0) {
+                    resultsContainer.innerHTML = "";
+                    return;
+                }
+
+                const matches = phoneDatabase.filter((phone) => phone.name.toLowerCase().includes(query));
+
+                matches.sort((a, b) => {
+                    if (a.name.length !== b.name.length) return a.name.length - b.name.length;
+                    return a.name.localeCompare(b.name);
+                });
+
+                if (matches.length === 0) {
+                    resultsContainer.innerHTML =
+                        '<div style="padding: 12px; font-size: 13px; color: #64748b;">No devices found.</div>';
+                    return;
+                }
+
+                resultsContainer.innerHTML = "";
+                matches.slice(0, 5).forEach((phone) => {
+                    const item = document.createElement("div");
+                    item.className = "device-item";
+                    item.innerHTML = `<span><strong>${phone.name}</strong></span> <span style="color:var(--primary); font-weight:bold;">${phone.ppi} PPI</span>`;
+
+                    item.onclick = () => {
+                        actualHardwarePPI = phone.ppi;
+                        document.getElementById("device-search-input").value = phone.name;
+                        resultsContainer.innerHTML = "";
+                        document.getElementById("target-ppi").value = phone.ppi;
+                        startSimulator();
+                    };
+                    resultsContainer.appendChild(item);
+                });
+            }
+
+            function calibrateByDirectPPI() {
+                const inputPPI = parseFloat(document.getElementById("direct-ppi").value);
+                if (!inputPPI || inputPPI <= 0) return alert("Enter valid PPI");
+                actualHardwarePPI = inputPPI;
+                startSimulator();
+            }
+
+            function calibrateBySpecs() {
+                const diag = parseFloat(document.getElementById("screen-diag").value);
+                const w = parseFloat(document.getElementById("screen-w").value);
+                const h = parseFloat(document.getElementById("screen-h").value);
+                if (!diag || !w || !h) return alert("Fill in all specs");
+                actualHardwarePPI = Math.sqrt(w * w + h * h) / diag;
+                startSimulator();
+            }
+
+            function startSimulator() {
+                viewHome.classList.add("hidden");
+                viewFS.classList.remove("hidden");
+                document.getElementById("canvas-controls").classList.remove("collapsed");
+                document.getElementById("collapse-toggle").innerHTML = "▼ Hide Settings";
+                renderCanvasSimulation();
+            }
+
+            window.addEventListener("resize", () => {
+                renderCanvasSimulation();
+            });
+
+            function renderCanvasSimulation() {
+                const targetPPI = parseFloat(document.getElementById("target-ppi").value) || 150;
+                const customText = document.getElementById("sim-text").value || "Sample Text";
+                const bgColor = document.getElementById("sim-bg").value;
+                const textColor = document.getElementById("sim-color").value;
+
+                const w = window.innerWidth;
+                const h = window.innerHeight;
+
+                const targetW = Math.round(((w * window.devicePixelRatio) / actualHardwarePPI) * targetPPI);
+                const targetH = Math.round(((h * window.devicePixelRatio) / actualHardwarePPI) * targetPPI);
+
+                canvas.width = targetW;
+                canvas.height = targetH;
+                canvas.style.width = w + "px";
+                canvas.style.height = h + "px";
+
+                const ctx = canvas.getContext("2d");
+
+                ctx.fillStyle = bgColor;
+                ctx.fillRect(0, 0, targetW, targetH);
+
+                const scale = targetPPI / 150;
+
+                ctx.fillStyle = textColor;
+                ctx.font = `bold ${64 * scale}px "IBM Plex Sans Condensed", sans-serif`;
+
+                ctx.fillText(`Pixel density`, 20 * scale, 80 * scale);
+                ctx.fillText(`visualizer`, 20 * scale, 140 * scale);
+
+                ctx.font = `bold ${24 * scale}px sans-serif`;
+                ctx.fillText(`Hardware PPI: ${Math.round(actualHardwarePPI)}`, 30 * scale, 200 * scale);
+                ctx.fillText(`Simulated PPI: ${targetPPI}`, 30 * scale, 230  * scale);
+
+                //
+                        // --- Render 1-Inch Test Square ---
+                        const squareSize = targetPPI;
+                        const squareX = 40 * scale;
+                        const squareY = 300 * scale;
+                
+                        ctx.strokeStyle = '#3b82f6';
+                        ctx.lineWidth = 3 * scale;
+                        ctx.strokeRect(squareX, squareY, squareSize, squareSize);
+                
+                        ctx.fillStyle = '#3b82f6';
+                        ctx.font = `${14 * scale}px sans-serif`;
+                        ctx.fillText('1-Inch physical square', squareX, squareY - 10 * scale);
+                
+                        const squareSize = targetPPI;
+                        const squareX = 40 * scale;
+                        const squareY = 300 * scale;
+                
+                        ctx.strokeStyle = '#3b82f6';
+                        ctx.lineWidth = 3 * scale;
+                        ctx.strokeRect(squareX, squareY, squareSize, squareSize);
+                
+                        ctx.fillStyle = '#3b82f6';
+                        ctx.font = `${14 * scale}px sans-serif`;
+                        ctx.fillText('1-Inch physical square', squareX, squareY - 10 * scale);
+                //
+                //        // --- Render Accurately Scaled Typography ---
+                //        const fontSizes = [9, 11, 14, 16, 24, 36];
+                //        let textStartY = squareY + squareSize + (60 * scale);
+                //
+                //        fontSizes.flowEach = undefined; // safety check
+                //        fontSizes.forEach(pt => {
+                //            const pixelSize = (pt / 72) * targetPPI;
+                //
+                //            ctx.fillStyle = textColor;
+                //            ctx.font = `${pixelSize}px sans-serif`;
+                //            ctx.fillText(`${pt}pt: ${customText}`, 40 * scale, textStartY);
+                //
+                //            textStartY += pixelSize + (10 * scale);
+                //        });
+            }
+
+            // Initial render on load with default 96 PPI
+            renderCanvasSimulation();
+        </script>
+    </body>
+</html>

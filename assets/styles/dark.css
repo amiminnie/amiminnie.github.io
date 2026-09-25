@@ -1,36 +1,35 @@
 /* ===== THEME VARIABLES ===== */
 
 :root {
-    /* Backgrounds */
-    --bg-main: #22161a;
-    --bg-dark: #1f1317;
+  --bg-main: #22161a;
+  --bg-dark: #1f1317;
 
-    --surface-hgt: #d86a7a;
-    --surface-hgt-shadow: #a84a5b;
+  --surface-hgt: #d86a7a;
+  --surface-hgt-shadow: #a84a5b;
 
-    --surface: #412227;
-    --surface-shadow: #331a1f;
-    --surface-dsb: #3a1d22;
-    --surface-dsb-shadow: #2a1518;
-    --surface-text: #efc5cd;
+  --surface: #412227;
+  --surface-shadow: #331a1f;
+  --surface-dsb: #3a1d22;
+  --surface-dsb-shadow: #2a1518;
+  --surface-text: #efc5cd;
 
-    --highlight: #d86a7a44;
-    --shading: #00000030;
-    --outline: #2a0f13;
+  --highlight: #d86a7a44;
+  --shading: #00000030;
+  --outline: #2a0f13;
 
-    --text-main: #f0c7cf;
-    --text-muted: #c79aa3;
-    --text-hgt: #e38a96;
+  --text-main: #f0c7cf;
+  --text-muted: #c79aa3;
+  --text-hgt: #e38a96;
 
-    --border-solid: #c77a7a55;
-    --border-weak: #c77a7a22;
+  --border-solid: #c77a7a55;
+  --border-weak: #c77a7a22;
 
-    --accent: #d86a7a;
-    --accent-dark: #8b3f49;
-    --accent-hover: #9bb7ff;
+  --accent: #d86a7a;
+  --accent-dark: #8b3f49;
+  --accent-hover: #9bb7ff;
 
-    --bubble: #ffffff10;
-    --card-hover: #ff8ef111;
+  --bubble: #ffffff10;
+  --card-hover: #ff8ef111;
     
 
     --card-agender: linear-gradient(

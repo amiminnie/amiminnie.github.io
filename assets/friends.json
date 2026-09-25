@@ -1,9 +1,8 @@
 [
     {
-        "name": "S4qC",
-        "avatar": "https://cdn.discordapp.com/avatars/843354685556654110/d67cff2c6825ae7a899750104cb7ae43.webp?size=1024",
-        "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1287835633615765524/animated",
-        "description": "Looking for the last 3 digits of π",
+        "name": "Saad",
+        "avatar": "https://cdn.discordapp.com/avatars/843354685556654110/009aae41988439d8bfcb62ec41f52fce.webp?size=1024",
+        "description": "Arch user btw",
         "hoverBackground": "https://miwcmqwhudshgetmrmhf.supabase.co/storage/v1/object/public/blog-assets/1781678057769-banner-blur.png",
         "links": [
             {
@@ -28,7 +27,7 @@
         "avatar": "https://cdn.discordapp.com/avatars/1100263587756384316/4ca8a07bab89274c7b8528a5a99d831a.webp?size=1024",
         "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1306330662990643252/animated",
         "description": "‮\"          \"",
-        "secretFont": true,
+        "Tivathi": true,
         "hoverColor": "var(--card-bilexicon)",
         "links": [
             {
@@ -46,7 +45,7 @@
         "name": "Dihan",
         "avatar": "https://github.com/RandomCatUser/RandomCatUser/blob/main/workflows/MyProfile.webp?raw=true",
         "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1333866045282451527/animated?size=1024",
-        "description": "behold our lord whiskers :3",
+        "description": "autumn of 2012 ❤",
         "hoverBackground": "https://www.dropbox.com/scl/fi/w7g8m64woanhwr8yv447t/wmremove-transformed-1.webp?rlkey=7i9n39tnbyjpuu07qm9h668t3&st=plvfy0p7&dl=1",
         "links": [
             {
@@ -58,13 +57,17 @@
                 "icon": "<i class='bi bi-github'></i>",
                 "url": "https://github.com/RandomCatUser",
                 "label": "GitHub"
+            },
+            {
+                "icon": "<i class='bi bi-tree'></i>",
+                "url": "#autumn"
             }
         ]
     },
     {
         "name": "Emily",
         "avatar": "https://avatars.githubusercontent.com/u/63641392?v=4",
-        "description": "it's <span id=\"budapest-time\">some time</span> in some parts of europe",
+        "description": "it's <span id=\"budapest-time\">ERROR</span> in some parts of europe",
         "htmlDescription": true,
         "hoverColor": "var(--card-transgender)",
         "links": [
@@ -80,8 +83,14 @@
         ]
     },
     {
+        "name": "Isuru",
+        "avatar": "https://cdn.discordapp.com/avatars/1360805395609813002/81ba5728345dc36aab8e29a222b2a5ec.webp?size=1024",
+        "description": "Coffee... WHERE'S THE COFFEE??",
+        "links": []
+    },
+    {
         "name": "Lucy",
-        "avatar": "https://styles.redditmedia.com/t5_d7ptkk/styles/profileIcon_gh8o5szz2ang1.jpeg?s=8fb5d83e31562cef1062a40b5962c6dbbd14ca02",
+        "avatar": "https://styles.redditmedia.com/t5_d7ptkk/styles/profileIcon_oop002oszqmh1.jpeg?frame=1&auto=webp&crop=256%3A256%2Csmart&s=5bd9cff20292a9f3249c4f492ca58c90656f0f48",
         "description": "hope everything works out for them",
         "hoverColor": "var(--card-nonbinary)",
         "links": []
@@ -95,7 +104,8 @@
     },
     {
         "name": "Rose",
-        "avatar": "https://cdn.discordapp.com/avatars/1255062122145120370/e7007414847b944a5daecc83881a0540.webp?size=1024",
+        "avatar": "https://cdn.discordapp.com/avatars/1255062122145120370/4b67c503c5c4974a49b34c6021a670a1.webp?size=1024",
+        "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1479187698768937010/animated?size=1024",
         "description": "Justice, The High Priestes",
         "hoverColor": "var(--card-agender)",
         "links": []
@@ -104,7 +114,7 @@
         "name": "Eesha",
         "avatar": "https://cdn.discordapp.com/avatars/1420739579723513948/e88c4e313d97b61679c3094d732906f6.webp?size=1024",
         "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1271174324375519273/animated?size=1024",
-        "description": "Never gonna give you up",
+        "description": "never gonna give you up",
         "hoverColor": "",
         "links": [
             {
@@ -118,5 +128,18 @@
                 "url": "#https://eeshamandiw79-bot.github.io/my.website/"
             }
         ]
+    },
+    {
+        "name": "Luna",
+        "avatar": "https://cdn.discordapp.com/avatars/1476953868284858418/4f387de4e8be5f34639c3eeeea941176.webp?size=1024",
+        "description": "mom :3",
+        "links": []
+    },
+    {
+        "name": "Atulya",
+        "avatar": "https://cdn.discordapp.com/avatars/848899344865820672/6ab5e4ba5ca359eaf873e6d721d8bb46.webp?size=1024",
+        "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1537474334333997248/animated?size=1024",
+        "description": "samsung's the best!",
+        "links": []
     }
 ]
