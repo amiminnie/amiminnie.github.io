@@ -20,7 +20,7 @@
     <link rel="apple-touch-icon" href="images/icons/articles.svg" />
 
     <link id="theme-style" rel="stylesheet" href="/assets/styles/dark.css" />
-    <link id="style" rel="stylesheet" href="/assets/styles/style.css" />
+    <link id="style" rel="stylesheet" href="/assets/styles/legacy.css" />
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -38,7 +38,9 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
   </head>
-
+  <p class="tab-btn" style="background-color: #ff000033">
+    THIS PAGE IS STILL USING THE OLD STYLES. NO CLUE WHEN I'LL GET AROUND TO REDESIGNING THIS PAGE :(
+  </p>
   <body>
     <aside class="desktop-sidebar">
       <ul id="sidebar-thoughts-list" class="sidebar-list"></ul>
@@ -110,7 +112,8 @@
                 id="toggle-comment-btn"
                 class="btnsoft"
                 style="margin-top: 31px; width: 100%"
-                onclick="toggleCommentForm()"> Write a Comment
+                onclick="toggleCommentForm()">
+                Write a Comment
               </button>
 
               <form id="guestbook-form" style="display: none; flex-direction: column; gap: 10px; width: 100%">

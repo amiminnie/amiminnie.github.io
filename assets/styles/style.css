@@ -600,3 +600,5 @@ footer {
 .resizer.ne { top: -4px; right: -4px; width: 10px; height: 10px; cursor: ne-resize; }
 .resizer.sw { bottom: -4px; left: -4px; width: 10px; height: 10px; cursor: sw-resize; }
 .resizer.se { bottom: -4px; right: -4px; width: 10px; height: 10px; cursor: se-resize; }
+
+
