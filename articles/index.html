@@ -154,13 +154,6 @@
       let currentArticleId = null;
       let currentArticleTag = null;
 
-      const escapeHTML = (str) => {
-        return str.replace(
-          /[&<>"']/g,
-          (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[m]
-        );
-      };
-
       async function checkAdminStatus(session) {
         if (!session?.user) return false;
 
@@ -341,7 +334,7 @@ ${adminButtons}
 
       async function loadArticleComments(blogId) {
         const entriesContainer = document.getElementById("guestbook-entries");
-        entriesContainer.innerHTML = "<p>loading what others have to say…</p>";
+        entriesContainer.textContent = "loading what others have to say…";
 
         try {
           const { data: comments, error } = await supabaseClient
@@ -354,7 +347,9 @@ ${adminButtons}
 
           entriesContainer.innerHTML = "";
           if (!comments || comments.length === 0) {
-            entriesContainer.innerHTML = "<p>aww nothing</p>";
+            const p = document.createElement("p");
+            p.textContent = "aww nothing";
+            entriesContainer.appendChild(p);
             return;
           }
 
@@ -362,42 +357,75 @@ ${adminButtons}
             const div = document.createElement("div");
             div.className = "guestbook-entry";
 
-            div.innerHTML = `
-              <div class="guestbook-entry-header">
-                <strong>${msg.name}</strong>
-                <small class="guestbook-entry-time">
-                  ${new Date(msg.created_at).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })} - 
-                  ${new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                </small>
-              </div>
-              <p>${msg.message}</p>
-            `;
+            // Header container
+            const headerDiv = document.createElement("div");
+            headerDiv.className = "guestbook-entry-header";
 
+            const strongName = document.createElement("strong");
+            strongName.textContent = msg.name;
+
+            const timeSmall = document.createElement("small");
+            timeSmall.className = "guestbook-entry-time";
+            const formattedDate = new Date(msg.created_at).toLocaleDateString(undefined, {
+              day: "numeric",
+              month: "short",
+              year: "numeric"
+            });
+            const formattedTime = new Date(msg.created_at).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit"
+            });
+            timeSmall.textContent = `${formattedDate} - ${formattedTime}`;
+
+            headerDiv.appendChild(strongName);
+            headerDiv.appendChild(timeSmall);
+            div.appendChild(headerDiv);
+
+            // Message Body
+            const messageP = document.createElement("p");
+            messageP.textContent = msg.message;
+            div.appendChild(messageP);
+
+            // Admin / Reply handling
             if (isAdmin) {
               const replyContainer = document.createElement("div");
               replyContainer.className = "guestbook-reply admin-reply-box";
               replyContainer.style.cssText = "display: flex; align-items: center; gap: 6px; margin-top: 6px;";
 
-              replyContainer.innerHTML = `
-                <i class='bi bi-arrow-return-right'></i>
-                <input 
-                  type="text" 
-                  class="inline-reply-input txtarea block-wrapper" 
-                  value="${msg.reply ? msg.reply : ""}" 
-                  placeholder="no reply"
-                  style="width:100%"
-                  onblur="handleInlineReplySave('${msg.id}', this.value, '${msg.reply || ""}')"
-                  onkeydown="if(event.key === 'Enter') { event.preventDefault(); this.blur(); }"
-                />
-              `;
+              const replyIcon = document.createElement("i");
+              replyIcon.className = "bi bi-arrow-return-right";
+
+              const replyInput = document.createElement("input");
+              replyInput.type = "text";
+              replyInput.className = "inline-reply-input txtarea block-wrapper";
+              replyInput.value = msg.reply ? msg.reply : "";
+              replyInput.placeholder = "no reply";
+              replyInput.style.width = "100%";
+              replyInput.addEventListener("blur", function () {
+                handleInlineReplySave(msg.id, this.value, msg.reply || "");
+              });
+              replyInput.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  this.blur();
+                }
+              });
+
+              replyContainer.appendChild(replyIcon);
+              replyContainer.appendChild(replyInput);
               div.appendChild(replyContainer);
             } else if (msg.reply) {
               const replyDiv = document.createElement("div");
               replyDiv.className = "guestbook-reply";
-              replyDiv.innerHTML = `
-                <i class='bi bi-arrow-return-right'></i>
-                <span>${msg.reply}</span>
-              `;
+
+              const replyIcon = document.createElement("i");
+              replyIcon.className = "bi bi-arrow-return-right";
+
+              const replySpan = document.createElement("span");
+              replySpan.textContent = msg.reply;
+
+              replyDiv.appendChild(replyIcon);
+              replyDiv.appendChild(replySpan);
               div.appendChild(replyDiv);
             }
 
@@ -406,18 +434,27 @@ ${adminButtons}
               const adminControls = document.createElement("div");
               adminControls.className = "admin-actions";
               adminControls.style.cssText = "position: absolute; top: 0; right: 0;";
-              adminControls.innerHTML = `
-                <button class="btn" style="scale: 0.7;" onclick="deleteComment('${msg.id}')" title="Delete entry">
-                  <i class="bi bi-x-lg"></i>
-                </button>
-              `;
+
+              const deleteBtn = document.createElement("button");
+              deleteBtn.className = "btn";
+              deleteBtn.style.scale = "0.7";
+              deleteBtn.title = "Delete entry";
+              deleteBtn.addEventListener("click", () => deleteComment(msg.id));
+
+              const deleteIcon = document.createElement("i");
+              deleteIcon.className = "bi bi-x-lg";
+              deleteBtn.appendChild(deleteIcon);
+
+              adminControls.appendChild(deleteBtn);
               div.appendChild(adminControls);
             }
 
             entriesContainer.appendChild(div);
           });
         } catch (err) {
-          entriesContainer.innerHTML = `<p>idk, they say ${err.message} happened :/</p>`;
+          const p = document.createElement("p");
+          p.textContent = `idk, they say ${err.message} happened :/`;
+          entriesContainer.appendChild(p);
         }
       }
 
@@ -449,13 +486,13 @@ ${adminButtons}
         if (!isAdmin) return;
 
         const trimmedValue = newValue.trim();
-        const escapedValue = trimmedValue ? escapeHTML(trimmedValue) : null;
+        const savedValue = trimmedValue ? trimmedValue : null;
 
-        if ((escapedValue === null && !previousValue) || escapedValue === previousValue) {
+        if ((savedValue === null && !previousValue) || savedValue === previousValue) {
           return;
         }
 
-        const { error } = await supabaseClient.from("blog_comments").update({ reply: escapedValue }).eq("id", id);
+        const { error } = await supabaseClient.from("blog_comments").update({ reply: savedValue }).eq("id", id);
 
         if (error) {
           alert("Failed to update reply: " + error.message);
@@ -528,8 +565,8 @@ ${adminButtons}
           return;
         }
 
-        const name = rawName ? escapeHTML(rawName) : "anonymous";
-        const message = escapeHTML(rawMessage);
+        const name = rawName ? rawName : "anonymous";
+        const message = rawMessage;
 
         try {
           const { error } = await supabaseClient

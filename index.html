@@ -464,7 +464,7 @@
       import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
       const isLocalhost =
-        location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.hostname === "";
+        location.hostname === "localhostt" || location.hostname === "127.0.0.1" || location.hostname === "";
       const SUPABASE_URL = "https://miwcmqwhudshgetmrmhf.supabase.co";
       const SUPABASE_KEY = "sb_publishable_stheDa15dO1UIajFAVSHmw_hKuIf4GZ";
 
@@ -510,7 +510,7 @@
 
       async function loadMessages() {
         if (isLocalhost || !supabase) {
-          guestbookEntries.innerHTML = "<p>guestbook disabled in local development</p>";
+          guestbookEntries.textContent = "guestbook disabled in local development";
           return;
         }
         try {
@@ -527,7 +527,9 @@
 
           guestbookEntries.innerHTML = "";
           if (!data || !data.length) {
-            guestbookEntries.innerHTML = "<p>aww nothing </p>";
+            const p = document.createElement("p");
+            p.textContent = "aww nothing ";
+            guestbookEntries.appendChild(p);
             return;
           }
 
@@ -535,42 +537,75 @@
             const div = document.createElement("div");
             div.className = "guestbook-entry";
 
-            div.innerHTML = `
-          <div class="guestbook-entry-header">
-            <strong>${msg.name}</strong>
-            <small class="guestbook-entry-time">
-              ${new Date(msg.created_at).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" })} - 
-              ${new Date(msg.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-            </small>
-          </div>
-          <p>${msg.message}</p>
-        `;
+            // Header container
+            const headerDiv = document.createElement("div");
+            headerDiv.className = "guestbook-entry-header";
 
+            const strongName = document.createElement("strong");
+            strongName.textContent = msg.name;
+
+            const timeSmall = document.createElement("small");
+            timeSmall.className = "guestbook-entry-time";
+            const formattedDate = new Date(msg.created_at).toLocaleDateString(undefined, {
+              day: "numeric",
+              month: "short",
+              year: "numeric"
+            });
+            const formattedTime = new Date(msg.created_at).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit"
+            });
+            timeSmall.textContent = `${formattedDate} - ${formattedTime}`;
+
+            headerDiv.appendChild(strongName);
+            headerDiv.appendChild(timeSmall);
+            div.appendChild(headerDiv);
+
+            // Message body
+            const messageP = document.createElement("p");
+            messageP.textContent = msg.message;
+            div.appendChild(messageP);
+
+            // Admin / Reply handling
             if (isAdmin) {
               const replyContainer = document.createElement("div");
               replyContainer.className = "guestbook-reply admin-reply-box";
               replyContainer.style.cssText = "display: flex; align-items: center; gap: 6px; margin-top: 6px;";
 
-              replyContainer.innerHTML = `
-            <i class='bi bi-arrow-return-right'></i>
-            <input 
-              type="text" 
-              class="inline-reply-input txtarea block-wrapper" 
-              value="${msg.reply ? msg.reply : ""}" 
-              placeholder="no reply"
-              style="width:100%"
-              onblur="handleInlineReplySave('${msg.id}', this.value, '${msg.reply || ""}')"
-              onkeydown="if(event.key === 'Enter') { event.preventDefault(); this.blur(); }"
-            />
-          `;
+              const replyIcon = document.createElement("i");
+              replyIcon.className = "bi bi-arrow-return-right";
+
+              const replyInput = document.createElement("input");
+              replyInput.type = "text";
+              replyInput.className = "inline-reply-input txtarea block-wrapper";
+              replyInput.value = msg.reply ? msg.reply : "";
+              replyInput.placeholder = "no reply";
+              replyInput.style.width = "100%";
+              replyInput.addEventListener("blur", function () {
+                handleInlineReplySave(msg.id, this.value, msg.reply || "");
+              });
+              replyInput.addEventListener("keydown", function (event) {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  this.blur();
+                }
+              });
+
+              replyContainer.appendChild(replyIcon);
+              replyContainer.appendChild(replyInput);
               div.appendChild(replyContainer);
             } else if (msg.reply) {
               const replyDiv = document.createElement("div");
               replyDiv.className = "guestbook-reply";
-              replyDiv.innerHTML = `
-            <i class='bi bi-arrow-return-right'></i>
-            <span>${msg.reply}</span>
-          `;
+
+              const replyIcon = document.createElement("i");
+              replyIcon.className = "bi bi-arrow-return-right";
+
+              const replySpan = document.createElement("span");
+              replySpan.textContent = msg.reply;
+
+              replyDiv.appendChild(replyIcon);
+              replyDiv.appendChild(replySpan);
               div.appendChild(replyDiv);
             }
 
@@ -581,11 +616,17 @@
               adminControls.className = "admin-actions";
               adminControls.style.cssText = "position: absolute; top: 0; right: 0;";
 
-              adminControls.innerHTML = `
-            <button class="btn" style="scale: 0.7;" onclick="handleDeleteMessage('${msg.id}')" title="Delete entry">
-              <i class="bi bi-x-lg"></i>
-            </button>
-          `;
+              const deleteBtn = document.createElement("button");
+              deleteBtn.className = "btn";
+              deleteBtn.style.scale = "0.7";
+              deleteBtn.title = "Delete entry";
+              deleteBtn.addEventListener("click", () => handleDeleteMessage(msg.id));
+
+              const deleteIcon = document.createElement("i");
+              deleteIcon.className = "bi bi-x-lg";
+              deleteBtn.appendChild(deleteIcon);
+
+              adminControls.appendChild(deleteBtn);
               div.appendChild(adminControls);
             }
 
@@ -599,26 +640,39 @@
             paginationContainer.style.cssText =
               "display: flex; justify-content: space-between; align-items: center; margin-top: 10px;";
 
-            paginationContainer.innerHTML = `
-          <button class="btn" id="prev-page-btn" ${currentPage === 1 ? "disabled" : ""}>
-            <i class="bi bi-caret-left-fill"></i>
-          </button>
-          <span>${currentPage} / ${totalPages}</span>
-          <button class="btn" id="next-page-btn" ${currentPage >= totalPages ? "disabled" : ""}>
-            <i class="bi bi-caret-right-fill"></i>
-          </button>
-        `;
+            const prevBtn = document.createElement("button");
+            prevBtn.className = "btn";
+            prevBtn.id = "prev-page-btn";
+            prevBtn.disabled = currentPage === 1;
+            const prevIcon = document.createElement("i");
+            prevIcon.className = "bi bi-caret-left-fill";
+            prevBtn.appendChild(prevIcon);
+
+            const pageSpan = document.createElement("span");
+            pageSpan.textContent = `${currentPage} / ${totalPages}`;
+
+            const nextBtn = document.createElement("button");
+            nextBtn.className = "btn";
+            nextBtn.id = "next-page-btn";
+            nextBtn.disabled = currentPage >= totalPages;
+            const nextIcon = document.createElement("i");
+            nextIcon.className = "bi bi-caret-right-fill";
+            nextBtn.appendChild(nextIcon);
+
+            paginationContainer.appendChild(prevBtn);
+            paginationContainer.appendChild(pageSpan);
+            paginationContainer.appendChild(nextBtn);
 
             guestbookEntries.appendChild(paginationContainer);
 
-            document.getElementById("prev-page-btn").addEventListener("click", () => {
+            prevBtn.addEventListener("click", () => {
               if (currentPage > 1) {
                 currentPage--;
                 loadMessages();
               }
             });
 
-            document.getElementById("next-page-btn").addEventListener("click", () => {
+            nextBtn.addEventListener("click", () => {
               if (currentPage < totalPages) {
                 currentPage++;
                 loadMessages();
@@ -626,7 +680,9 @@
             });
           }
         } catch (err) {
-          guestbookEntries.innerHTML = `<p>idk, they say ${err.message} happened :/</p>`;
+          const p = document.createElement("p");
+          p.textContent = `idk, they say ${err.message} happened :/`;
+          guestbookEntries.appendChild(p);
         }
       }
 
@@ -648,26 +704,20 @@
         if (!isAdmin) return;
 
         const trimmedValue = newValue.trim();
-        const escapedValue = trimmedValue ? escapeHTML(trimmedValue) : null;
+        // Since we are using textContent everywhere now, we can insert raw strings safely!
+        const savedValue = trimmedValue ? trimmedValue : null;
 
-        if ((escapedValue === null && !previousValue) || escapedValue === previousValue) {
+        if ((savedValue === null && !previousValue) || savedValue === previousValue) {
           return;
         }
 
-        const { error } = await supabase.from("guestbook").update({ reply: escapedValue }).eq("id", id);
+        const { error } = await supabase.from("guestbook").update({ reply: savedValue }).eq("id", id);
 
         if (error) {
           alert("Failed to update reply: " + error.message);
         }
 
         loadMessages();
-      };
-
-      const escapeHTML = (str) => {
-        return str.replace(
-          /[&<>"']/g,
-          (m) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[m]
-        );
       };
 
       guestbookForm.addEventListener("submit", async (e) => {
@@ -686,8 +736,9 @@
           return;
         }
 
-        const name = rawName ? escapeHTML(rawName) : "anonymous";
-        const message = escapeHTML(rawMessage);
+        // With textContent, manual HTML entity escaping function is no longer required for display security!
+        const name = rawName ? rawName : "anonymous";
+        const message = rawMessage;
 
         const submitBtn = guestbookForm.querySelector("button[type='submit']");
         if (submitBtn) submitBtn.disabled = true;
@@ -696,7 +747,7 @@
           const { error } = await supabase.from("guestbook").insert([{ name, message }]);
           if (error) throw error;
           guestbookForm.reset();
-          currentPage = 1; 
+          currentPage = 1;
           await loadMessages();
         } catch (err) {
           alert("sorry, something happened: " + err.message);
