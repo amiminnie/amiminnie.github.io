@@ -31,6 +31,11 @@
         "hoverColor": "var(--card-bilexicon)",
         "links": [
             {
+                "icon": "<i class='bi bi-soundwave'></i>",
+                "url": "https://soundcloud.com/aigr5f8eocdo",
+                "label": "Soundcloud"
+            },
+            {
                 "icon": "<i class='bi bi-twitter'></i>",
                 "url": "https://x.com/shizutsu1",
                 "label": "Twitter"
