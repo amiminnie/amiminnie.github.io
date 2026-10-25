@@ -1,7 +1,7 @@
 [
     {
         "name": "Saad",
-        "avatar": "https://cdn.discordapp.com/avatars/843354685556654110/009aae41988439d8bfcb62ec41f52fce.webp?size=1024",
+        "avatar": "https://cdn.discordapp.com/avatars/843354685556654110/a3e02e72541d3a3112d58960aaa0eae4.webp?size=1024",
         "description": "Arch user btw",
         "hoverBackground": "https://miwcmqwhudshgetmrmhf.supabase.co/storage/v1/object/public/blog-assets/1781678057769-banner-blur.png",
         "links": [
@@ -24,7 +24,7 @@
     },
     {
         "name": "Shizu",
-        "avatar": "https://cdn.discordapp.com/avatars/1100263587756384316/4ca8a07bab89274c7b8528a5a99d831a.webp?size=1024",
+        "avatar": "https://cdn.discordapp.com/avatars/1100263587756384316/c4bd08c66ff89f80f1b42f5473a8ec27.webp?size=1024",
         "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1306330662990643252/animated",
         "description": "‮\"          \"",
         "Tivathi": true,
@@ -43,8 +43,8 @@
     },
     {
         "name": "Dihan",
-        "avatar": "https://github.com/RandomCatUser/RandomCatUser/blob/main/workflows/MyProfile.webp?raw=true",
-        "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1333866045282451527/animated?size=1024",
+        "avatar": "https://cdn.discordapp.com/avatars/1233068654552420484/3829220ba1f1fa3781a51a5e2b6c9b81.webp?size=1024",
+        "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1212569433839636530/animated?size=1024",
         "description": "autumn of 2012 ❤",
         "hoverBackground": "https://www.dropbox.com/scl/fi/w7g8m64woanhwr8yv447t/wmremove-transformed-1.webp?rlkey=7i9n39tnbyjpuu07qm9h668t3&st=plvfy0p7&dl=1",
         "links": [
@@ -66,7 +66,7 @@
     },
     {
         "name": "Emily",
-        "avatar": "https://avatars.githubusercontent.com/u/63641392?v=4",
+        "avatar": "https://cdn.discordapp.com/avatars/211173123372875786/88b32d8880af8cddcf7a44dc2525c2c5.webp?size=1024",
         "description": "it's <span id=\"budapest-time\">ERROR</span> in some parts of europe",
         "htmlDescription": true,
         "hoverColor": "var(--card-transgender)",
@@ -84,7 +84,7 @@
     },
     {
         "name": "Isuru",
-        "avatar": "https://cdn.discordapp.com/avatars/1360805395609813002/81ba5728345dc36aab8e29a222b2a5ec.webp?size=1024",
+        "avatar": "https://cdn.discordapp.com/avatars/1360805395609813002/46a51095b4aac809e7ecd0c0b3acd106.webp?size=1024",
         "description": "Coffee... WHERE'S THE COFFEE??",
         "links": []
     },
@@ -104,35 +104,23 @@
     },
     {
         "name": "Rose",
-        "avatar": "https://cdn.discordapp.com/avatars/1255062122145120370/4b67c503c5c4974a49b34c6021a670a1.webp?size=1024",
+        "avatar": "https://cdn.discordapp.com/avatars/1255062122145120370/23d4aff397b7f9a915ec5ea458f83f15.webp?size=1024",
         "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1479187698768937010/animated?size=1024",
         "description": "Justice, The High Priestes",
         "hoverColor": "var(--card-agender)",
         "links": []
     },
     {
-        "name": "Eesha",
-        "avatar": "https://cdn.discordapp.com/avatars/1420739579723513948/e88c4e313d97b61679c3094d732906f6.webp?size=1024",
-        "decoration": "https://cdn.discordapp.com/media/v1/collectibles-shop/1271174324375519273/animated?size=1024",
-        "description": "never gonna give you up",
-        "hoverColor": "",
-        "links": [
-            {
-                "icon": "<i class='bi bi-globe2'></i>",
-                "url": "#https://eeshamandiw79-bot.github.io/amieesha.web/",
-                "label": "Website"
-            },
-            {
-                "icon": "<i class='bi bi-film'></i>",
-                "label": "Portfolio",
-                "url": "#https://eeshamandiw79-bot.github.io/my.website/"
-            }
-        ]
-    },
-    {
         "name": "Luna",
         "avatar": "https://cdn.discordapp.com/avatars/1476953868284858418/4f387de4e8be5f34639c3eeeea941176.webp?size=1024",
         "description": "mom :3",
+        "links": []
+    },
+    {
+        "name": "Stelle",
+        "avatar": "https://cdn.discordapp.com/avatars/807087449850904586/d15fc10fc04a2eec959386113171afd5.webp?size=1024",
+        "description": "rare W from reddit!",
+        "hoverColor": "var(--card-transgender)",
         "links": []
     }
 ]
